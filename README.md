@@ -33,26 +33,23 @@ Installation of MantaRay
 ==================================
 PPA:
 
-::
 
-        $ sudo apt-add-repository ppa:mantaray/stable
-	$ sudo apt-add-repository ppa:sift/stable
-	$ sudo apt-get update && sudo apt-get upgrade -y
-        $ sudo apt-get install mantaray
+
+    $ sudo apt-add-repository ppa:mantaray/stable
+    $ sudo apt-add-repository ppa:sift/stable
+    $ sudo apt-get update && sudo apt-get upgrade -y
+    $ sudo apt-get install mantaray
         
 Source from PPA:
-::
 
-        $ sudo apt-add-repository ppa:mantaray/stable
-        $ apt-get source mantaray
+    $ sudo apt-add-repository ppa:mantaray/stable
+    $ apt-get source mantaray
 
 How To Run MantaRay
 ==================================
 From command line (as user with sudo privileges) in PPA:
 
-::
-
-        $ mantaray
+    $ mantaray
 
 
 A popup window should appear. Pressing continue will begin running the script.
@@ -60,14 +57,12 @@ A popup window should appear. Pressing continue will begin running the script.
 Check For Updates
 ==================================
 Using apt-get:
-::
 
-	$ sudo apt-get update && sudo apt-get upgrade
+    $ sudo apt-get update && sudo apt-get upgrade
 
 Using mantaray-updater:
-::
 
-	$ mantaray-updater
+    $ mantaray-updater
 
 Errors and Bugs
 ==================================
