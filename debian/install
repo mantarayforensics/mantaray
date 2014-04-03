@@ -81,5 +81,5 @@ usr/share/Tools/Python/simplekml/substyle.py usr/share/mantaray/Tools/Python/sim
 usr/share/Tools/Python/simplekml/timeprimitive.py usr/share/mantaray/Tools/Python/simplekml
 usr/bin/mantaray usr/bin
 usr/bin/mantaray-updater /usr/bin
-readme.rst /usr/share/mantaray
+README.md /usr/share/mantaray
 usr/share/MantaRay.desktop /usr/share/applications
