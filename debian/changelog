@@ -1,0 +1,101 @@
+mantaray (1.3.1-dev0) precise; urgency=low
+
+  * Stability Improvements
+
+ -- Chapin Bryce <sansforensics@ubuntu>  Thu, 27 Mar 2014 11:35:31 -0400
+
+mantaray (1.3.0-dev1ubuntu3) precise; urgency=low
+
+  * Additional Fixes for dev version
+
+ -- Chapin Bryce <sansforensics@ubuntu>  Thu, 27 Mar 2014 11:08:46 -0400
+
+mantaray (1.3.0-dev1ubuntu2) precise; urgency=low
+
+  * Fixed additional typos
+
+ -- Chapin Bryce <sansforensics@ubuntu>  Thu, 27 Mar 2014 11:05:01 -0400
+
+mantaray (1.3.0-dev1ubuntu1) precise; urgency=low
+
+  * Fixed vmware glitch caused typo 
+
+ -- Chapin Bryce <sansforensics@ubuntu>  Thu, 27 Mar 2014 09:37:05 -0400
+
+mantaray (1.3.0-dev1) precise; urgency=low
+
+  * Updated parser_timeline and timeline GUI. Added update script
+
+ -- Chapin Bryce <webmaster@mantarayforensics.com>  Wed, 26 Mar 2014 20:07:00 -0400
+
+mantaray (1.3.0-dev0) precise; urgency=low
+
+  * New features include new module File Name Search, updates to volatility, plaso, and bulk extractor. Added launcher to desktop
+
+ -- Chapin Bryce <webmaster@mantarayforensics.com>  Wed, 26 Mar 2014 11:26:00 -0400
+
+mantaray (1.2.9-ubuntu0) precise; urgency=low
+
+  * Fixed bug in Super Timeline when no timezone was selected 
+
+ -- Chapin Bryce <webmaster@mantarayforensics.com>  Wed, 26 Feb 2014 07:35:00 -0500
+
+mantaray (1.2.8-ubuntu9) precise; urgency=low
+
+  * Added windows-perl dependecy and fixed bugs in jumplist and usrclass
+
+ -- Chapin Bryce <webmaster@mantarayforensics.com>  Tue, 25 Feb 2014 13:37:56 -0500
+
+mantaray (1.2.8-ubuntu8) precise; urgency=low
+
+  * Updated Paths and dependencies. Fixed some rr Plugins, vol bin, and plists
+
+ -- Chapin Bryce <webmaster@mantarayforensics.com>  Tue, 25 Feb 2014 09:46:45 -0500
+
+mantaray (1.2.8-ubuntu7) precise; urgency=low
+
+  * Updated paths in code
+
+ -- Chapin Bryce <webmaster@mantarayforensics.com>  Thu, 20 Feb 2014 21:01:10 -0500
+
+mantaray (1.2.8-ubuntu6) precise; urgency=low
+
+  * More corrections...
+
+ -- Chapin Bryce <webmaster@mantarayforensics.com>  Wed, 19 Feb 2014 14:07:35 -0500
+
+mantaray (1.2.8-ubuntu5) precise; urgency=low
+
+  * Correcting Dependencies 
+
+ -- Chapin Bryce <webmaster@mantarayforensics.com>  Wed, 19 Feb 2014 13:30:33 -0500
+
+mantaray (1.2.8-ubuntu4) precise; urgency=low
+
+  * Added Dependencies
+
+ -- Chapin Bryce <webmaster@mantarayforensics.com>  Wed, 19 Feb 2014 13:03:02 -0500
+
+mantaray (1.2.8-ubuntu3) precise; urgency=low
+
+  * Fixed issue with binary
+
+ -- Chapin Bryce <webmaster@mantarayforensics.com>  Sun, 09 Feb 2014 09:24:21 -0500
+
+mantaray (1.2.7-ubuntu2) precise; urgency=low
+
+  * Fixed dependency issues and updated binary file. 
+
+ -- Chapin Bryce <webmaster@mantarayforensics.com>  Sat, 08 Feb 2014 22:51:24 -0500
+
+mantaray (1.2.6-ubuntu1) precise; urgency=low
+
+  * Updated mantaray launcher in /usr/bin/
+
+ -- Chapin Bryce <webmaster@mantarayforensics.com>  Sat, 08 Feb 2014 08:40:05 -0500
+
+mantaray (1.2.5) precise; urgency=low
+
+  * Initial release. (Closes: #XXXXXX)
+
+ -- Chapin Bryce <webmaster@mantarayforensics.com>  Wed, 05 Feb 2014 17:55:17 -0500

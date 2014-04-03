@@ -1,0 +1,8 @@
+#!/usr/bin/make -f
+# -*- makefile -*-
+
+#Comment to make not verbose
+export DH_VERBOSE=1
+
+%:
+	dh $@

@@ -1,0 +1,10 @@
+usr/share/docs
+usr/share/images
+usr/share/Tools
+usr/share/Tools/conf_files
+usr/share/Tools/Python
+usr/share/Tools/Python/simplekml
+usr/share/Tools/Python/__pycache__
+usr/share/Tools/Python/simplekml/samples
+usr/share/Tools/Python/simplekml/__pycache__
+usr/share/Tools/Python/simplekml/samples/resources
