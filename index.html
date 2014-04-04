@@ -1,0 +1,131 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>MantaRay by mantarayforensics</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header">MantaRay</h1>
+        <p class="header">ManTech Triage and Analysis System</p>
+
+        <ul>
+          <li class="download"><a class="buttons" href="https://github.com/mantarayforensics/mantaray/zipball/master">Download ZIP</a></li>
+          <li class="download"><a class="buttons" href="https://github.com/mantarayforensics/mantaray/tarball/master">Download TAR</a></li>
+          <li><a class="buttons github" href="https://github.com/mantarayforensics/mantaray">View On GitHub</a></li>
+        </ul>
+
+        <p class="header">This project is maintained by <a class="header name" href="https://github.com/mantarayforensics">mantarayforensics</a></p>
+
+
+      </header>
+      <section>
+        <h1>
+<a name="mantaray-forensics" class="anchor" href="#mantaray-forensics"><span class="octicon octicon-link"></span></a>MantaRay Forensics</h1>
+
+<p>ManTech Triage and Analysis System, Forensics Workflow Automation Suite</p>
+
+<p><img src="https://raw.githubusercontent.com/mantarayforensics/mantaray/master/usr/share/images/Mantaray_Logo_Template_Full_Screen.gif" alt="alt tag"></p>
+
+<h1>
+<a name="overview" class="anchor" href="#overview"><span class="octicon octicon-link"></span></a>Overview</h1>
+
+<p>MantaRay is designed to automate the processing of forensic images, 
+directories and individual files with open source tools. With 
+support for numerous image formats, this tool provides a scalable 
+base to utilize open source and custom exploitation tools.</p>
+
+<p>For more information about the suite, visit our website <a href="http://www.mantarayforensics.com">http://www.mantarayforensics.com</a></p>
+
+<h1>
+<a name="contributors" class="anchor" href="#contributors"><span class="octicon octicon-link"></span></a>Contributors</h1>
+
+<p>Doug Koster (<a href="https://github.com/dougkoster" class="user-mention">@dougkoster</a>)</p>
+
+<p>Kevin Murphy</p>
+
+<p>Chapin Bryce (<a href="https://github.com/cbryce" class="user-mention">@cbryce</a>)</p>
+
+<h1>
+<a name="dependencies" class="anchor" href="#dependencies"><span class="octicon octicon-link"></span></a>Dependencies</h1>
+
+<p>See <a href="https://launchpad.net/%7Emantaray/+archive/stable">https://launchpad.net/~mantaray/+archive/stable</a> for a full list</p>
+
+<ul>
+<li>BulkExtractor</li>
+<li>ENT – Calculate Entropy</li>
+<li>KML from JPG EXIF Data</li>
+<li>fdupes</li>
+<li>EXIF Tool</li>
+<li>Foremost</li>
+<li>Jumplist Parser</li>
+<li>Sleuth Kit tools</li>
+<li>Regripper</li>
+<li>Log2Timeline</li>
+<li>Volatility</li>
+</ul><h1>
+<a name="installation-of-mantaray" class="anchor" href="#installation-of-mantaray"><span class="octicon octicon-link"></span></a>Installation of MantaRay</h1>
+
+<p>PPA:</p>
+
+<pre><code>$ sudo apt-add-repository ppa:mantaray/stable
+$ sudo apt-add-repository ppa:sift/stable
+$ sudo apt-get update &amp;&amp; sudo apt-get upgrade -y
+$ sudo apt-get install mantaray
+</code></pre>
+
+<p>Source from PPA:</p>
+
+<pre><code>$ sudo apt-add-repository ppa:mantaray/stable
+$ apt-get source mantaray
+</code></pre>
+
+<h1>
+<a name="how-to-run-mantaray" class="anchor" href="#how-to-run-mantaray"><span class="octicon octicon-link"></span></a>How To Run MantaRay</h1>
+
+<p>From command line (as user with sudo privileges) in PPA:</p>
+
+<pre><code>$ mantaray
+</code></pre>
+
+<p>A popup window should appear. Pressing continue will begin running the script.</p>
+
+<h1>
+<a name="check-for-updates" class="anchor" href="#check-for-updates"><span class="octicon octicon-link"></span></a>Check For Updates</h1>
+
+<p>Using apt-get:</p>
+
+<pre><code>$ sudo apt-get update &amp;&amp; sudo apt-get upgrade
+</code></pre>
+
+<p>Using mantaray-updater:</p>
+
+<pre><code>$ mantaray-updater
+</code></pre>
+
+<h1>
+<a name="errors-and-bugs" class="anchor" href="#errors-and-bugs"><span class="octicon octicon-link"></span></a>Errors and Bugs</h1>
+
+<p>If MantaRay crashes, please re-run it in debug mode and send a screenshot
+of the crash along with any other details you can provide to the 
+MantaRay Forum <a href="http://mantarayforensics.com/forums/">http://mantarayforensics.com/forums/</a>
+or report to our GitHub <a href="https://github.com/mantarayforensics/mantaray/issues">https://github.com/mantarayforensics/mantaray/issues</a></p>
+      </section>
+      <footer>
+        <p><small>Hosted on <a href="http://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+		
+  </body>
+</html>
