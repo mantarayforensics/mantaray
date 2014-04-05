@@ -22,9 +22,9 @@ usr/share/Tools/Python/entropy_module.py usr/share/mantaray/Tools/Python
 usr/share/Tools/Python/entropy_mr.py usr/share/mantaray/Tools/Python
 usr/share/Tools/Python/exif2kml.py usr/share/mantaray/Tools/Python
 usr/share/Tools/Python/exifdata_mr.py usr/share/mantaray/Tools/Python
-usr/share/Tools/Python/EXIF.py usr/share/mantaray/Tools/Python
 usr/share/Tools/Python/extract_ntfs_artifacts_mr.py usr/share/mantaray/Tools/Python
 usr/share/Tools/Python/extract_registry_hives_mr.py usr/share/mantaray/Tools/Python
+usr/share/Tools/Python/filename_search_mr.py usr/share/mantaray/Tools/Python
 usr/share/Tools/Python/get_case_number.py usr/share/mantaray/Tools/Python
 usr/share/Tools/Python/get_ntuser_paths.py usr/share/mantaray/Tools/Python
 usr/share/Tools/Python/get_output_location.py usr/share/mantaray/Tools/Python
