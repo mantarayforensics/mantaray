@@ -154,8 +154,8 @@ def process_folder(folder_to_process, export_file, outfile, outfile_error, now):
 	#plists_to_process = ['com.apple.airport.preferences.plist', 'com.apple.Bluetooth.plist' ]
 	
 	#open input file containing list of plists to process
-	#infile = ('/usr/local/src/Manta_Ray/docs/plists_to_process.txt', encoding='utf-8')
-	with open('/usr/local/src/Manta_Ray/docs/plists_to_process.txt') as f:
+	#infile = ('/usr/share/mantaray/docs/plists_to_process.txt', encoding='utf-8')
+	with open('/usr/share/mantaray/docs/plists_to_process.txt') as f:
 		plists_to_process = f.read().splitlines()
 
 	print("Plists_to_process type is: " + str(type(plists_to_process)))
