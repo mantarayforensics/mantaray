@@ -607,7 +607,7 @@ def plaso_process_folder(Image_Path, folder_path, outfile, case_number, user_def
 		cores_to_use_str = str(cores_to_use)
 	except:
 		print("Error converting processor cores to string. Reverting to default value of 1 core for processing.")
-		if(outfile != "NONE")
+		if(outfile != "NONE"):
 			outfile.write("PLASO DIRECTORY PARSER: Error converting processor cores to string. Reverting to default value of 1 core for processing.")
 		cores_to_use_str = "1"
 	
