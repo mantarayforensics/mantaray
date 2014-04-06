@@ -602,13 +602,20 @@ def process_folder(folder_to_process, folder_path, outfile, case_number, user_de
 def plaso_process_folder(Image_Path, folder_path, outfile, case_number, user_defined_timezone, plaso_output_options, cores_to_use):
 	
 	#convert cores_to_use to string
-	cores_to_use = str(cores_to_use)
-
+	#If it fails to convert (for some reason) it will reset the value of corses to use to 1
+	try:
+		cores_to_use_str = str(cores_to_use)
+	except:
+		print("Error converting processor cores to string. Reverting to default value of 1 core for processing.")
+		if(outfile != "NONE")
+			outfile.write("PLASO DIRECTORY PARSER: Error converting processor cores to string. Reverting to default value of 1 core for processing.")
+		cores_to_use_str = "1"
+	
 	#set plaso command
 	if(user_defined_timezone == "NONE"):
-		plaso_command = "log2timeline.py --workers " + cores_to_use + " -t '" + case_number + "' -z UTC -p --logfile '" + folder_path + "/Timeline_Logs/plaso_logfile.txt' '" + folder_path +"/plaso_timeline.dmp" + "'" +" " + Image_Path + ""
+		plaso_command = "log2timeline.py --workers " + cores_to_use_str + " -t '" + case_number + "' -z UTC -p --logfile '" + folder_path + "/Timeline_Logs/plaso_logfile.txt' '" + folder_path +"/plaso_timeline.dmp" + "'" +" " + Image_Path + ""
 	else:
-		plaso_command = "log2timeline.py --workers " + cores_to_use + " -t '" + case_number + "' -z " + user_defined_timezone + " --logfile '" + folder_path + "/Timeline_Logs/plaso_logfile.txt' '" + folder_path +"/plaso_timeline.dmp" + "'" +" " + Image_Path + "" % cores_to_use
+		plaso_command = "log2timeline.py --workers " + cores_to_use_str + " -t '" + case_number + "' -z " + user_defined_timezone + " --logfile '" + folder_path + "/Timeline_Logs/plaso_logfile.txt' '" + folder_path +"/plaso_timeline.dmp" + "'" +" " + Image_Path + "" % cores_to_use
 	print ("The Plaso command is: " + plaso_command, end ="\n\n")
 	print ("Running Plaso against: " + Image_Path, end ="\n\n")
 	if(outfile != "NONE"):
