@@ -822,7 +822,7 @@ def GUI_Timeline_mr(item_to_process, case_number, root_folder_path, evidence, us
 			process_folder(file_to_process, folder_path, outfile, case_number, user_defined_timezone)
 			tool = "l2t"
 		if run_plaso == "True":
-			plaso_process_folder(file_to_process, folder_path, outfile, case_number, user_defined_timezone)
+			plaso_process_folder(file_to_process, folder_path, outfile, case_number, user_defined_timezone, plaso_output_options, cores_to_use)
 			tool = "plaso"
 		split_csv(case_number, temp_time_wc, folder_path, outfile, tool)
 		outfile.close()
