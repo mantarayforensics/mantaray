@@ -615,7 +615,7 @@ def plaso_process_folder(Image_Path, folder_path, outfile, case_number, user_def
 	if(user_defined_timezone == "NONE"):
 		plaso_command = "log2timeline.py --workers " + cores_to_use_str + " -t '" + case_number + "' -z UTC -p --logfile '" + folder_path + "/Timeline_Logs/plaso_logfile.txt' '" + folder_path +"/plaso_timeline.dmp" + "'" +" " + Image_Path + ""
 	else:
-		plaso_command = "log2timeline.py --workers " + cores_to_use_str + " -t '" + case_number + "' -z " + user_defined_timezone + " --logfile '" + folder_path + "/Timeline_Logs/plaso_logfile.txt' '" + folder_path +"/plaso_timeline.dmp" + "'" +" " + Image_Path + "" % cores_to_use
+		plaso_command = "log2timeline.py --workers " + cores_to_use_str + " -t '" + case_number + "' -z " + user_defined_timezone + " --logfile '" + folder_path + "/Timeline_Logs/plaso_logfile.txt' '" + folder_path +"/plaso_timeline.dmp" + "'" +" " + Image_Path + ""
 	print ("The Plaso command is: " + plaso_command, end ="\n\n")
 	print ("Running Plaso against: " + Image_Path, end ="\n\n")
 	if(outfile != "NONE"):
