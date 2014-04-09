@@ -372,7 +372,11 @@ def plaso(key, folder_path, outfile, Image_Path, timezone_shift, plaso_output_op
 
 	#set & run psort csv command
 	if run_l2tcsv == "True":
-		psort_cmd = "psort.py -o L2tcsv -w '" + folder_path + "/partition_" + key + "_timeline.csv' '" + folder_path + "/partition_" + key + ".dmp" + "'"
+		if(timezone_shift == "NONE"):
+			psort_cmd = "psort.py -o L2tcsv -z UTC -w '" + folder_path + "/partition_" + key + "_timeline.csv' '" + folder_path + "/partition_" + key + ".dmp" + "'"
+		else:
+			psort_cmd = "psort.py -o L2tcsv -z " + timezone_shift + " -w '" + folder_path + "/partition_" + key + "_timeline.csv' '" + folder_path + "/partition_" + key + ".dmp" + "'"
+
 		print ("The Plaso Psort command is: " + psort_cmd + "\n\n")
 		if(outfile != "NONE"):
 			outfile.write("The Plaso Psort command is: " + psort_cmd + "\n\n")
@@ -380,7 +384,10 @@ def plaso(key, folder_path, outfile, Image_Path, timezone_shift, plaso_output_op
 
 	#set & run psort sqlite command
 	if run_sqlite == "True":
-		psort_cmd = "psort.py -o Rawpy -w '" + folder_path + "/partition_" + key + "_rawpy.txt' '" + folder_path + "/partition_" + key + ".dmp" + "'"
+		if(timezone_shift == "NONE"):
+			psort_cmd = "psort.py -o Rawpy -z UTC -w '" + folder_path + "/partition_" + key + "_rawpy.txt' '" + folder_path + "/partition_" + key + ".dmp" + "'"
+		else:
+			psort_cmd = "psort.py -o Rawpy -z " + timezone_shift + " -w '" + folder_path + "/partition_" + key + "_rawpy.txt' '" + folder_path + "/partition_" + key + ".dmp" + "'"
 		print ("The Plaso Psort command is: " + psort_cmd + "\n\n")
 		if(outfile != "NONE"):
 			outfile.write("The Plaso Psort command is: " + psort_cmd + "\n\n")
@@ -388,7 +395,10 @@ def plaso(key, folder_path, outfile, Image_Path, timezone_shift, plaso_output_op
 
 	#set & run psort Elastic command
 	if run_elastic == "True":
-		psort_cmd = "psort.py -o dynamic -w '" + folder_path + "/partition_" + key + "_timeline_dynamic.csv' '" + folder_path + "/partition_" + key + ".dmp'"
+		if(timezone_shift == "NONE"):
+			psort_cmd = "psort.py -o dynamic -z UTC -w '" + folder_path + "/partition_" + key + "_timeline_dynamic.csv' '" + folder_path + "/partition_" + key + ".dmp'"
+		else:
+			psort_cmd = "psort.py -o dynamic -z " + timezone_shift + " -w '" + folder_path + "/partition_" + key + "_timeline_dynamic.csv' '" + folder_path + "/partition_" + key + ".dmp'"
 		print ("The Plaso Psort command is: " + psort_cmd + "\n\n")
 		if(outfile != "NONE"):
 			outfile.write("The Plaso Psort command is: " + psort_cmd + "\n\n")
@@ -672,7 +682,10 @@ def plaso_process_folder(Image_Path, folder_path, outfile, case_number, user_def
 
 	#set & run psort csv command
 	if run_l2tcsv == "True":
-		psort_cmd = "psort.py -o L2tcsv -w " + folder_path + "/plaso_timeline.csv " + folder_path + "/plaso_timeline.dmp"
+		if(timezone_shift == "NONE"):
+			psort_cmd = "psort.py -o L2tcsv -z UTC -w " + folder_path + "/plaso_timeline.csv " + folder_path + "/plaso_timeline.dmp"
+		else:
+			psort_cmd = "psort.py -o L2tcsv -z " + timezone_shift + " -w " + folder_path + "/plaso_timeline.csv " + folder_path + "/plaso_timeline.dmp"
 		print ("The Plaso Psort command is: " + psort_cmd + "\n\n")
 		if(outfile != "NONE"):
 			outfile.write("The Plaso Psort command is: " + psort_cmd + "\n\n")
@@ -680,7 +693,10 @@ def plaso_process_folder(Image_Path, folder_path, outfile, case_number, user_def
 
 	#set & run psort sqlite command
 	if run_sqlite == "True":
-		psort_cmd = "psort.py -o Rawpy -w " + folder_path + "/plaso_rawpy.txt " + folder_path + "/plaso_timeline.dmp"
+		if(timezone_shift == "NONE"):
+			psort_cmd = "psort.py -o Rawpy -z UTC -w " + folder_path + "/plaso_rawpy.txt " + folder_path + "/plaso_timeline.dmp"
+		else:
+			psort_cmd = "psort.py -o Rawpy -z " + timezone_shift + " -w " + folder_path + "/plaso_rawpy.txt " + folder_path + "/plaso_timeline.dmp"
 		print ("The Plaso Psort command is: " + psort_cmd + "\n\n")
 		if(outfile != "NONE"):
 			outfile.write("The Plaso Psort command is: " + psort_cmd + "\n\n")
@@ -688,7 +704,10 @@ def plaso_process_folder(Image_Path, folder_path, outfile, case_number, user_def
 
 	#set & run psort Dynamic command
 	if run_elastic == "True":
-		psort_cmd = "psort.py -o Dynamic -w '" + folder_path + "/plaso_timeline_dynamic.csv' '" + folder_path + "/plaso_timeline.dmp'"
+		if(timezone_shift == "NONE"):
+			psort_cmd = "psort.py -o Dynamic -z UTC -w '" + folder_path + "/plaso_timeline_dynamic.csv' '" + folder_path + "/plaso_timeline.dmp'"
+		else:
+			psort_cmd = "psort.py -o Dynamic -z " + timezone_shift + " -w '" + folder_path + "/plaso_timeline_dynamic.csv' '" + folder_path + "/plaso_timeline.dmp'"
 		print ("The Plaso Psort command is: " + psort_cmd + "\n\n")
 		if(outfile != "NONE"):
 			outfile.write("The Plaso Psort command is: " + psort_cmd + "\n\n")
