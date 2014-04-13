@@ -227,7 +227,7 @@ def get_timezones_windows(value, system_hive_path, outfile):
 	timezone_final = "NONE"
 
 	#set up regp command
-	regp_command = "perl /usr/local/src/windows-perl/regp.pl "+ system_hive_path +" | grep -a 'StandardName;REG_SZ' > /tmp/regp_output_" + temp_time_windows + ".txt"
+	regp_command = "perl /usr/share/windows-perl/regp.pl "+ system_hive_path +" | grep -a 'StandardName;REG_SZ' > /tmp/regp_output_" + temp_time_windows + ".txt"
 	print("The regp command is: " + regp_command + "\n\n")
 	if(outfile != "NONE"):
 		outfile.write("The regp command is: " + regp_command + "\n\n")
@@ -249,7 +249,7 @@ def get_timezones_windows(value, system_hive_path, outfile):
 			print("This partition is not Windows XP, looking for timezone")
 			if(outfile != "NONE"):
 				outfile.write("This partition is not Windows XP, looking for timezone\n")
-			regp_command_vista = "perl /usr/local/src/windows-perl/regp.pl " + system_hive_path +" | grep -a 'TimeZoneKeyName' > /tmp/regp_output_nonXP_" + temp_time_windows + ".txt"
+			regp_command_vista = "perl /usr/share/windows-perl/regp.pl " + system_hive_path +" | grep -a 'TimeZoneKeyName' > /tmp/regp_output_nonXP_" + temp_time_windows + ".txt"
 				
 			#run the regp command
 			subprocess.call([regp_command_vista], shell=True)
@@ -442,7 +442,7 @@ def regtime(system_hive_path, system_hive_regback_path, sam_hive_path, sam_hive_
 
 	if(system_hive_path != "NONE"):	
 		#setup system_hive command		
-		system_hive_command = "perl /usr/local/src/windows-perl/regtime.pl -m HKLM-SYSTEM_" + partition_start + " -r " + system_hive_path + " >> " + folder_path + "/bodyfile_" + partition_start
+		system_hive_command = "perl /usr/share/windows-perl/regtime.pl -m HKLM-SYSTEM_" + partition_start + " -r " + system_hive_path + " >> " + folder_path + "/bodyfile_" + partition_start
 		print("Running Regtime.pl against: " + system_hive_path)
 		print("The system_hive_command is: " + system_hive_command, end = "\n\n")
 		if(outfile != "NONE"):
@@ -453,7 +453,7 @@ def regtime(system_hive_path, system_hive_regback_path, sam_hive_path, sam_hive_
 
 	if(system_hive_regback_path != "NONE"):	
 		#setup system_hive command		
-		system_hive_regback_command = "perl /usr/local/src/windows-perl/regtime.pl -m HKLM-SYSTEM_REGBACK_" + partition_start + " -r " + system_hive_regback_path + " >> " + "'" + folder_path + "/bodyfile_" + partition_start + "'"
+		system_hive_regback_command = "perl /usr/share/windows-perl/regtime.pl -m HKLM-SYSTEM_REGBACK_" + partition_start + " -r " + system_hive_regback_path + " >> " + "'" + folder_path + "/bodyfile_" + partition_start + "'"
 		print("Running Regtime.pl against: " + system_hive_regback_path)		
 		print("The system_hive_regback_command is: " + system_hive_regback_command, end = "\n\n")
 		if(outfile != "NONE"):
@@ -464,7 +464,7 @@ def regtime(system_hive_path, system_hive_regback_path, sam_hive_path, sam_hive_
 
 	if(sam_hive_regback_path != "NONE"):	
 		#setup sam_hive command		
-		sam_hive_regback_command = "perl /usr/local/src/windows-perl/regtime.pl -m HKLM-SAM_REGBACK_" + partition_start + " -r " + sam_hive_regback_path + " >> " + "'" + folder_path + "/bodyfile_" + partition_start + "'"
+		sam_hive_regback_command = "perl /usr/share/windows-perl/regtime.pl -m HKLM-SAM_REGBACK_" + partition_start + " -r " + sam_hive_regback_path + " >> " + "'" + folder_path + "/bodyfile_" + partition_start + "'"
 		print("Running Regtime.pl against: " + sam_hive_regback_path)		
 		print("The sam_hive_regback_command is: " + sam_hive_regback_command, end = "\n\n")
 		if(outfile != "NONE"):
@@ -475,7 +475,7 @@ def regtime(system_hive_path, system_hive_regback_path, sam_hive_path, sam_hive_
 
 	if(sam_hive_path != "NONE"):	
 		#setup sam_hive command		
-		sam_hive_command = "perl /usr/local/src/windows-perl/regtime.pl -m HKLM-SAM_" + partition_start + " -r " + sam_hive_path + " >> " + "'" + folder_path + "/bodyfile_" + partition_start + "'"
+		sam_hive_command = "perl /usr/share/windows-perl/regtime.pl -m HKLM-SAM_" + partition_start + " -r " + sam_hive_path + " >> " + "'" + folder_path + "/bodyfile_" + partition_start + "'"
 		print("Running Regtime.pl against: " + sam_hive_path)		
 		print("The sam_hive_command is: " + sam_hive_command, end = "\n\n")
 		if(outfile != "NONE"):
@@ -486,7 +486,7 @@ def regtime(system_hive_path, system_hive_regback_path, sam_hive_path, sam_hive_
 
 	if(security_hive_path != "NONE"):	
 		#setup security_hive command		
-		security_hive_command = "perl /usr/local/src/windows-perl/regtime.pl -m HKLM-SECURITY_" + partition_start + " -r " + security_hive_path + " >> " + "'" + folder_path + "/bodyfile_" + partition_start + "'"
+		security_hive_command = "perl /usr/share/windows-perl/regtime.pl -m HKLM-SECURITY_" + partition_start + " -r " + security_hive_path + " >> " + "'" + folder_path + "/bodyfile_" + partition_start + "'"
 		print("Running Regtime.pl against: " + security_hive_path )		
 		print("The security_hive_command is: " + security_hive_command, end = "\n\n")
 		if(outfile != "NONE"):
@@ -497,7 +497,7 @@ def regtime(system_hive_path, system_hive_regback_path, sam_hive_path, sam_hive_
 	
 	if(security_hive_regback_path != "NONE"):	
 		#setup security_hive command		
-		security_hive_regback_command = "perl /usr/local/src/windows-perl/regtime.pl -m HKLM-SECURITY_REGBACK_" + partition_start + " -r " + security_hive_regback_path + " >> " + "'" + folder_path + "/bodyfile_" + partition_start + "'"
+		security_hive_regback_command = "perl /usr/share/windows-perl/regtime.pl -m HKLM-SECURITY_REGBACK_" + partition_start + " -r " + security_hive_regback_path + " >> " + "'" + folder_path + "/bodyfile_" + partition_start + "'"
 		print("Running Regtime.pl against: " + security_hive_regback_path)		
 		print("The security_hive_regback_command is: " + security_hive_regback_command, end = "\n\n")
 		if(outfile != "NONE"):
@@ -508,7 +508,7 @@ def regtime(system_hive_path, system_hive_regback_path, sam_hive_path, sam_hive_
 
 	if(software_hive_path != "NONE"):	
 		#setup software_hive command		
-		software_hive_command = "perl /usr/local/src/windows-perl/regtime.pl -m HKLM-SOFTWARE_" + partition_start + " -r " + software_hive_path + " >> " + "'" + folder_path + "/bodyfile_" + partition_start + "'"
+		software_hive_command = "perl /usr/share/windows-perl/regtime.pl -m HKLM-SOFTWARE_" + partition_start + " -r " + software_hive_path + " >> " + "'" + folder_path + "/bodyfile_" + partition_start + "'"
 		print("Running Regtime.pl against: " + software_hive_path)		
 		print("The software_hive_command is: " + software_hive_command, end = "\n\n")
 		if(outfile != "NONE"):
@@ -519,7 +519,7 @@ def regtime(system_hive_path, system_hive_regback_path, sam_hive_path, sam_hive_
 
 	if(software_hive_regback_path != "NONE"):	
 		#setup software_hive command		
-		software_hive_regback_command = "perl /usr/local/src/windows-perl/regtime.pl -m HKLM-SOFTWARE_REGBACK_" + partition_start + " -r " + software_hive_regback_path + " >> " + "'" + folder_path + "/bodyfile_" + partition_start + "'"
+		software_hive_regback_command = "perl /usr/share/windows-perl/regtime.pl -m HKLM-SOFTWARE_REGBACK_" + partition_start + " -r " + software_hive_regback_path + " >> " + "'" + folder_path + "/bodyfile_" + partition_start + "'"
 		print("Running Regtime.pl against: " + software_hive_regback_path)		
 		print("The software_hive_regback_command is: " + software_hive_regback_command, end = "\n\n")
 		if(outfile != "NONE"):
@@ -545,7 +545,7 @@ def ntuser_regtime(nt_user_dat, folder_path, key, outfile):
 		account_quoted = "'" +account +"'"
 
 		#process NTUSER.dat with regtime.pl
-		ntuser_command = "perl /usr/local/src/windows-perl/regtime.pl -m HTLM-USER-" + profile_name + " -r " + account_quoted + " >> " + "'" + folder_path + "/bodyfile_" + key + "'"
+		ntuser_command = "perl /usr/share/windows-perl/regtime.pl -m HTLM-USER-" + profile_name + " -r " + account_quoted + " >> " + "'" + folder_path + "/bodyfile_" + key + "'"
 
 		print("the ntuser command is: " + ntuser_command, end = "\n\n")
 		if(outfile != "NONE"):
