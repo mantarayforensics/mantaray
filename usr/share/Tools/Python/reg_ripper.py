@@ -265,7 +265,7 @@ for key,value in sorted(partition_info_dict.items()):
 			for plugin in ntuser_plugins:
 				print ("Currently running plugin: " + plugin + " against " + account_name + "\n")
 				outfile.write("Currently running plugin: " + plugin + " against " + account_name + "\n")
-				rip_ntuser_command = "perl /usr/local/src/regripper/rip.pl -r " + quoted_user_account + " -p " +  plugin + " > " + "'" + folder_path + "/Regripper_Partition_" + str(key) + "/NTUSER_INFO/" + account_name + "/" + plugin + ".txt" + "'"
+				rip_ntuser_command = "perl /usr/share/regripper/rip.pl -r " + quoted_user_account + " -p " +  plugin + " > " + "'" + folder_path + "/Regripper_Partition_" + str(key) + "/NTUSER_INFO/" + account_name + "/" + plugin + ".txt" + "'"
 				print("The rip_ntuser command is: " + rip_ntuser_command + "\n")			
 				subprocess.call([rip_ntuser_command], shell=True)
 	##### PROCESS NTUSER.DAT FILES ######################################################################################################################
@@ -302,7 +302,7 @@ for key,value in sorted(partition_info_dict.items()):
 			for plugin in usrclass_plugins:
 				print ("Currently running plugin: " + plugin + " against " + account_name + "\n")
 				outfile.write("Currently running plugin: " + plugin + " against " + account_name + "\n")
-				rip_usrclass_command = "perl /usr/local/src/regripper/rip.pl -r " + quoted_user_account + " -p " +  plugin + " > " + "'" + folder_path + "/Regripper_Partition_" + str(key) + "/USRCLASS_INFO/" + account_name + "/" + plugin + ".txt" + "'"
+				rip_usrclass_command = "perl /usr/share/regripper/rip.pl -r " + quoted_user_account + " -p " +  plugin + " > " + "'" + folder_path + "/Regripper_Partition_" + str(key) + "/USRCLASS_INFO/" + account_name + "/" + plugin + ".txt" + "'"
 				print("The rip_usrclass command is: " + rip_usrclass_command + "\n")			
 				subprocess.call([rip_usrclass_command], shell=True)
 
@@ -320,7 +320,7 @@ for key,value in sorted(partition_info_dict.items()):
 				print ("Currently running plugin: " + plugin + " against SYSTEM HIVE\n")
 				outfile.write("Currently running plugin: " + plugin + " against SYSTEM HIVE with MD5: " + str(system_hive_md5) + "\n")
 
-				rip_system_command = "perl /usr/local/src/regripper/rip.pl -r "+ system_hive_path + " -p " + plugin + " > " + "'" + folder_path + "/Regripper_Partition_" + str(key) +"/SYSTEM/" + plugin + ".txt" + "'"
+				rip_system_command = "perl /usr/share/regripper/rip.pl -r "+ system_hive_path + " -p " + plugin + " > " + "'" + folder_path + "/Regripper_Partition_" + str(key) +"/SYSTEM/" + plugin + ".txt" + "'"
 				print("The rip system_command is: " + rip_system_command + "\n")
 				subprocess.call([rip_system_command], shell=True)
 		if(system_hive_regback_path != "NONE"):
@@ -330,7 +330,7 @@ for key,value in sorted(partition_info_dict.items()):
 				print ("Currently running plugin: " + plugin + " against SYSTEM REGBACK HIVE\n")
 				outfile.write("Currently running plugin: " + plugin + " against SYSTEM REGBACK HIVE with MD5: " + str(system_hive_regback_md5) + "\n")	
 				
-				rip_system_regback_command = "perl /usr/local/src/regripper/rip.pl -r "+ system_hive_regback_path + " -p " + plugin + " > " + "'" + folder_path + "/Regripper_Partition_" + str(key) +"/REGBACK_SYSTEM/" + plugin + ".txt" + "'"
+				rip_system_regback_command = "perl /usr/share/regripper/rip.pl -r "+ system_hive_regback_path + " -p " + plugin + " > " + "'" + folder_path + "/Regripper_Partition_" + str(key) +"/REGBACK_SYSTEM/" + plugin + ".txt" + "'"
 				print("The rip system_command is: " + rip_system_regback_command + "\n")
 				subprocess.call([rip_system_regback_command], shell=True)
 		
@@ -346,7 +346,7 @@ for key,value in sorted(partition_info_dict.items()):
 			print ("Currently running plugin: samparse against SAM HIVE\n")
 			outfile.write("Currently running plugin: samparse against SAM HIVE with MD5: " + str(sam_hive_md5) + "\n")
 
-			rip_sam_command = "perl /usr/local/src/regripper/rip.pl -r "+ sam_hive_path + " -p samparse > " + "'" + folder_path + "/Regripper_Partition_" + str(key) +"/SAM/samparse.txt" + "'"
+			rip_sam_command = "perl /usr/share/regripper/rip.pl -r "+ sam_hive_path + " -p samparse > " + "'" + folder_path + "/Regripper_Partition_" + str(key) +"/SAM/samparse.txt" + "'"
 			print("The rip sam_command is: " + rip_sam_command + "\n")
 			subprocess.call([rip_sam_command], shell=True)
 
@@ -357,7 +357,7 @@ for key,value in sorted(partition_info_dict.items()):
 			print ("Currently running plugin: samparse against SAM REGBACK HIVE\n")
 			outfile.write("Currently running plugin: samparse against SAM REGBACK HIVE with MD5: " + str(sam_hive_regback_md5) + "\n")
 
-			rip_sam_regback_command = "perl /usr/local/src/regripper/rip.pl -r "+ sam_hive_regback_path + " -p samparse > " + "'" + folder_path + "/Regripper_Partition_" + str(key) +"/REGBACK_SAM/samparse.txt" + "'"
+			rip_sam_regback_command = "perl /usr/share/regripper/rip.pl -r "+ sam_hive_regback_path + " -p samparse > " + "'" + folder_path + "/Regripper_Partition_" + str(key) +"/REGBACK_SAM/samparse.txt" + "'"
 			print("The rip sam_regback_command is: " + rip_sam_command + "\n")
 			subprocess.call([rip_sam_regback_command], shell=True)
 
@@ -375,7 +375,7 @@ for key,value in sorted(partition_info_dict.items()):
 				print ("Currently running plugin: " + plugin + " against SECURITY HIVE\n")
 				outfile.write("Currently running plugin: " + plugin + " against SECURITY HIVE with MD5: " + str(security_hive_md5) + "\n")
 
-				rip_security_command = "perl /usr/local/src/regripper/rip.pl -r "+ security_hive_path + " -p " + plugin + " > " + "'" + folder_path + "/Regripper_Partition_" + str(key) +"/SECURITY/" + plugin + ".txt" + "'"
+				rip_security_command = "perl /usr/share/regripper/rip.pl -r "+ security_hive_path + " -p " + plugin + " > " + "'" + folder_path + "/Regripper_Partition_" + str(key) +"/SECURITY/" + plugin + ".txt" + "'"
 				print("The rip security_command is: " + rip_security_command + "\n")
 				subprocess.call([rip_security_command], shell=True)
 
@@ -386,7 +386,7 @@ for key,value in sorted(partition_info_dict.items()):
 				print ("Currently running plugin: " + plugin + " against SECURITY REGBACK HIVE\n")
 				outfile.write("Currently running plugin: " + plugin + " against SECURITY REGBACK HIVE with MD5: " + str(security_hive_regback_md5) + "\n")	
 				
-				rip_security_regback_command = "perl /usr/local/src/regripper/rip.pl -r "+ security_hive_regback_path + " -p " + plugin + " > " + "'" + folder_path + "/Regripper_Partition_" + str(key) +"/REGBACK_SECURITY/" + plugin + ".txt" + "'"
+				rip_security_regback_command = "perl /usr/share/regripper/rip.pl -r "+ security_hive_regback_path + " -p " + plugin + " > " + "'" + folder_path + "/Regripper_Partition_" + str(key) +"/REGBACK_SECURITY/" + plugin + ".txt" + "'"
 				print("The rip security_regback_command is: " + rip_security_regback_command + "\n")
 				subprocess.call([rip_security_regback_command], shell=True)
 
@@ -405,7 +405,7 @@ for key,value in sorted(partition_info_dict.items()):
 				print ("Currently running plugin: " + plugin + " against SOFTWARE HIVE\n")
 				outfile.write("Currently running plugin: " + plugin + " against SOFTWARE HIVE with MD5: " + str(software_hive_md5)  + "\n")
 
-				rip_software_command = "perl /usr/local/src/regripper/rip.pl -r "+ software_hive_path + " -p " + plugin + " > " + "'" + folder_path + "/Regripper_Partition_" + str(key) +"/SOFTWARE/" + plugin + ".txt" + "'"
+				rip_software_command = "perl /usr/share/regripper/rip.pl -r "+ software_hive_path + " -p " + plugin + " > " + "'" + folder_path + "/Regripper_Partition_" + str(key) +"/SOFTWARE/" + plugin + ".txt" + "'"
 				print("The rip software_command is: " + rip_software_command + "\n")
 				subprocess.call([rip_software_command], shell=True)
 
@@ -419,7 +419,7 @@ for key,value in sorted(partition_info_dict.items()):
 				print ("Currently running plugin: " + plugin + " against SOFTWARE REGBACK HIVE\n")
 				outfile.write("Currently running plugin: " + plugin + " against SOFTWARE REGBACK HIVE with MD5: " + str(software_hive_regback_md5) + "\n")
 
-				rip_software_regback_command = "perl /usr/local/src/regripper/rip.pl -r "+ software_hive_regback_path + " -p " + plugin + " > " + "'" + folder_path + "/Regripper_Partition_" + str(key) +"/REGBACK_SOFTWARE/" + plugin + ".txt" + "'"
+				rip_software_regback_command = "perl /usr/share/regripper/rip.pl -r "+ software_hive_regback_path + " -p " + plugin + " > " + "'" + folder_path + "/Regripper_Partition_" + str(key) +"/REGBACK_SOFTWARE/" + plugin + ".txt" + "'"
 				print("The rip software_regback_command is: " + rip_software_regback_command + "\n")
 				subprocess.call([rip_software_regback_command], shell=True)
 
