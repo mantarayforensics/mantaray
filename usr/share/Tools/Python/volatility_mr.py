@@ -213,67 +213,67 @@ def volatility_mr(case_number, root_folder_path,  evidence, profile_to_use):
 	subprocess.call([devicetree_command], shell=True)
 
 	#VistaSP0x86run psxview
-	print("\n\n[30 of 40] Running psxview.\nSee Volatility Commands reference data (/usr/local/src/Manta_Ray/docs/VolatilityUsage23.html) for more information\n")
+	print("\n\n[30 of 40] Running psxview.\nSee Volatility Commands reference data (/usr/share/Manta_Ray/docs/VolatilityUsage23.html) for more information\n")
 	psxview_command = "vol -f " + quoted_path + " psxview > " + "'"+folder_path + "/" + case_number + "_psxview.txt"+"'"
 	subprocess.call([psxview_command], shell=True)
 
 	#run privs
-	print("\n\n[31 of 40] Running privs.\nSee Volatility Commands reference data (/usr/local/src/Manta_Ray/docs/VolatilityUsage23.rst) for more information\n")
+	print("\n\n[31 of 40] Running privs.\nSee Volatility Commands reference data (/usr/share/Manta_Ray/docs/VolatilityUsage23.rst) for more information\n")
 	privs_command = "vol --profile=" + profile_type + " -f " + quoted_path + " privs > " + "'"+folder_path + "/" + case_number + "_privs.txt"+"'"
 	subprocess.call([privs_command], shell=True)
 
 	#run iehistory
-	print("\n\n[32 of 40] Running devicetree.\nSee Volatility Commands reference data (/usr/local/src/Manta_Ray/docs/VolatilityUsage23.rst) for more information\n")
+	print("\n\n[32 of 40] Running devicetree.\nSee Volatility Commands reference data (/usr/share/Manta_Ray/docs/VolatilityUsage23.rst) for more information\n")
 	iehistory_command = "vol --profile=" + profile_type + " -f " + quoted_path + " iehistory > " + "'"+folder_path + "/" + case_number + "_iehistory.txt"+"'"
 	subprocess.call([iehistory_command], shell=True)
 
 	#run unloadedmodules
-	print("\n\n[33 of 40] Running unloadedmodules.\nSee Volatility Commands reference data (/usr/local/src/Manta_Ray/docs/VolatilityUsage23.rst) for more information\n")
+	print("\n\n[33 of 40] Running unloadedmodules.\nSee Volatility Commands reference data (/usr/share/Manta_Ray/docs/VolatilityUsage23.rst) for more information\n")
 	unloadedmodules_command = "vol --profile=" + profile_type + " -f " + quoted_path + " unloadedmodules > " + "'"+folder_path + "/" + case_number + "_unloadedmodules.txt"+"'"
 	subprocess.call([unloadedmodules_command], shell=True)
 
 	#run shellbags
-	print("\n\n[34 of 40] Running shellbags.\nSee Volatility Commands reference data (/usr/local/src/Manta_Ray/docs/VolatilityUsage23.rst) for more information\n")
+	print("\n\n[34 of 40] Running shellbags.\nSee Volatility Commands reference data (/usr/share/Manta_Ray/docs/VolatilityUsage23.rst) for more information\n")
 	shellbags_command = "vol -f " + quoted_path + " shellbags > " + "'"+folder_path + "/" + case_number + "_shellbags.txt"+"'"
 	subprocess.call([shellbags_command], shell=True)
 
 	#run vboxinfo
-	print("\n\n[35 of 40] Running vboxinfo.\nSee Volatility Commands reference data (/usr/local/src/Manta_Ray/docs/VolatilityUsage23.rst) for more information\n")
+	print("\n\n[35 of 40] Running vboxinfo.\nSee Volatility Commands reference data (/usr/share/Manta_Ray/docs/VolatilityUsage23.rst) for more information\n")
 	vboxinfo_command = "vol --profile=" + profile_type + " -f " + quoted_path + " vboxinfo > " + "'"+folder_path + "/" + case_number + "_vboxinfo.txt"+"'"
 	subprocess.call([vboxinfo_command], shell=True)
 
 	#run vmwareinfo
-	print("\n\n[36 of 40] Running vmwareinfo.\nSee Volatility Commands reference data (/usr/local/src/Manta_Ray/docs/VolatilityUsage23.rst) for more information\n")
+	print("\n\n[36 of 40] Running vmwareinfo.\nSee Volatility Commands reference data (/usr/share/Manta_Ray/docs/VolatilityUsage23.rst) for more information\n")
 	vmwareinfo_command = "vol -f " + quoted_path + " vmwareinfo > " + "'"+folder_path + "/" + case_number + "_vmwareinfo.txt"+"'"
 	subprocess.call([vmwareinfo_command], shell=True)
 
 	#run hpakinfo
-	print("\n\n[37 of 40] Running hpakinfo.\nSee Volatility Commands reference data (/usr/local/src/Manta_Ray/docs/VolatilityUsage23.rst) for more information\n")
+	print("\n\n[37 of 40] Running hpakinfo.\nSee Volatility Commands reference data (/usr/share/Manta_Ray/docs/VolatilityUsage23.rst) for more information\n")
 	hpakinfo_command = "vol --profile=" + profile_type + " -f " + quoted_path + " hpakinfo > " + "'"+folder_path + "/" + case_number + "_hpakinfo.txt"+"'"
 	subprocess.call([hpakinfo_command], shell=True)
 
 	#run hpakextract
-#	print("Running hpakextract.\nSee Volatility Commands reference data (/usr/local/src/Manta_Ray/docs/VolatilityUsage23.rst) for more information\n")
+#	print("Running hpakextract.\nSee Volatility Commands reference data (/usr/share/Manta_Ray/docs/VolatilityUsage23.rst) for more information\n")
 #	hpakextract_command = "vol --profile=" + profile_type + " -f " + quoted_path + " hpakextract > " + "'"+folder_path + "/" + case_number + "_hpakextract.txt"+"'"
 #	subprocess.call([hpakextract_command], shell=True)
 
 	#run mbrparser
-	print("\n\n[38 of 40] Running mbrparser.\nSee Volatility Commands reference data (/usr/local/src/Manta_Ray/docs/VolatilityUsage23.rst) for more information\n")
+	print("\n\n[38 of 40] Running mbrparser.\nSee Volatility Commands reference data (/usr/share/Manta_Ray/docs/VolatilityUsage23.rst) for more information\n")
 	mbrparser_command = "vol --profile=" + profile_type + " -f " + quoted_path + " mbrparser > " + "'"+folder_path + "/" + case_number + "_mbrparser.txt"+"'"
 	subprocess.call([mbrparser_command], shell=True)
 
 	#run mftparser
-	print("\n\n[39 of 40] Running mftparser.\nSee Volatility Commands reference data (/usr/local/src/Manta_Ray/docs/VolatilityUsage23.rst) for more information\n")
+	print("\n\n[39 of 40] Running mftparser.\nSee Volatility Commands reference data (/usr/share/Manta_Ray/docs/VolatilityUsage23.rst) for more information\n")
 	mftparser_command = "vol --profile=" + profile_type + " -f " + quoted_path + " mftparser > " + "'"+folder_path + "/" + case_number + "_mftparser.txt"+"'"
 	subprocess.call([mftparser_command], shell=True)
 
 	#run timeliner
-	print("\n\n[40 of 40] Running timeliner.\nSee Volatility Commands reference data (/usr/local/src/Manta_Ray/docs/VolatilityUsage23.rst) for more information\n")
+	print("\n\n[40 of 40] Running timeliner.\nSee Volatility Commands reference data (/usr/share/Manta_Ray/docs/VolatilityUsage23.rst) for more information\n")
 	timeliner_command = "vol --profile=" + profile_type + " -f " + quoted_path + " timeliner > " + "'"+folder_path + "/" + case_number + "_timeliner.txt"+"'"
 	subprocess.call([timeliner_command], shell=True)
 
 	#run dumpcerts
-	#print("Running dumpcerts.\nSee Volatility Commands reference data (/usr/local/src/Manta_Ray/docs/VolatilityUsage23.rst) for more information\n")
+	#print("Running dumpcerts.\nSee Volatility Commands reference data (/usr/share/Manta_Ray/docs/VolatilityUsage23.rst) for more information\n")
 	#dumpcerts_command = "vol --profile=" + profile_type + " -f " + quoted_path + " dumpcerts > " + "'"+folder_path + "/" + case_number + "_dumpcerts.txt"+"'"
 	#subprocess.call([dumpcerts_command], shell=True)
 
@@ -281,7 +281,7 @@ def volatility_mr(case_number, root_folder_path,  evidence, profile_to_use):
 	#run dumpfiles
 	#try:	
 	#	os.mkdir(folder_path + "/dumpfiles")
-	#	print("Running dumpfiles.\nSee Volatility Commands reference data (/usr/local/src/Manta_Ray/docs/VolatilityUsage23.rst) for more information\n")
+	#	print("Running dumpfiles.\nSee Volatility Commands reference data (/usr/share/Manta_Ray/docs/VolatilityUsage23.rst) for more information\n")
 	#	dumpfiles_command = "vol --profile=" + profile_type + " -f " + quoted_path + " dumpfiles --dump-dir " + "'"+folder_path + "/dumpfiles"+"'"
 	#	subprocess.call([dumpfiles_command], shell=True)
 	#except:
