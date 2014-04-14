@@ -172,8 +172,8 @@ def jumplist_mr(item_to_process, case_number, root_folder_path, evidence):
 							outfile.write("The profile is: " + profile + "\n")
 			
 							#process Jumplist files with jl.pl
-							#jl_command = "perl /usr/local/src/windows-perl/jl.pl -u " + "'" + profile + "'" + " -f " + full_path + " >> " + "'" + folder_path + "/jumplist_metadata.txt" + "'"
-							jl_command_tln = "perl /usr/local/src/windows-perl/jl.pl -u " + "'" + profile + "'" + " -t -f " + quoted_full_path + " >> " + "'" + folder_path + "/jumplist_metadata_tln.txt" + "'"
+							#jl_command = "perl /usr/share/windows-perl/jl.pl -u " + "'" + profile + "'" + " -f " + full_path + " >> " + "'" + folder_path + "/jumplist_metadata.txt" + "'"
+							jl_command_tln = "perl /usr/share/windows-perl/jl.pl -u " + "'" + profile + "'" + " -t -f " + quoted_full_path + " >> " + "'" + folder_path + "/jumplist_metadata_tln.txt" + "'"
 							outfile.write("The jl_command_tln is: " + jl_command_tln + "\n")
 							subprocess.call([jl_command_tln], shell=True)
 						else:
@@ -198,7 +198,7 @@ def jumplist_mr(item_to_process, case_number, root_folder_path, evidence):
 					losetup_d_command = "losetup -d " + loopback_device_mount
 					subprocess.call([losetup_d_command], shell=True)
 			#create timeline
-			parse_command = "perl /usr/local/src/windows-perl/parse.pl -f " + "'" + folder_path + "/jumplist_metadata_tln.txt" + "'" + "> " + "'" + folder_path + "/jumplist_timeline.txt" + "'"
+			parse_command = "perl /usr/share/windows-perl/parse.pl -f " + "'" + folder_path + "/jumplist_metadata_tln.txt" + "'" + "> " + "'" + folder_path + "/jumplist_timeline.txt" + "'"
 			subprocess.call([parse_command], shell=True)
 
 	#unmount and remove mount points
