@@ -275,6 +275,14 @@ def mr_registry(case_number, folder_to_process, root_folder_path):
 		print("Call to ls command failed")
 		f.close()
 
+	#initiating increment for counting
+	counting_cmd = "ls -A " + folder_to_process + " | wc -l > /tmp/reg_count_files"	
+	subprocess.call([counting_cmd], shell=True)
+	counting_it = open('/tmp/reg_count_files', 'r')
+	number_of_files = counting_it.readline()
+	number_of_files = int(number_of_files)
+	o = 0
+
 	#read infile and process each file from oldest to youngest based on atime
 	f = open('/tmp/ls_output_' + temp_time + '.txt', 'rt')
 	for line in f:
@@ -302,6 +310,10 @@ def mr_registry(case_number, folder_to_process, root_folder_path):
 			hive_name_info = "SECURITY_INFO"
 			process_other_hives(abs_file_path, security_plugins, file_name, hive_name_info, folder_path, outfile)
 		
+		#Print Progress Percentage
+		o = o + 1
+		v = (o/number_of_files)*100
+		print(v, "% complete")
 
 	f.close()
 			
