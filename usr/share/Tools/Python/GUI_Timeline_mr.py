@@ -48,10 +48,15 @@ import subprocess
 import datetime
 
 ### SPLIT CSV ####################################################
-
-def split_csv(case_number, temp_time_wc, folder_path, outfile, tool):
-
-	word_count_command = "wc -l " + folder_path + "/" + case_number + "_timeline_modules.csv | awk '{print $1}' > /tmp/wc_" + temp_time_wc + ".txt"	
+            
+def split_csv(case_number, temp_time_wc, folder_path, outfile, timeline_type, file_to_split):
+	
+	if(timeline_type == "l2t"):
+		#word_count_command = "wc -l " + case_number + "_timeline_modules.csv | awk '{print $1}' > /tmp/wc_" + temp_time_wc + ".txt"	
+		word_count_command = "wc -l " + file_to_split + " | awk '{print $1}' > /tmp/wc_" + temp_time_wc + ".txt"
+	elif(timeline_type == "plaso"):
+		#word_count_command = "wc -l " + case_number + "_timeline.csv | awk '{print $1}' > /tmp/wc_" + temp_time_wc + ".txt"
+		word_count_command = "wc -l " + file_to_split + " | awk '{print $1}' > /tmp/wc_" + temp_time_wc + ".txt"
 	lines = (subprocess.call([word_count_command], shell=True))
 
 	fh = open('/tmp/wc_' + temp_time_wc + '.txt')
@@ -69,7 +74,10 @@ def split_csv(case_number, temp_time_wc, folder_path, outfile, tool):
 			split_number = (int(line)//2) + 1
 
 			#set up the split command
-			split_command = "split -l " + str(split_number) + " " + case_number + "_timeline_modules.csv"
+			if(timeline_type == "l2t"):
+				split_command = "split -l " + str(split_number) + " " + case_number + "_timeline_modules.csv"
+			elif(timeline_type == "plaso"):
+				split_command = "split -l " + str(split_number) + " " + case_number + "_timeline.csv"
 			print ("The split command is: " + split_command)
 			outfile.write("The split command is: " + split_command + "\n\n")
 			subprocess.call([split_command], shell=True)
@@ -79,16 +87,23 @@ def split_csv(case_number, temp_time_wc, folder_path, outfile, tool):
 				for filenames in files:
 					if re.search("xaa", filenames):
 						#the first split file already contains the correct header line so just rename it
-						os.rename(filenames, case_number + "_timeline_modules_split_"+filenames+".csv")
+						if(timeline_type == "l2t"):
+							os.rename(filenames, case_number + "_timeline_modules_split_"+filenames+".csv")
+						elif(timeline_type == "plaso"):
+							os.rename(filenames, case_number + "_timeline_split_"+filenames+".csv")
 					elif re.search("xa", filenames):
 						full_path = os.path.join(root, filenames)
 						#add header info back into split file
-						if tool == "l2t":
+						if(timeline_type == "l2t"):
 							sed_command = "sed -i '1i\ Date,Size,Type,Mode,UID,GID,Meta,L2T_Function,File_Name' " + "'"+full_path+"'"
-						elif tool == "plaso":
-							sed_command = "sed -i '1i\ date,time,timezone,MACB,source,type,user,host,short,desc,version,filename,inode,notes,format,extra' " + "'"+full_path+"'"
+							
+						elif(timeline_type == "plaso"):
+							sed_command = "sed -i '1i\ Date,Time,Timezone,MACB,Source,SourceType,Type,User,Host,Short,Desc,Version,Filename,Inode,Notes,Format,Extra' " + "'" + full_path + "'"		
 						subprocess.call([sed_command], shell=True)
-						os.rename(filenames, case_number + "_timeline_modules_split_"+filenames+".csv")
+						if(timeline_type == "l2t"):
+							os.rename(filenames, case_number + "_timeline_modules_split_"+filenames+".csv")
+						elif(timeline_type == "plaso"):
+							os.rename(filenames, case_number + "_timeline_split_"+filenames+".csv")				
 					
 
 		elif(int(line) > 2000000):
@@ -102,7 +117,10 @@ def split_csv(case_number, temp_time_wc, folder_path, outfile, tool):
 			outfile.write("We are going to split the file at line: " + str(split_number_final) + "\n\n")
 
 			#set up the split command
-			split_command = "split -l " + str(split_number_final) + " " + case_number + "_timeline_modules.csv"
+			if(timeline_type == "l2t"):
+				split_command = "split -l " + str(split_number_final) + " " + case_number + "_timeline_modules.csv"
+			elif(timeline_type == "plaso"):
+				split_command = "split -l " + str(split_number_final) + " " + case_number + "_timeline.csv"
 			print ("The split command is: " + split_command)
 			outfile.write("The split command is: " + split_command + "\n\n")
 			subprocess.call([split_command], shell=True)
@@ -112,16 +130,22 @@ def split_csv(case_number, temp_time_wc, folder_path, outfile, tool):
 				for filenames in files:
 					if re.search("xaa", filenames):
 						#the first split file already contains the correct header line so just rename it
-						os.rename(filenames, case_number + "_timeline_modules_split_"+filenames+".csv")
+						if(timeline_type == "l2t"):
+							os.rename(filenames, case_number + "_timeline_modules_split_"+filenames+".csv")
+						if(timeline_type == "plaso"):
+							os.rename(filenames, case_number + "_timeline_split_"+filenames+".csv")
 					elif re.search("xa", filenames):
 						full_path = os.path.join(root, filenames)
 						#add header info back into split file
-						if tool == "l2t":
-							sed_command = "sed -i '1i\ Date,Size,Type,Mode,UID,GID,Meta,L2T_Function,File_Name' " + "'"+full_path+"'"
-						elif tool == "plaso":
-							sed_command = "sed -i '1i\ date,time,timezone,MACB,source,type,user,host,short,desc,version,filename,inode,notes,format,extra' " + "'"+full_path+"'"
+						if(timeline_type == "l2t"):
+							sed_command = "sed -i '1i\ 	Date,Size,Type,Mode,UID,GID,Meta,L2T_Function, File_Name' " + "'"+full_path+"'"
+						elif(timeline_type == "plaso"):
+							sed_command = "sed -i '1i\ 	Date,Size,Type,Mode,UID,GID,Meta,L2T_Function, File_Name' " + "'"+full_path+"'"
 						subprocess.call([sed_command], shell=True)
-						os.rename(filenames, case_number + "_timeline_modules_split_"+filenames+".csv")
+						if(timeline_type == "l2t"):
+							os.rename(filenames, case_number + "_timeline_modules_split_"+filenames+".csv")
+						elif(timeline_type == "plaso"):
+							os.rename(filenames, case_number + "_timeline_split_"+filenames+".csv")
 
 		else:
 			outfile.write("There are: " + str(lines) + " in the supertimeline" + "\n")
@@ -306,17 +330,18 @@ def log2timeline(timezone_shift, key, folder_path, outfile, mount_point):
 
 ### PLASO ############################################################################
 
-def plaso(key, folder_path, outfile, Image_Path, timezone_shift, plaso_output_options, case_number, cores_to_use):
+def plaso(key, folder_path, outfile, Image_Path, timezone, plaso_output_options, case_number, cores_to_use):
 #add logfile
 	#convert cores_to_use to str
 	cores_to_use = str(cores_to_use)
 
 	#set plaso command
-	#if(timezone_shift == "NONE"):
-		#plaso_command = "log2timeline.py -o " + key + " -z UTC -t '" + case_number + "_Partition_" + key + "_' --vss --workers " + cores_to_use + " --logfile '" + folder_path + "/Timeline_Logs/plaso_logfile" + key + ".txt' '" + folder_path +"/partition_" + key + ".dmp" + "'" +" " + Image_Path + "" 
+	if(timezone == "NONE"):
+		timezone = "UTC"
+	plaso_command = "log2timeline.py -o " + key + " -z " + timezone + " -t '" + case_number + "_Partition_" + key + "_' --vss --workers " + cores_to_use + " --logfile '" + folder_path + "/Timeline_Logs/plaso_logfile" + key + ".txt' '" + folder_path +"/partition_" + key + ".dmp" + "'" +" " + Image_Path + "" 
+	#plaso_command = "log2timeline.py -o " + key + " -t '" + case_number + "_Partition_" + key + "_' --vss --workers " + cores_to_use + " --logfile '" + folder_path + "/Timeline_Logs/plaso_logfile" + key + ".txt' '" + folder_path +"/partition_" + key + ".dmp" + "'" +" " + Image_Path + "" 
 	#else:
-		#plaso_command = "log2timeline.py -o " + key + " -z " + timezone_shift + " -t '" + case_number + "_Partition_" + key + "_' --vss --workers " + cores_to_use + " --logfile '" + folder_path + "/Timeline_Logs/plaso_logfile" + key + ".txt' '" + folder_path +"/partition_" + key + ".dmp" + "'" +" " + Image_Path + ""
-	plaso_command = "log2timeline.py -o " + key + " -t '" + case_number + "_Partition_" + key + "_' --vss --workers " + cores_to_use + " --logfile '" + folder_path + "/Timeline_Logs/plaso_logfile" + key + ".txt' '" + folder_path +"/partition_" + key + ".dmp" + "'" +" " + Image_Path + "" 
+	#	plaso_command = "log2timeline.py -o " + key + " -z " + timezone_shift + " -t '" + case_number + "_Partition_" + key + "_' --vss --workers " + cores_to_use + " --logfile '" + folder_path + "/Timeline_Logs/plaso_logfile" + key + ".txt' '" + folder_path +"/partition_" + key + ".dmp" + "'" +" " + Image_Path + ""
 	print ("The Plaso command is: " + plaso_command + "\n\n")
 	print ("Running Plaso against: " + Image_Path + "\n\n")
 	if(outfile != "NONE"):
@@ -344,12 +369,12 @@ def plaso(key, folder_path, outfile, Image_Path, timezone_shift, plaso_output_op
 			print("l2tcsv ", plaso_output_options_split)
 			run_l2tcsv = "True"
 			check_plaso_output += 1
-		elif plaso_output_options_split[check_plaso_output] == "Rawpy":
-			print("Rawpy ", plaso_output_options_split)
+		elif plaso_output_options_split[check_plaso_output] == "SQLite":
+			print("SQLite ", plaso_output_options_split)
 			run_sqlite = "True"
 			check_plaso_output += 1
-		elif plaso_output_options_split[check_plaso_output] == "Dynamic":
-			print("Dynamic ", plaso_output_options_split)
+		elif plaso_output_options_split[check_plaso_output] == "Elastic":
+			print("Elastic ", plaso_output_options_split)
 			run_elastic = "True"
 			check_plaso_output += 1
 		else:
@@ -373,11 +398,7 @@ def plaso(key, folder_path, outfile, Image_Path, timezone_shift, plaso_output_op
 
 	#set & run psort csv command
 	if run_l2tcsv == "True":
-		if(timezone_shift == "NONE"):
-			psort_cmd = "psort.py -o L2tcsv -z UTC -w '" + folder_path + "/partition_" + key + "_timeline.csv' '" + folder_path + "/partition_" + key + ".dmp" + "'"
-		else:
-			psort_cmd = "psort.py -o L2tcsv -z " + timezone_shift + " -w '" + folder_path + "/partition_" + key + "_timeline.csv' '" + folder_path + "/partition_" + key + ".dmp" + "'"
-
+		psort_cmd = "psort.py -o L2tcsv -z " + timezone + " -w '" + folder_path + "/partition_" + key + "_timeline.csv' '" + folder_path + "/partition_" + key + ".dmp" + "'"
 		print ("The Plaso Psort command is: " + psort_cmd + "\n\n")
 		if(outfile != "NONE"):
 			outfile.write("The Plaso Psort command is: " + psort_cmd + "\n\n")
@@ -385,10 +406,7 @@ def plaso(key, folder_path, outfile, Image_Path, timezone_shift, plaso_output_op
 
 	#set & run psort sqlite command
 	if run_sqlite == "True":
-		if(timezone_shift == "NONE"):
-			psort_cmd = "psort.py -o Rawpy -z UTC -w '" + folder_path + "/partition_" + key + "_rawpy.txt' '" + folder_path + "/partition_" + key + ".dmp" + "'"
-		else:
-			psort_cmd = "psort.py -o Rawpy -z " + timezone_shift + " -w '" + folder_path + "/partition_" + key + "_rawpy.txt' '" + folder_path + "/partition_" + key + ".dmp" + "'"
+		psort_cmd = "psort.py -o Sql4n6 -z " + timezone + " -w '" + folder_path + "/partition_" + key + "_sqlite' '" + folder_path + "/partition_" + key + ".dmp" + "'"
 		print ("The Plaso Psort command is: " + psort_cmd + "\n\n")
 		if(outfile != "NONE"):
 			outfile.write("The Plaso Psort command is: " + psort_cmd + "\n\n")
@@ -396,15 +414,21 @@ def plaso(key, folder_path, outfile, Image_Path, timezone_shift, plaso_output_op
 
 	#set & run psort Elastic command
 	if run_elastic == "True":
-		if(timezone_shift == "NONE"):
-			psort_cmd = "psort.py -o dynamic -z UTC -w '" + folder_path + "/partition_" + key + "_timeline_dynamic.csv' '" + folder_path + "/partition_" + key + ".dmp'"
-		else:
-			psort_cmd = "psort.py -o dynamic -z " + timezone_shift + " -w '" + folder_path + "/partition_" + key + "_timeline_dynamic.csv' '" + folder_path + "/partition_" + key + ".dmp'"
+		psort_cmd = "psort.py -o Elastic -z " + timezone + " '" + folder_path + "/partition_" + key + ".dmp'"
 		print ("The Plaso Psort command is: " + psort_cmd + "\n\n")
 		if(outfile != "NONE"):
 			outfile.write("The Plaso Psort command is: " + psort_cmd + "\n\n")
 		subprocess.call([psort_cmd], shell=True)
+
+	#set & run psort Elastic command
+	#if run_elastic == "True":
+	#	psort_cmd = "psort.py -o Elastic -z " + timezone_shift + " -w '" + folder_path + "/partition_" + key + "_timeline_dynamic.csv' '" + folder_path + "/partition_" + key + ".dmp'"
+	#	print ("The Plaso Psort command is: " + psort_cmd + "\n\n")
+	#	if(outfile != "NONE"):
+	#		outfile.write("The Plaso Psort command is: " + psort_cmd + "\n\n")
+	#	subprocess.call([psort_cmd], shell=True)
 ### PLASO ############################################################################
+
 
 ### FLS ##############################################################################
 
@@ -604,7 +628,9 @@ def process_folder(folder_to_process, folder_path, outfile, case_number, user_de
 	subprocess.call([mactime_command], shell=True)
 
 	#run parse timeline module to add extra column
-	parse_timeline_module(folder_path, case_number, outfile)
+	file_to_split = parse_timeline_module(folder_path, case_number, outfile)
+
+	return file_to_split
 
 ##################################################################################################
 
@@ -623,11 +649,10 @@ def plaso_process_folder(Image_Path, folder_path, outfile, case_number, user_def
 		cores_to_use_str = "1"
 	
 	#set plaso command
-	#if(user_defined_timezone == "NONE"):
-		#plaso_command = "log2timeline.py --workers " + cores_to_use_str + " -t '" + case_number + "' -z UTC -p --logfile '" + folder_path + "/Timeline_Logs/plaso_logfile.txt' '" + folder_path +"/plaso_timeline.dmp" + "'" +" " + Image_Path + ""
-	#else:
-		#plaso_command = "log2timeline.py --workers " + cores_to_use_str + " -t '" + case_number + "' -z " + user_defined_timezone + " --logfile '" + folder_path + "/Timeline_Logs/plaso_logfile.txt' '" + folder_path +"/plaso_timeline.dmp" + "'" +" " + Image_Path + ""
-	plaso_command = "log2timeline.py --workers " + cores_to_use_str + " -t '" + case_number + "' -p --logfile '" + folder_path + "/Timeline_Logs/plaso_logfile.txt' '" + folder_path +"/plaso_timeline.dmp" + "'" +" " + Image_Path + ""
+	if(user_defined_timezone == "NONE"):
+		plaso_command = "log2timeline.py --workers " + cores_to_use_str + " -t '" + case_number + "' -z UTC -p --logfile '" + folder_path + "/Timeline_Logs/plaso_logfile.txt' '" + folder_path +"/plaso_timeline.dmp" + "'" +" " + Image_Path + ""
+	else:
+		plaso_command = "log2timeline.py --workers " + cores_to_use_str + " -t '" + case_number + "' -z " + user_defined_timezone + " --logfile '" + folder_path + "/Timeline_Logs/plaso_logfile.txt' '" + folder_path +"/plaso_timeline.dmp" + "'" +" " + Image_Path + ""
 	print ("The Plaso command is: " + plaso_command, end ="\n\n")
 	print ("Running Plaso against: " + Image_Path, end ="\n\n")
 	if(outfile != "NONE"):
@@ -657,17 +682,18 @@ def plaso_process_folder(Image_Path, folder_path, outfile, case_number, user_def
 	run_elastic = "False"
 
 	check_plaso_output = 0
-	while check_plaso_output != plaso_output_options_split_len: 
+	while check_plaso_output != plaso_output_options_split_len:
+		print(plaso_output_options_split[check_plaso_output])
 		if plaso_output_options_split[check_plaso_output] == "CSV":
 			print("l2tcsv ", plaso_output_options_split)
 			run_l2tcsv = "True"
 			check_plaso_output += 1
-		elif plaso_output_options_split[check_plaso_output] == "Rawpy":
-			print("Rawpy ", plaso_output_options_split)
+		elif plaso_output_options_split[check_plaso_output] == "SQLite":
+			print("SQLite ", plaso_output_options_split)
 			run_sqlite = "True"
 			check_plaso_output += 1
-		elif plaso_output_options_split[check_plaso_output] == "Dynamic":
-			print("Dynamic ", plaso_output_options_split)
+		elif plaso_output_options_split[check_plaso_output] == "Elastic":
+			print("Elastic ", plaso_output_options_split)
 			run_elastic = "True"
 			check_plaso_output += 1
 		else:
@@ -684,10 +710,10 @@ def plaso_process_folder(Image_Path, folder_path, outfile, case_number, user_def
 
 	#set & run psort csv command
 	if run_l2tcsv == "True":
-		if(timezone_shift == "NONE"):
-			psort_cmd = "psort.py -o L2tcsv -z UTC -w " + folder_path + "/plaso_timeline.csv " + folder_path + "/plaso_timeline.dmp"
+		if(user_defined_timezone == "NONE"):
+			psort_cmd = "psort.py -o L2tcsv -z UTC" + " -w " + folder_path + "/plaso_timeline.csv " + folder_path + "/plaso_timeline.dmp"
 		else:
-			psort_cmd = "psort.py -o L2tcsv -z " + timezone_shift + " -w " + folder_path + "/plaso_timeline.csv " + folder_path + "/plaso_timeline.dmp"
+			psort_cmd = "psort.py -o L2tcsv -z " + user_defined_timezone  + " -w " + folder_path + "/plaso_timeline.csv " + folder_path + "/plaso_timeline.dmp"
 		print ("The Plaso Psort command is: " + psort_cmd + "\n\n")
 		if(outfile != "NONE"):
 			outfile.write("The Plaso Psort command is: " + psort_cmd + "\n\n")
@@ -695,10 +721,10 @@ def plaso_process_folder(Image_Path, folder_path, outfile, case_number, user_def
 
 	#set & run psort sqlite command
 	if run_sqlite == "True":
-		if(timezone_shift == "NONE"):
-			psort_cmd = "psort.py -o Rawpy -z UTC -w " + folder_path + "/plaso_rawpy.txt " + folder_path + "/plaso_timeline.dmp"
+		if(user_defined_timezone == "NONE"):
+			psort_cmd = "psort.py -o Sql4n6 -z UTC" + " -w " + folder_path + "/plaso_sqlite " + folder_path + "/plaso_timeline.dmp"
 		else:
-			psort_cmd = "psort.py -o Rawpy -z " + timezone_shift + " -w " + folder_path + "/plaso_rawpy.txt " + folder_path + "/plaso_timeline.dmp"
+			psort_cmd = "psort.py -o Sql4n6 -z" + user_defined_timezone + " -w " + folder_path + "/plaso_sqlite " + folder_path + "/plaso_timeline.dmp"
 		print ("The Plaso Psort command is: " + psort_cmd + "\n\n")
 		if(outfile != "NONE"):
 			outfile.write("The Plaso Psort command is: " + psort_cmd + "\n\n")
@@ -706,26 +732,28 @@ def plaso_process_folder(Image_Path, folder_path, outfile, case_number, user_def
 
 	#set & run psort Dynamic command
 	if run_elastic == "True":
-		if(timezone_shift == "NONE"):
-			psort_cmd = "psort.py -o Dynamic -z UTC -w '" + folder_path + "/plaso_timeline_dynamic.csv' '" + folder_path + "/plaso_timeline.dmp'"
+		if(user_defined_timezone == "NONE"):
+			psort_cmd = "psort.py -o Elastic -z UTC " + "'" + folder_path + "/plaso_timeline.dmp" + "'"
 		else:
-			psort_cmd = "psort.py -o Dynamic -z " + timezone_shift + " -w '" + folder_path + "/plaso_timeline_dynamic.csv' '" + folder_path + "/plaso_timeline.dmp'"
+			psort_cmd = "psort.py -o Elastic -z " + user_defined_timezone + "'" + folder_path + "/plaso_timeline.dmp'"
 		print ("The Plaso Psort command is: " + psort_cmd + "\n\n")
 		if(outfile != "NONE"):
 			outfile.write("The Plaso Psort command is: " + psort_cmd + "\n\n")
 		subprocess.call([psort_cmd], shell=True)
 
-### PROCESS FOLDER PLASO ###############################################################################################
+	return folder_path + "/plaso_timeline.csv "
 
+### PROCESS FOLDER PLASO ###############################################################################################
 
 ### MAIN PROGRAM #####################################################################
 
-def GUI_Timeline_mr(item_to_process, case_number, root_folder_path, evidence, user_defined_timezone, super_timeline_options, plaso_output_options, plaso_processor):
+def GUI_Timeline_mr(item_to_process, case_number, root_folder_path, evidence, user_defined_timezone, super_timeline_options, plaso_output_options):
 	print("The item to process is: " + item_to_process)
 	print("The case_name is: " + case_number)
 	print("The output folder is: " + root_folder_path)
 	print("The evidence to process is: " + evidence)
 	print("The plaso_output_options are: " + plaso_output_options)
+	print("The user defined timezone is: " + user_defined_timezone)
 
 	evidence_no_quotes = evidence
 	evidence = '"' + evidence + '"'
@@ -802,8 +830,8 @@ def GUI_Timeline_mr(item_to_process, case_number, root_folder_path, evidence, us
 
 	if run_plaso == "True":
 		#Calculate Processors for Plaso
-		speed = plaso_processor
-		speed = speed.strip()
+		#speed = plaso_processor
+		#speed = speed.strip()
 
 		#calculate number of processors to use (Speed-Slow, Speed-Fast, Speed-Med
 		calc_cores_command = "cat /proc/cpuinfo | grep processor | wc -l"
@@ -812,14 +840,16 @@ def GUI_Timeline_mr(item_to_process, case_number, root_folder_path, evidence, us
 		num_of_cores = num_of_cores.strip()
 		print("This VM has " + str(num_of_cores) +" cores")
 
-		if(num_of_cores == "1"):
-			cores_to_use = 1	
-		elif(speed == "Speed-Slow"):
-			cores_to_use = 1
-		elif(speed == "Speed-Med"):
-			cores_to_use = int(num_of_cores)//2
-		elif(speed == "Speed-Fast"):
-			cores_to_use = int(num_of_cores) - 1
+		cores_to_use = num_of_cores
+			
+		#if(num_of_cores == "1"):
+		#	cores_to_use = 1	
+		#elif(speed == "Speed-Slow"):
+		#	cores_to_use = 1
+		#elif(speed == "Speed-Med"):
+		#	cores_to_use = int(num_of_cores)//2
+		#elif(speed == "Speed-Fast"):
+		#	cores_to_use = int(num_of_cores) - 1
 
 		print("Cores to used is set to: %r" % cores_to_use)
 
@@ -828,24 +858,28 @@ def GUI_Timeline_mr(item_to_process, case_number, root_folder_path, evidence, us
 		#folder_to_process = select_folder_to_process(outfile)
 		folder_to_process = evidence_no_quotes
 		if run_l2t == "True":
-			process_folder(folder_to_process, folder_path, outfile, case_number, user_defined_timezone)
+			file_to_split = process_folder(folder_to_process, folder_path, outfile, case_number, user_defined_timezone)
 			tool = "l2t"
+			split_csv(case_number, temp_time_wc, folder_path, outfile, tool,file_to_split)
 		if run_plaso == "True":
-			plaso_process_folder(folder_to_process, folder_path, outfile, case_number, user_defined_timezone, plaso_output_options, cores_to_use)
+			file_to_split = plaso_process_folder(folder_to_process, folder_path, outfile, case_number, user_defined_timezone, plaso_output_options, cores_to_use)
 			tool = "plaso"
-		split_csv(case_number, temp_time_wc, folder_path, outfile, tool)
+			if(plaso_output_options == "CSV"):
+				split_csv(case_number, temp_time_wc, folder_path, outfile, tool, file_to_split)
 		outfile.close()
 	elif(item_to_process =="EnCase Logical Evidence File"):
 		#file_to_process = select_file_to_process(outfile)
 		file_to_process = evidence
 		mount_point = mount_encase_v6_l01(case_number, file_to_process, outfile)
 		if run_l2t == "True":
-			process_folder(file_to_process, folder_path, outfile, case_number, user_defined_timezone)
+			file_to_split = process_folder(file_to_process, folder_path, outfile, case_number, user_defined_timezone)
 			tool = "l2t"
+			split_csv(case_number, temp_time_wc, folder_path, outfile, tool, file_to_split)
 		if run_plaso == "True":
-			plaso_process_folder(file_to_process, folder_path, outfile, case_number, user_defined_timezone, plaso_output_options, cores_to_use)
+			file_to_split = plaso_process_folder(file_to_process, folder_path, outfile, case_number, user_defined_timezone, plaso_output_options, cores_to_use)
 			tool = "plaso"
-		split_csv(case_number, temp_time_wc, folder_path, outfile, tool)
+			if(plaso_output_options == "CSV"):
+				split_csv(case_number, temp_time_wc, folder_path, outfile, tool, file_to_split)
 		outfile.close()
 
 		#umount
@@ -1077,6 +1111,7 @@ def GUI_Timeline_mr(item_to_process, case_number, root_folder_path, evidence, us
 					key_512 = int(key) / 512
 					key_512 = int(key_512)
 					plaso(str(key_512), folder_path, outfile, Image_Path, timezone_final, plaso_output_options, case_number, cores_to_use)
+	
 
 				#call log2timeline (timezone_shift, offset, folder_path, filesystem)
 				#print("l2t is: ", run_l2t)
@@ -1086,9 +1121,6 @@ def GUI_Timeline_mr(item_to_process, case_number, root_folder_path, evidence, us
 				#call fls (offset, folder_path, filesystem) against non NTFS partitions.  Also fls can't support ext4
 				#log2timeline will parse the MFT for NTFS partitions
 					fls(str(key), folder_path, value, outfile, Image_Path)
-				#else:
-				#	print("Skipping fls call since fls doesn't support ext4\n")
-				#	outfile.write("Skipping fls call since fls doesn't support ext4\n")
 
 				#run mactime command against all fileystem types, pass timezone, offset and list containing begin and end dates
 					mactime(timezone_final, key, outfile, folder_path)
@@ -1147,56 +1179,54 @@ def GUI_Timeline_mr(item_to_process, case_number, root_folder_path, evidence, us
 				print("No need to sort the final bodyfile since there is only one partition.")
 				outfile.write("No need to sort the final bodyfile since there is only one partition.\n\n")
 				os.rename('bodyfile_final_temp', case_number + "_timeline.csv")
-			
+
+			file_to_split = case_number + "_timeline.csv"
+
 			#call parse_timeline module to add column into mactime formatted .csv that contains the log2timeline module informaiton
-			parse_timeline_module(folder_path, case_number, outfile)
-			split_csv(case_number, temp_time_wc, folder_path, outfile, "l2t")
+			file_to_split = parse_timeline_module(folder_path, case_number, outfile)
+			split_csv(case_number, temp_time_wc, folder_path, outfile, "l2t", file_to_split)
 
-		elif(run_plaso == "True"):
-
-			#concatenate the csv files
-			cat_command = "cat partition*_timeline.csv > " + "'" + folder_path + "/csv_final_temp" + "'"
-
-			print("The cat command is: " + cat_command)
-
-			outfile.write("The cat command is: " + cat_command + "\n")
-
-			subprocess.call([cat_command], shell=True)
+		elif(run_plaso == "True") and (plaso_output_options == "CSV"):
 
 			#get length of partition_info_dict to figure out how many bodyfiles there were
 			#if there were more than one then you need to add a header to the concatenated final bodyfile
 			partition_info_dict_len = len(partition_info_dict)
 
 			if(partition_info_dict_len > 1):
+
+				#concatenate the .csv files
+				cat_command = "cat *.csv > " + "'" + folder_path + "/plaso_timeline_combined.csv" + "'"
+				print("The cat command is: " + cat_command)
+				outfile.write("The cat command is: " + cat_command + "\n")
+				subprocess.call([cat_command], shell=True)
+
 				#grep out the header rows
-				grep_command = "grep -Eva date,time,timezone,MACB,source,type,user,host,short,desc,version,filename,inode,notes,format,extra csv_final_temp > csv_final"
+				grep_command = "grep -Eva date,time,timezone plaso_timeline_combined.csv > plaso_timeline_combined_no_header.csv"
 				subprocess.call([grep_command], shell=True)
-	
+		
+				#set up sort command - this sorts the concatenated bodyfile so that it is in descending order
+				sort_command = "sort -k 1.7,1.10 -k 1.1,1.2 -k 1.4,1.5 -k 2.1,2.2 -k 2.4,2.5 -k 2.7,2.8 plaso_timeline_combined_no_header.csv > " + case_number + "_timeline.csv"
+				subprocess.call([sort_command], shell=True)
+
 				#remove the bodyfile_final_temp fit folder to process
-				bodyfile_final_temp = folder_path + "/csv_final_temp"
+				bodyfile_final_temp = folder_path + "/plaso_timeline_combined.csv"
 				print("The bodyfile_final_temp is: " + bodyfile_final_temp)
 				#bodyfile_final_temp_quoted = "'" +bodyfile_final_temp +"'"	
 				os.remove(bodyfile_final_temp)
-		
-				#set up sort command - this sorts the concatenated bodyfile so that it is in descending order
-				sort_command = "sort -k 1.7,1.10 -k 1.1,1.2 -k 1.4,1.5 -k 1.12,1.19 csv_final > " + case_number + "_timeline_modules.csv"
-				subprocess.call([sort_command], shell=True)
 
 				#insert header line back into final .csv file
-				sed_command = "sed -i '1i\ date,time,timezone,MACB,source,type,user,host,short,desc,version,filename,inode,notes,format,extra' " + case_number + "_timeline_modules.csv";
+				sed_command = "sed -i '1i\ Date,Time,Timezone,MACB,Source,SourceType,type,User,Host,Short,Desc,Version,FileName,Inode,Notes,Format,Extra' " + case_number + "_timeline.csv";
 				subprocess.call([sed_command], shell=True)
+				file_to_split = case_number + "_timeline.csv"
 		
 			else: 
 				print("No need to sort the final bodyfile since there is only one partition.")
 				outfile.write("No need to sort the final bodyfile since there is only one partition.\n\n")
-				os.rename('csv_final_temp', case_number + "_timeline_modules.csv")
+				#os.rename('bodyfile_final_temp', case_number + "_timeline.csv")
+				#set file_to_split variable
+				file_to_split = "partition_" + str(key_512) + "_timeline.csv"
 
-			#call parse_timeline module to add column into mactime formatted .csv that contains the log2timeline module informaiton
-			#parse_timeline_module(folder_path, case_number, outfile)
-			split_csv(case_number, temp_time_wc, folder_path, outfile, "plaso")
-
-		
-
+			split_csv(case_number, temp_time_wc, folder_path, outfile, "plaso", file_to_split)
 
 		#program cleanup
 		if os.path.exists("/tmp/wc_" + temp_time_wc + ".txt"):
@@ -1230,4 +1260,3 @@ def GUI_Timeline_mr(item_to_process, case_number, root_folder_path, evidence, us
 
 
 ### MAIN PROGRAM #####################################################################	
-
