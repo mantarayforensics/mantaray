@@ -360,11 +360,14 @@ def plaso(key, folder_path, outfile, Image_Path, timezone, plaso_output_options,
 	print("plaso_output_options = ", plaso_output_options_split_len)
 
 	run_l2tcsv = "False"
+	run_raw = "False"
+	run_dynamic = "False"
 	run_sqlite = "False"
-	run_elastic = "False"
+	run_kibana = "False"
 
 	check_plaso_output = 0
-	while check_plaso_output != plaso_output_options_split_len: 
+	while check_plaso_output != plaso_output_options_split_len:
+		print(plaso_output_options_split[check_plaso_output])
 		if plaso_output_options_split[check_plaso_output] == "CSV":
 			print("l2tcsv ", plaso_output_options_split)
 			run_l2tcsv = "True"
@@ -373,21 +376,29 @@ def plaso(key, folder_path, outfile, Image_Path, timezone, plaso_output_options,
 			print("SQLite ", plaso_output_options_split)
 			run_sqlite = "True"
 			check_plaso_output += 1
-		elif plaso_output_options_split[check_plaso_output] == "Elastic":
-			print("Elastic ", plaso_output_options_split)
-			run_elastic = "True"
+		elif plaso_output_options_split[check_plaso_output] == "Rawpy":
+			print("Rawpy ", plaso_output_options_split)
+			run_raw = "True"
+			check_plaso_output += 1
+		elif plaso_output_options_split[check_plaso_output] == "Dynamic":
+			print("Dynamic ", plaso_output_options_split)
+			run_dynamic = "True"
+			check_plaso_output += 1
+		elif plaso_output_options_split[check_plaso_output] == "Kibana":
+			print("Kibana ", plaso_output_options_split)
+			run_kibana = "True"
 			check_plaso_output += 1
 		else:
 			print("all ", plaso_output_options_split)
 			run_l2tcsv = "False"
+			run_raw = "False"
+			run_dynamic = "False"
 			run_sqlite = "False"
-			run_elastic = "False"
+			run_kibana = "False"
 			check_plaso_output += 1
 
-	if run_l2tcsv == "False" and run_sqlite == "False" and run_elastic == "False":
-		print("No output type selected for plaso. Saving dump file")
-
-
+	if run_l2tcsv == "False" and run_sqlite == "False" and run_raw == "False" and run_dynamic == "False" and run_kibana == "False":
+		print("No output type selected for plaso, saving dump file")
 
 	#set & run pinfo command
 	pinfo_cmd = "pinfo.py -v '" + folder_path + "/partition_" + key + ".dmp' > '" + folder_path + "/pinfo_partition_" + key + ".txt'"
@@ -413,8 +424,24 @@ def plaso(key, folder_path, outfile, Image_Path, timezone, plaso_output_options,
 		subprocess.call([psort_cmd], shell=True)
 
 	#set & run psort Elastic command
-	if run_elastic == "True":
+	if run_kibana == "True":
 		psort_cmd = "psort.py -o Elastic -z " + timezone + " '" + folder_path + "/partition_" + key + ".dmp'"
+		print ("The Plaso Psort command is: " + psort_cmd + "\n\n")
+		if(outfile != "NONE"):
+			outfile.write("The Plaso Psort command is: " + psort_cmd + "\n\n")
+		subprocess.call([psort_cmd], shell=True)
+
+	#set & run psort Dynamic command
+	if run_dynamic == "True":
+		psort_cmd = "psort.py -o Dynamic -z " + timezone + " -w '" + folder_path + "/partition_" + key + "_dynamic.csv' '" + folder_path + "/partition_" + key + ".dmp" + "'"
+		print ("The Plaso Psort command is: " + psort_cmd + "\n\n")
+		if(outfile != "NONE"):
+			outfile.write("The Plaso Psort command is: " + psort_cmd + "\n\n")
+		subprocess.call([psort_cmd], shell=True)
+
+	#set & run psort Raw command
+	if run_raw == "True":
+		psort_cmd = "psort.py -o Rawpy -z " + timezone + " -w '" + folder_path + "/partition_" + key + "_raw.txt' '" + folder_path + "/partition_" + key + ".dmp" + "'"
 		print ("The Plaso Psort command is: " + psort_cmd + "\n\n")
 		if(outfile != "NONE"):
 			outfile.write("The Plaso Psort command is: " + psort_cmd + "\n\n")
@@ -678,8 +705,10 @@ def plaso_process_folder(Image_Path, folder_path, outfile, case_number, user_def
 	print("plaso_output_options = ", plaso_output_options_split_len)
 
 	run_l2tcsv = "False"
+	run_raw = "False"
+	run_dynamic = "False"
 	run_sqlite = "False"
-	run_elastic = "False"
+	run_kibana = "False"
 
 	check_plaso_output = 0
 	while check_plaso_output != plaso_output_options_split_len:
@@ -692,18 +721,28 @@ def plaso_process_folder(Image_Path, folder_path, outfile, case_number, user_def
 			print("SQLite ", plaso_output_options_split)
 			run_sqlite = "True"
 			check_plaso_output += 1
-		elif plaso_output_options_split[check_plaso_output] == "Elastic":
-			print("Elastic ", plaso_output_options_split)
-			run_elastic = "True"
+		elif plaso_output_options_split[check_plaso_output] == "Rawpy":
+			print("Rawpy ", plaso_output_options_split)
+			run_raw = "True"
+			check_plaso_output += 1
+		elif plaso_output_options_split[check_plaso_output] == "Dynamic":
+			print("Dynamic ", plaso_output_options_split)
+			run_dynamic = "True"
+			check_plaso_output += 1
+		elif plaso_output_options_split[check_plaso_output] == "Kibana":
+			print("Kibana ", plaso_output_options_split)
+			run_kibana = "True"
 			check_plaso_output += 1
 		else:
 			print("all ", plaso_output_options_split)
 			run_l2tcsv = "False"
+			run_raw = "False"
+			run_dynamic = "False"
 			run_sqlite = "False"
-			run_elastic = "False"
+			run_kibana = "False"
 			check_plaso_output += 1
 
-	if run_l2tcsv == "False" and run_sqlite == "False" and run_elastic == "False":
+	if run_l2tcsv == "False" and run_sqlite == "False" and run_raw == "False" and run_dynamic == "False" and run_kibana == "False":
 		print("No output type selected for plaso, saving dump file")
 
 
@@ -730,12 +769,34 @@ def plaso_process_folder(Image_Path, folder_path, outfile, case_number, user_def
 			outfile.write("The Plaso Psort command is: " + psort_cmd + "\n\n")
 		subprocess.call([psort_cmd], shell=True)
 
-	#set & run psort Dynamic command
+	#set & run psort Elastic command
 	if run_elastic == "True":
 		if(user_defined_timezone == "NONE"):
 			psort_cmd = "psort.py -o Elastic -z UTC " + "'" + folder_path + "/plaso_timeline.dmp" + "'"
 		else:
 			psort_cmd = "psort.py -o Elastic -z " + user_defined_timezone + "'" + folder_path + "/plaso_timeline.dmp'"
+		print ("The Plaso Psort command is: " + psort_cmd + "\n\n")
+		if(outfile != "NONE"):
+			outfile.write("The Plaso Psort command is: " + psort_cmd + "\n\n")
+		subprocess.call([psort_cmd], shell=True)
+
+	#set & run psort Rawpy command
+	if run_l2tcsv == "True":
+		if(user_defined_timezone == "NONE"):
+			psort_cmd = "psort.py -o Rawpy -z UTC" + " -w " + folder_path + "/plaso_timeline_raw.txt " + folder_path + "/plaso_timeline.dmp"
+		else:
+			psort_cmd = "psort.py -o Rawpy -z " + user_defined_timezone  + " -w " + folder_path + "/plaso_timeline_raw.txt " + folder_path + "/plaso_timeline.dmp"
+		print ("The Plaso Psort command is: " + psort_cmd + "\n\n")
+		if(outfile != "NONE"):
+			outfile.write("The Plaso Psort command is: " + psort_cmd + "\n\n")
+		subprocess.call([psort_cmd], shell=True)
+
+	#set & run psort Dynamic command
+	if run_l2tcsv == "True":
+		if(user_defined_timezone == "NONE"):
+			psort_cmd = "psort.py -o Dynamic -z UTC" + " -w " + folder_path + "/plaso_timeline_dynamic.csv " + folder_path + "/plaso_timeline.dmp"
+		else:
+			psort_cmd = "psort.py -o Dynamic -z " + user_defined_timezone  + " -w " + folder_path + "/plaso_timeline_dynamic.csv " + folder_path + "/plaso_timeline.dmp"
 		print ("The Plaso Psort command is: " + psort_cmd + "\n\n")
 		if(outfile != "NONE"):
 			outfile.write("The Plaso Psort command is: " + psort_cmd + "\n\n")
@@ -747,7 +808,7 @@ def plaso_process_folder(Image_Path, folder_path, outfile, case_number, user_def
 
 ### MAIN PROGRAM #####################################################################
 
-def GUI_Timeline_mr(item_to_process, case_number, root_folder_path, evidence, user_defined_timezone, super_timeline_options, plaso_output_options):
+def GUI_Timeline_mr(item_to_process, case_number, root_folder_path, evidence, user_defined_timezone, super_timeline_options, plaso_output_options,  plaso_processor):
 	print("The item to process is: " + item_to_process)
 	print("The case_name is: " + case_number)
 	print("The output folder is: " + root_folder_path)

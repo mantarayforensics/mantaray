@@ -494,7 +494,7 @@ for x in processing_scripts_list:
 		if(super_timeline_options == "Plaso"):
 
 			try:
-				plaso_output_options = subprocess.check_output(['zenity --list --checklist --title "MantaRay - ManTech Triage & Analysis System	        MantaRayForensics.com v1.3.9" --column="Selection" --column="Psort Output" --column="Description" --separator="," FALSE "CSV" "CSV Format, similar to the Log2Timeline csv output" FALSE "Rawpy" "Prints out raw text file of Event Objects" FALSE "Dynamic" "CSV format, Contains fields " --text="Select Plaso Options" --width 800 --height 400'], shell=True, universal_newlines=True)
+				plaso_output_options = subprocess.check_output(['zenity --list --checklist --title "MantaRay - ManTech Triage & Analysis System	        MantaRayForensics.com v1.3.9" --column="Selection" --column="Psort Output" --column="Description" --separator="," FALSE "CSV" "CSV Format, similar to the Log2Timeline csv output" FALSE "Rawpy" "Prints out raw text file of Event Objects" FALSE "Dynamic" "CSV format, Contains fields " --text="Select Plaso Options" FALSE "Kibana" "Data visualization of the Plaso output. View at http://127.0.0.1" FALSE "SQLite" "SQLite output format" --width 800 --height 400'], shell=True, universal_newlines=True)
 				plaso_output_options = plaso_output_options.strip()
 				print("Plaso Output Options: " + plaso_output_options)
 				gui_outfile.write("Plaso Output Options: " + "\t" + plaso_output_options + "\n")	
@@ -502,6 +502,17 @@ for x in processing_scripts_list:
 				print ("Cancel/Exit chosen")
 				gui_outfile.write("Timeline Processor: Processor Options - Aborted by user - Cancel/Exit chosen")
 				sys.exit(0)
+
+			#Option to clear out Kibana Database
+			try:
+				subprocess.call(['zenity --question --title "MantaRay - ManTech Triage & Analysis System	        MantaRayForensics.com v1.3.9" --text="Kibana will save previous entries until cleared. If you would like to delete data in previous entries, select Yes below. The preservation of previous cases in Kibana can allow for cross analysis and clearing the data within Kibana is not always the best option. To preserve the data, select No. \n \n \n Would you like to clear the Kibana database?" --width 800 --height 400'], shell=True, universal_newlines=True)
+				
+				subprocess.call("curl -XDELETE 'http://127.0.0.1:9200/_all/'")
+				gui_outfile.write("Plaso Processor: Kibana Database Cleared")
+				print("Kibana Database Cleared")
+			except:
+				print("Kibana Database Preserved")
+				gui_outfile.write("Plaso Processor: Kibana Database Preserved")
 
 			#Add Processing Speed to Plaso
 			try:		
