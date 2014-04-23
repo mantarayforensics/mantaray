@@ -14,6 +14,12 @@ base to utilize open source and custom exploitation tools.
 
 For more information about the suite, visit our website http://www.mantarayforensics.com
 
+####Kibana and Eleasticsearch:
+
+This version supports Kibana and Elasticsearch through Plaso's psort.py. Kibana must first 
+be installed on Elasticsearch before this version can be run successfully. Installation 
+instructions will be available in the near future, for now refer to  http://blog.kiddaland.net/2013/11/visualize-output.html 
+
 Dependencies
 ==================================
 
