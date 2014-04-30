@@ -494,7 +494,7 @@ for x in processing_scripts_list:
 		if(super_timeline_options == "Plaso"):
 
 			try:
-				plaso_output_options = subprocess.check_output(['zenity --list --checklist --title "MantaRay - ManTech Triage & Analysis System	        MantaRayForensics.com v1.3.9" --column="Selection" --column="Psort Output" --column="Description" --separator="," FALSE "CSV" "CSV Format, similar to the Log2Timeline csv output" FALSE "Rawpy" "Prints out raw text file of Event Objects" FALSE "Dynamic" "CSV format, Contains fields " --text="Select Plaso Options" FALSE "Kibana" "Data visualization of the Plaso output. View at http://127.0.0.1" FALSE "SQLite" "SQLite output format" --width 800 --height 400'], shell=True, universal_newlines=True)
+				plaso_output_options = subprocess.check_output(['zenity --list --checklist --title "MantaRay - ManTech Triage & Analysis System	        MantaRayForensics.com v1.3.9" --column="Selection" --column="Psort Output" --column="Description" --separator="," FALSE "CSV" "CSV Format, similar to the Log2Timeline csv output" FALSE "Rawpy" "Prints out raw text file of Event Objects" FALSE "Dynamic" "CSV format, Contains fields " --text="Select Plaso Options" FALSE "Kibana" "[Not Installed by Default, See README] Data visualization of the Plaso output. View at http://127.0.0.1" FALSE "SQLite" "SQLite output format" --width 800 --height 400'], shell=True, universal_newlines=True)
 				plaso_output_options = plaso_output_options.strip()
 				print("Plaso Output Options: " + plaso_output_options)
 				gui_outfile.write("Plaso Output Options: " + "\t" + plaso_output_options + "\n")	
