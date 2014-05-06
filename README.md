@@ -39,9 +39,24 @@ See https://launchpad.net/~mantaray/+archive/stable for a full list
 
 Installation of MantaRay
 ==================================
+
+Using bootstrap to install SIFT and Mantaray:
+    
+    $ sudo wget https://github.com/mantarayforensics/mantaray/raw/kibana/bootstrap.sh && sudo sh bootstrap.sh -i
+
+Using bootstrap to install Kibana, SIFT and Mantaray:
+    
+    $ sudo wget https://github.com/mantarayforensics/mantaray/raw/kibana/bootstrap.sh && sudo sh bootstrap.sh -s -i -y
+
+Using bootstrap to install theme, Kibana, SIFT and Mantaray:
+    
+    $ sudo wget https://github.com/mantarayforensics/mantaray/raw/kibana/bootstrap.sh && sudo sh bootstrap.sh -s -k -i -y
+    
+Using bootstrap to configure SIFT and Mantaray:
+    
+    $ sudo wget https://github.com/mantarayforensics/mantaray/raw/kibana/bootstrap.sh && sudo sh bootstrap.sh -c
+
 ####PPA:
-
-
 
     $ sudo apt-add-repository ppa:mantaray/stable
     $ sudo apt-add-repository ppa:sift/stable
@@ -71,6 +86,7 @@ A popup window should appear. Pressing continue will begin running the script.
 
 Check For Updates
 ==================================
+
 Using apt-get:
 
     $ sudo apt-get update && sudo apt-get upgrade
