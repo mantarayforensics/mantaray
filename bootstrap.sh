@@ -331,14 +331,6 @@ complete_message() {
     echo
 }
 
-complete_message_kibana() {
-    echo
-    echo "Please restart before using kibana & elasticsearch features"
-    echo
-    echo "To access kibana interface, load http://localhost in the webbrowser"
-    echo
-}
-
 complete_message_skin() {
     echo "The hostname was changed, you should relogin or reboot for it to take full effect."
     echo
@@ -350,7 +342,6 @@ CONFIGURE_ONLY=0
 SKIN=0
 INSTALL=1
 YESTOALL=0
-KIBANA=0
 
 OS=$(lsb_release -si)
 ARCH=$(uname -m | sed 's/x86_//;s/i[3-6]86/32/')
@@ -390,7 +381,7 @@ case "${opt}" in
     v ) echo "$0 -- Version $__ScriptVersion"; exit 0 ;;
     s ) SKIN=1 ;;
     i ) INSTALL=1 ;;
-    c ) CONFIGURE_ONLY=1; INSTALL=0; SKIN=0; KIBANA=0; ;;
+    c ) CONFIGURE_ONLY=1; INSTALL=0; SKIN=0; ;;
     y ) YESTOALL=1 ;;
     \?) echo
         echoerror "Option does not exist: $OPTARG"
