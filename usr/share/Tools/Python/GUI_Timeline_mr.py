@@ -781,7 +781,7 @@ def plaso_process_folder(Image_Path, folder_path, outfile, case_number, user_def
 		subprocess.call([psort_cmd], shell=True)
 
 	#set & run psort Rawpy command
-	if run_l2tcsv == "True":
+	if run_raw == "True":
 		if(user_defined_timezone == "NONE"):
 			psort_cmd = "psort.py -o Rawpy -z UTC" + " -w " + folder_path + "/plaso_timeline_raw.txt " + folder_path + "/plaso_timeline.dmp"
 		else:
@@ -792,7 +792,7 @@ def plaso_process_folder(Image_Path, folder_path, outfile, case_number, user_def
 		subprocess.call([psort_cmd], shell=True)
 
 	#set & run psort Dynamic command
-	if run_l2tcsv == "True":
+	if run_dynamic == "True":
 		if(user_defined_timezone == "NONE"):
 			psort_cmd = "psort.py -o Dynamic -z UTC" + " -w " + folder_path + "/plaso_timeline_dynamic.csv " + folder_path + "/plaso_timeline.dmp"
 		else:
