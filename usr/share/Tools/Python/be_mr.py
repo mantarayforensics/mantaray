@@ -51,13 +51,13 @@ def process_folder(evidence, folder_path_be, whitelist_location, speed, outfile,
 
 	#set up bulk_extractor command
 	if(whitelist_location != "NONE") and (keyword_list == "NONE"):
-		be_command = "bulk_extractor -o " + folder_path_be + " -w " + whitelist_location + " -j " + str(cores_to_use) + " -R " + evidence
+		be_command = "bulk_extractor -o " + folder_path_be + ' -w "' + whitelist_location + '" -j ' + str(cores_to_use) + " -R " + evidence
 	elif(whitelist_location == "NONE") and (keyword_list =="NONE"):
 		be_command = "bulk_extractor -o " + folder_path_be + " -j " + str(cores_to_use) + " -R " + evidence
 	elif(whitelist_location != "NONE") and (keyword_list != "NONE"):
-		be_command = "bulk_extractor -o " + folder_path_be + " -w " + whitelist_location + " -x find -F " + keyword_list + " -j " + str(cores_to_use) + " -R " + evidence
+		be_command = "bulk_extractor -o " + folder_path_be + ' -w "' + whitelist_location + '" -x find -F "' + keyword_list + '" -j ' + str(cores_to_use) + " -R " + evidence
 	elif(whitelist_location == "NONE") and (keyword_list != "NONE"):
-		be_command = "bulk_extractor -o " + folder_path_be + " -x find -F " + keyword_list + " -j " + str(cores_to_use) + " -R " + evidence
+		be_command = "bulk_extractor -o " + folder_path_be + ' -x find -F "' + keyword_list + '" -j ' + str(cores_to_use) + " -R " + evidence
 
 	#run be_command
 	subprocess.call([be_command], shell=True)
@@ -117,13 +117,13 @@ def be_mr(item_to_process, case_number, folder_path, evidence, whitelist_locatio
 
 		#set up bulk extractor command
 		if(whitelist_location != "NONE") and (keyword_list == "NONE"):
-			be_command = "bulk_extractor -o " + folder_path_be + " -w " + whitelist_location + " -j " + str(cores_to_use) + " " + evidence
+			be_command = "bulk_extractor -o " + folder_path_be + ' -w "' + whitelist_location + '" -j ' + str(cores_to_use) + " " + evidence
 		elif(whitelist_location == "NONE") and (keyword_list =="NONE"):
 			be_command = "bulk_extractor -o " + folder_path_be + " -j " + str(cores_to_use) + " " + evidence
 		elif(whitelist_location != "NONE") and (keyword_list != "NONE"):
-			be_command = "bulk_extractor -o " + folder_path_be + " -w " + whitelist_location + " -x find l -F " + keyword_list + " -j " + str(cores_to_use) + " " + evidence
+			be_command = "bulk_extractor -o " + folder_path_be + ' -w "' + whitelist_location + '" -x find l -F "' + keyword_list + '" -j ' + str(cores_to_use) + " " + evidence
 		elif(whitelist_location == "NONE") and (keyword_list != "NONE"):
-			be_command = "bulk_extractor -o " + folder_path_be + " -x find -F " + keyword_list + " -j " + str(cores_to_use) + " " + evidence
+			be_command = "bulk_extractor -o " + folder_path_be + ' -x find -F "' + keyword_list + '" -j ' + str(cores_to_use) + " " + evidence
 
 		#outfile.write("The be_command is: " + be_command + "\n")
 
@@ -133,13 +133,13 @@ def be_mr(item_to_process, case_number, folder_path, evidence, whitelist_locatio
 	elif(item_to_process == "Bit-Stream Image"):
 		#set up bulk extractor command
 		if(whitelist_location != "NONE") and (keyword_list == "NONE"):
-			be_command = "bulk_extractor -C 60 -o " + folder_path_be + " -w " + whitelist_location + " -j " + str(cores_to_use) + " " + evidence
+			be_command = "bulk_extractor -C 60 -o " + folder_path_be + ' -w "' + whitelist_location + '" -j ' + str(cores_to_use) + " " + evidence
 		elif(whitelist_location == "NONE") and (keyword_list =="NONE"):
 			be_command = "bulk_extractor -C 60 -o " + folder_path_be + " -j " + str(cores_to_use) + " " + evidence
 		elif(whitelist_location != "NONE") and (keyword_list != "NONE"):
-			be_command = "bulk_extractor -C 60 -o " + folder_path_be + " -w " + whitelist_location + " -x find -F " + keyword_list + " -j " + str(cores_to_use) + " " + evidence
+			be_command = "bulk_extractor -C 60 -o " + folder_path_be + ' -w "' + whitelist_location + '" -x find l -F "' + keyword_list + '" -j ' + str(cores_to_use) + " " + evidence
 		elif(whitelist_location == "NONE") and (keyword_list != "NONE"):
-			be_command = "bulk_extractor -C 60 -o " + folder_path_be + " -x find -F " + keyword_list + " -j " + str(cores_to_use) + " " + evidence
+			be_command = "bulk_extractor -C 60 -o " + folder_path_be + ' -x find -F "' + keyword_list + '" -j ' + str(cores_to_use) + " " + evidence
 
 		#run be_command
 		print("The be command is: " + be_command)
