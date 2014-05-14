@@ -509,17 +509,6 @@ for x in processing_scripts_list:
 				gui_outfile.write("Timeline Processor: Processor Options - Aborted by user - Cancel/Exit chosen")
 				sys.exit(0)
 
-			#Add Processing Speed to Plaso
-			try:		
-		
-				plaso_processor = subprocess.check_output(['zenity --list --radiolist --title "MantaRay - ManTech Triage & Analysis System	        MantaRayForensics.com v1.3.9" --column="Selection" --column="Processor Performance" --column="Description" --separator="," FALSE "Speed-Slow" "Minimum Processing Cores" TRUE "Speed-Med" "Medium Processing Cores (Recommended)" FALSE "Speed-Fast" "Maximum Processing Cores (Warning - Processor Intensive)" --text="Processing Performance - Plaso" --width 800 --height 400'], shell=True, universal_newlines=True)
-
-		
-			except:
-
-				print ("Cancel/Exit chosen")
-				gui_outfile.write("Plaso Processor: Processor Options - Aborted by user - Cancel/Exit chosen")
-				sys.exit(0)
 
 
 		elif(super_timeline_options == "Log2Timeline"):
@@ -687,11 +676,11 @@ for x in processing_scripts_list:
 				gui_outfile.write("RegRipper failed...Please reprocess with Debug Mode ON - running MantaRay from command line as root\n")
 	elif x == 'Super Timeline':
 		if(debug_mode == "ON"):
-			GUI_Timeline_mr(evidence_type, case_number, folder_path,  evidence_path.strip(), user_defined_timezone, super_timeline_options, plaso_output_options, plaso_processor)
+			GUI_Timeline_mr(evidence_type, case_number, folder_path,  evidence_path.strip(), user_defined_timezone, super_timeline_options, plaso_output_options)
 			gui_outfile.write("Super Timeline...".ljust(35) + "completed successfully".ljust(55) + "\n")
 		else:
 			try:
-				GUI_Timeline_mr(evidence_type, case_number, folder_path,  evidence_path.strip(), user_defined_timezone, super_timeline_options, plaso_output_options, plaso_processor)
+				GUI_Timeline_mr(evidence_type, case_number, folder_path,  evidence_path.strip(), user_defined_timezone, super_timeline_options, plaso_output_options)
 				gui_outfile.write("Super Timeline...".ljust(35) + "completed successfully".ljust(55) + "\n")
 			except:
 				print("Call to Super Timeline failed")
