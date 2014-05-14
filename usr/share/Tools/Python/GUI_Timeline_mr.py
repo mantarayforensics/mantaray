@@ -338,10 +338,10 @@ def plaso(key, folder_path, outfile, Image_Path, timezone, plaso_output_options,
 	#set plaso command
 	if(timezone == "NONE"):
 		timezone = "UTC"
-	plaso_command = "log2timeline.py -o " + key + " -z " + timezone + " -t '" + case_number + "_Partition_" + key + "_' --vss --workers " + cores_to_use + " --logfile '" + folder_path + "/Timeline_Logs/plaso_logfile" + key + ".txt' '" + folder_path +"/partition_" + key + ".dmp" + "'" +" " + Image_Path + "" 
-	#plaso_command = "log2timeline.py -o " + key + " -t '" + case_number + "_Partition_" + key + "_' --vss --workers " + cores_to_use + " --logfile '" + folder_path + "/Timeline_Logs/plaso_logfile" + key + ".txt' '" + folder_path +"/partition_" + key + ".dmp" + "'" +" " + Image_Path + "" 
+	plaso_command = "log2timeline.py -o " + key + " -z " + timezone + " -t '" + case_number + "_Partition_" + key + "_' --workers " + cores_to_use + " --logfile '" + folder_path + "/Timeline_Logs/plaso_logfile" + key + ".txt' '" + folder_path +"/partition_" + key + ".dmp" + "'" +" " + Image_Path + "" 
+	#plaso_command = "log2timeline.py -o " + key + " -t '" + case_number + "_Partition_" + key + "_' --workers " + cores_to_use + " --logfile '" + folder_path + "/Timeline_Logs/plaso_logfile" + key + ".txt' '" + folder_path +"/partition_" + key + ".dmp" + "'" +" " + Image_Path + "" 
 	#else:
-	#	plaso_command = "log2timeline.py -o " + key + " -z " + timezone_shift + " -t '" + case_number + "_Partition_" + key + "_' --vss --workers " + cores_to_use + " --logfile '" + folder_path + "/Timeline_Logs/plaso_logfile" + key + ".txt' '" + folder_path +"/partition_" + key + ".dmp" + "'" +" " + Image_Path + ""
+	#	plaso_command = "log2timeline.py -o " + key + " -z " + timezone_shift + " -t '" + case_number + "_Partition_" + key + "_' --workers " + cores_to_use + " --logfile '" + folder_path + "/Timeline_Logs/plaso_logfile" + key + ".txt' '" + folder_path +"/partition_" + key + ".dmp" + "'" +" " + Image_Path + ""
 	print ("The Plaso command is: " + plaso_command + "\n\n")
 	print ("Running Plaso against: " + Image_Path + "\n\n")
 	if(outfile != "NONE"):
