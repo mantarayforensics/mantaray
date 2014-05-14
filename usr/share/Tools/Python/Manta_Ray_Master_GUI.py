@@ -346,7 +346,7 @@ if evidence_type == "Memory Image":
 
 	try:
 	
-		evidence_path = subprocess.check_output(['zenity --file-selection --filename="/mnt/hgfs/" --file-filter=""*.DD" "*.dd" "*.IMG" "*.img" "*.001" "*.BIN" "*.bin" "*.MEM" "*.mem" " --title "Select Memory Image to Process"'], shell=True, universal_newlines=True)
+		evidence_path = subprocess.check_output(['zenity --file-selection --filename="/mnt/hgfs/" --file-filter=""*.DD" "*.dd" "*.IMG" "*.img" "*.001" "*.BIN" "*.bin" "*.MEM" "*.mem" "*.vmem"" --title "Select Memory Image to Process"'], shell=True, universal_newlines=True)
 
 	except:	
 		print ("Cancel/Exit chosen")
