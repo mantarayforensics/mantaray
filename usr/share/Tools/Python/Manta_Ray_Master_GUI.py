@@ -516,7 +516,7 @@ for x in processing_scripts_list:
 		#	plaso_processor = "NONE"
 		
 		## Disable Plaso until engine is proven stable
-		super_timeline_options == "Log2Timeline"
+		super_timeline_options = "Log2Timeline"
 		plaso_output_options = "NONE"
 		plaso_processor = "NONE"
 
