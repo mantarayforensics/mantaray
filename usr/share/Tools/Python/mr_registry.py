@@ -108,7 +108,7 @@ def process_usrclass(abs_file_path, usrclass_plugins, file_name, folder_path, ou
 
 ### PROCESS OTHER HIVES ######################################################################
 
-def process_other_hives(abs_file_path, plugins, file_name, hive_name_info, folder_path, outfile):
+def process_other_hives(abs_file_path, plugins, file_name, hive_name_info, folder_path, outfile, winver):
 
 	#get file metadata
 	human_atime, MD5 = get_metadata(abs_file_path, file_name)
@@ -125,25 +125,27 @@ def process_other_hives(abs_file_path, plugins, file_name, hive_name_info, folde
 			line = line.strip()
 
 			if not (re.search("#", line)):
-
-				#write out filename and atime to output file
-				outfile_rr = open(folder_path + "/" + hive_name_info + "/" + line + ".txt", 'a')
-				outfile_rr.write("Last Modified Time: " + human_atime + "\n")
-				outfile_rr.write("Filename: " + file_name + "\n")
-				outfile_rr.write("MD5 SUM: " + MD5 + "\n")
-			
-				outfile_rr.close()
-
-				#run regripperl plugin against file
-				rip_command = "perl /usr/share/regripper/rip.pl -r "+ "'" + abs_file_path + "'" + " -p " + line +" >> " + "'" + folder_path + "/" + hive_name_info + "/" + line + ".txt" + "'"
-				outfile.write("The rip command is: " + rip_command + "\n")
-			
-				#run regripper command
-				subprocess.call([rip_command], shell=True)
-
-				outfile_rr = open(folder_path + "/" + hive_name_info + "/" + line + ".txt", 'a')
-				outfile_rr.write("\n-------------------------------------------------------------------------------------------\n\n")
-				outfile_rr.close()
+				if line == "productpolicy" and winver != "ProductName = Windows Vista (TM) Ultimate":
+					pass
+				else:
+					#write out filename and atime to output file
+					outfile_rr = open(folder_path + "/" + hive_name_info + "/" + line + ".txt", 'a')
+					outfile_rr.write("Last Modified Time: " + human_atime + "\n")
+					outfile_rr.write("Filename: " + file_name + "\n")
+					outfile_rr.write("MD5 SUM: " + MD5 + "\n")
+				
+					outfile_rr.close()
+	
+					#run regripperl plugin against file
+					rip_command = "perl /usr/share/regripper/rip.pl -r "+ "'" + abs_file_path + "'" + " -p " + line +" >> " + "'" + folder_path + "/" + hive_name_info + "/" + line + ".txt" + "'"
+					outfile.write("The rip command is: " + rip_command + "\n")
+				
+					#run regripper command
+					subprocess.call([rip_command], shell=True)
+	
+					outfile_rr = open(folder_path + "/" + hive_name_info + "/" + line + ".txt", 'a')
+					outfile_rr.write("\n-------------------------------------------------------------------------------------------\n\n")
+					outfile_rr.close()
 
 #################################################################################################
 
@@ -235,7 +237,7 @@ def get_metadata(abs_file_path, file_name):
 	
 	return str(atime), md5
 #################################################################################################
-def mr_registry(case_number, folder_to_process, root_folder_path):
+def mr_registry(case_number, folder_to_process, root_folder_path, winver):
 	print("The case_name is: " + case_number)
 	print("The output folder is: " + root_folder_path)
 
@@ -247,6 +249,9 @@ def mr_registry(case_number, folder_to_process, root_folder_path):
 	folder_path = root_folder_path + "/" + "RegRipper"
 	check_for_folder(folder_path, "NONE")
 	
+	#Convert winver
+	winver = winver.decose('ascii')
+	winver = winver.strip()
 
 	#open a log file for output
 	log_file = folder_path + "/RegRipper_logfile.txt"
@@ -299,16 +304,16 @@ def mr_registry(case_number, folder_to_process, root_folder_path):
 			process_ntuser(abs_file_path, ntuser_plugins, file_name, folder_path, outfile)
 		elif(re.search("SAM", file_name)):
 			hive_name_info = "SAM_INFO"
-			process_other_hives(abs_file_path, sam_plugins, file_name, hive_name_info, folder_path, outfile)
+			process_other_hives(abs_file_path, sam_plugins, file_name, hive_name_info, folder_path, outfile, winver)
 		elif(re.search("SOFTWARE", file_name)):
 			hive_name_info = "SOFTWARE_INFO"
-			process_other_hives(abs_file_path, software_plugins, file_name, hive_name_info, folder_path, outfile)
+			process_other_hives(abs_file_path, software_plugins, file_name, hive_name_info, folder_path, outfile, winver)
 		elif(re.search("SYSTEM", file_name)):
 			hive_name_info = "SYSTEM_INFO"
-			process_other_hives(abs_file_path, system_plugins, file_name, hive_name_info, folder_path, outfile)
+			process_other_hives(abs_file_path, system_plugins, file_name, hive_name_info, folder_path, outfile, winver)
 		elif(re.search("SECURITY", file_name)):
 			hive_name_info = "SECURITY_INFO"
-			process_other_hives(abs_file_path, security_plugins, file_name, hive_name_info, folder_path, outfile)
+			process_other_hives(abs_file_path, security_plugins, file_name, hive_name_info, folder_path, outfile, winver)
 		
 		#Print Progress Percentage
 		o = o + 1
