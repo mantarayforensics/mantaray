@@ -665,7 +665,12 @@ for x in processing_scripts_list:
 		if(debug_mode == "ON"):
 			folder_to_process = extract_registry_hives_mr(evidence_type, case_number, folder_path, evidence_path.strip(),registry_extractor_options.strip())
 			gui_outfile.write("Registry Hive Extractor...".ljust(35) + "completed successfully".ljust(55) + "\n")
-			mr_registry(case_number, folder_to_process, folder_path) #process extracted reg hives w/ rr
+
+			#Check OS version for plugins
+			winver_cmd = 'perl /usr/share/regripper/rip.pl -r "' + evidence_path.strip() + '" -p winver'
+			winver = subprocess.check_output([winver_cmd], shell=True)
+
+			mr_registry(case_number, folder_to_process, folder_path, winver) #process extracted reg hives w/ rr
 			gui_outfile.write("Regripper...".ljust(35) + "completed successfully".ljust(55) + "\n")
 		else:
 			try:
@@ -675,7 +680,11 @@ for x in processing_scripts_list:
 				print("Call to Extract Registry hives failed")
 				gui_outfile.write("Registry Hive Extractor failed...Please reprocess with Debug Mode ON - running MantaRay from command line as root\n")
 			try:
-				mr_registry(case_number, folder_to_process, folder_path)
+				#Check OS version for plugins
+				winver_cmd = 'perl /usr/share/regripper/rip.pl -r "' + evidence_path.strip() + '" -p winver'
+				winver = subprocess.check_output([winver_cmd], shell=True)
+
+				mr_registry(case_number, folder_to_process, folder_path, winver)
 				gui_outfile.write("Regripper...".ljust(35) + "completed successfully".ljust(55) + "\n")
 			except:
 				print("Call to RegRipper failed")
