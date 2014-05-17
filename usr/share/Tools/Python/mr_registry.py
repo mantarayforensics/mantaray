@@ -250,7 +250,7 @@ def mr_registry(case_number, folder_to_process, root_folder_path, winver):
 	check_for_folder(folder_path, "NONE")
 	
 	#Convert winver
-	winver = winver.decose('ascii')
+	winver = winver.decode('ascii')
 	winver = winver.strip()
 
 	#open a log file for output
