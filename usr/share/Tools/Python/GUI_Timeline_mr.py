@@ -936,7 +936,7 @@ def GUI_Timeline_mr(item_to_process, case_number, root_folder_path, evidence, us
 		file_to_process = evidence
 		mount_point = mount_encase_v6_l01(case_number, file_to_process, outfile)
 		if run_l2t == "True":
-			file_to_split = process_folder(file_to_process, folder_path, outfile, case_number, user_defined_timezone)
+			file_to_split = process_folder(mount_point, folder_path, outfile, case_number, user_defined_timezone)
 			tool = "l2t"
 			split_csv(case_number, temp_time_wc, folder_path, outfile, tool, file_to_split)
 		if run_plaso == "True":
