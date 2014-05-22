@@ -162,7 +162,7 @@ install_ubuntu_deps() {
 }
 
 install_ubuntu() {
-    packages="mantaray binplist bulk-extractor dos2unix libevt libevt-dev libevt-tools libevt-python libevt libevtx-dev libevtx-tools libevtx-python libewf libewf-dev libewf-tools libewf-python libfvde libfvde-dev libfvde-tools liblightgrep libolecf libolecf-dev libolecf-tools libolecf-python libolecf-tools libplist++1 libplist-dev libplist1 libregf libregf-python libregf-tools libregf-dev libvshadow libvshadow-tools libvshadow-dev libvshadow-python log2timeline-perl mantaray python-plaso pytsk3 regripper sift libtsk libtsk-dev sleuthkit windows-perl python-pip python3 git"
+    packages="mantaray binplist bulk-extractor dos2unix libevt libevt-dev libevt-tools libevt-python libevt libevtx-dev libevtx-tools libevtx-python libewf libewf-dev libewf-tools libewf-python libfvde libfvde-dev libfvde-tools liblightgrep libolecf libolecf-dev libolecf-tools libolecf-python libolecf-tools libplist++1 libplist-dev libplist1 libregf libregf-python libregf-tools libregf-dev libvshadow libvshadow-tools libvshadow-dev libvshadow-python log2timeline-perl python-plaso pytsk3 regripper sift sift-scripts g++ gcc libtsk libtsk-dev sleuthkit windows-perl python-pip python3 git"
 
     if [ "$@" = "dev" ]; then
         packages="$packages"
@@ -249,7 +249,7 @@ configure_ubuntu_skin() {
 	fi
 
 	sudo -u $SUDO_USER gsettings set org.gnome.desktop.background picture-uri file:///usr/share/mantaray/images/Mantaray_Logo_Template_Full_Screen.gif
-	sudo -u $SUDO_USER dconf write /desktop/unity/launcher/favorites "['nautilus.desktop', 'gnome-terminal.desktop', 'firefox.desktop', 'gnome-screenshot.desktop', 'gcalctool.desktop', 'bless.desktop', 'dff.desktop', 'autopsy.desktop', 'wireshark.desktop', 'MantaRay.desktop']"
+	sudo -u $SUDO_USER dconf write /desktop/unity/launcher/favorites "['nautilus.desktop', 'gnome-terminal.desktop', 'firefox.desktop', 'MantaRay.desktop', 'gnome-screenshot.desktop', 'gcalctool.desktop', 'bless.desktop', 'dff.desktop', 'autopsy.desktop', 'wireshark.desktop']"
 
 	if [ ! -L /home/$SUDO_USER/Desktop/cases ]; then
 		sudo -u $SUDO_USER ln -s /cases /home/$SUDO_USER/Desktop/cases
@@ -272,11 +272,6 @@ configure_ubuntu_skin() {
 	
 	if [ ! -L /home/$SUDO_USER/.config/autostart ]; then
 		sudo -u $SUDO_USER cp /usr/share/sift/other/gnome-terminal.desktop /home/$SUDO_USER/.config/autostart
-	fi
-    
-	if [ ! -e /usr/share/unity-greeter/logo.png.ubuntu ]; then
-		sudo cp /usr/share/unity-greeter/logo.png /usr/share/unity-greeter/logo.png.ubuntu
-		sudo cp /usr/share/sift/images/login_logo.png /usr/share/unity-greeter/logo.png
 	fi
 
 	gsettings set com.canonical.unity-greeter background file:///usr/share/mantaray/images/Mantaray_Logo_Template_Full_Screen.gif
