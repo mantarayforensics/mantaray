@@ -162,7 +162,7 @@ install_ubuntu_deps() {
 }
 
 install_ubuntu() {
-    packages="mantaray binplist bulk-extractor dos2unix libevt libevt-dev libevt-tools libevt-python libevt libevtx-dev libevtx-tools libevtx-python libewf libewf-dev libewf-tools libewf-python libfvde libfvde-dev libfvde-tools liblightgrep libolecf libolecf-dev libolecf-tools libolecf-python libolecf-tools libplist++1 libplist-dev libplist1 libregf libregf-python libregf-tools libregf-dev libvshadow libvshadow-tools libvshadow-dev libvshadow-python log2timeline-perl python-plaso pytsk3 regripper sift sift-scripts g++ gcc libtsk libtsk-dev sleuthkit windows-perl python-pip python3 git"
+    packages="mantaray binplist bulk-extractor dconf-tools dos2unix libevt libevt-dev libevt-tools libevt-python libevt libevtx-dev libevtx-tools libevtx-python libewf libewf-dev libewf-tools libewf-python libfvde libfvde-dev libfvde-tools liblightgrep libolecf libolecf-dev libolecf-tools libolecf-python libolecf-tools libplist++1 libplist-dev libplist1 libregf libregf-python libregf-tools libregf-dev libvshadow libvshadow-tools libvshadow-dev libvshadow-python log2timeline-perl python-plaso pytsk3 regripper sift sift-scripts g++ gcc libtsk libtsk-dev sleuthkit windows-perl python-setuptools python-pip python3 git"
 
     if [ "$@" = "dev" ]; then
         packages="$packages"
@@ -177,6 +177,9 @@ install_ubuntu() {
 
 install_pip_packages() {
     pip_packages="rekall docopt python-evtx python-registry"
+
+    sudo easy_install pip
+    sudo pip install --upgrade pip virtualenv virtualenvwrapper
 
     if [ "$@" = "dev" ]; then
         pip_packages="$pip_packages"
@@ -253,6 +256,7 @@ configure_ubuntu_skin() {
 
 	if [ ! -L /home/$SUDO_USER/Desktop/cases ]; then
 		sudo -u $SUDO_USER ln -s /cases /home/$SUDO_USER/Desktop/cases
+		cp /usr/share/mantaray/MantaRay.Desktop /home/$SUDO_USER/Desktop
 	fi
   
 	if [ ! -L /home/$SUDO_USER/Desktop/mount_points ]; then
