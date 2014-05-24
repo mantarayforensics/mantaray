@@ -4,6 +4,6 @@ Name=MantaRay
 Comment=Forensic Workflow Automation
 Exec=/usr/bin/mantaray
 Icon=/usr/share/mantaray/images/Mantaray_Artwork_Small.png
-Terminal=false
+Terminal=true
 Type=Application
 Categories=Utility;Application;
