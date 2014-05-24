@@ -36,16 +36,11 @@ Installation of MantaRay
 
 Using bootstrap to install SIFT and Mantaray:
 
-    sudo wget https://github.com/mantarayforensics/mantaray/raw/kibana/bootstrap.sh && sudo sh bootstrap.sh -i
+    sudo wget https://github.com/mantarayforensics/mantaray/raw/v1.3.9/mrbootstrap.sh && sudo sh bootstrap.sh -i
 
 Using bootstrap to install SIFT and Mantaray, and the MantaRay Skin:
 
-    sudo wget https://github.com/mantarayforensics/mantaray/raw/kibana/bootstrap.sh && sudo sh bootstrap.sh -s -i -y
-
-Using bootstrap to configure SIFT and Mantaray:
-
-    sudo wget https://github.com/mantarayforensics/mantaray/raw/kibana/bootstrap.sh && sudo sh bootstrap.sh -c
-
+    sudo wget https://github.com/mantarayforensics/mantaray/raw/v1.3.9/mrbootstrap.sh && sudo sh bootstrap.sh -s -i
 
 
 ####PPA:
