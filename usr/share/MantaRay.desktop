@@ -1,5 +1,5 @@
 [Desktop Entry]
-Version=1.0
+Version=1.3.9
 Name=MantaRay
 Comment=Forensic Workflow Automation
 Exec=/usr/bin/mantaray
