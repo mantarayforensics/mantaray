@@ -34,11 +34,11 @@ See https://launchpad.net/~mantaray/+archive/stable for a full list
 Installation of MantaRay
 ==================================
 
-Using bootstrap to install SIFT and Mantaray:
+Using bootstrap to install Mantaray:
 
     wget -q https://raw.githubusercontent.com/mantarayforensics/mantaray/master/mrbootstrap.sh && sh mrbootstrap.sh -i
 
-Using bootstrap to install SIFT and Mantaray, and the MantaRay Skin:
+Using bootstrap to install Mantaray, and the MantaRay Skin:
 
     wget -q https://raw.githubusercontent.com/mantarayforensics/mantaray/master/mrbootstrap.sh && sh mrbootstrap.sh -s -i
 
