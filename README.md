@@ -33,24 +33,32 @@ See https://launchpad.net/~mantaray/+archive/stable for a full list
 
 Installation of MantaRay
 ==================================
+
+Using bootstrap to install SIFT and Mantaray:
+
+    wget -q https://github.com/mantarayforensics/mantaray/raw/v1.3.9/mrbootstrap.sh && sh mrbootstrap.sh -i
+
+Using bootstrap to install SIFT and Mantaray, and the MantaRay Skin:
+
+    wget -q https://github.com/mantarayforensics/mantaray/raw/v1.3.9/mrbootstrap.sh && sh mrbootstrap.sh -s -i
+
+
 ####PPA:
 
-
-
-    $ sudo apt-add-repository ppa:mantaray/stable
-    $ sudo apt-add-repository ppa:sift/stable
-    $ sudo apt-get update && sudo apt-get upgrade -y
-    $ sudo apt-get install mantaray
+    sudo apt-add-repository ppa:mantaray/stable
+    sudo apt-add-repository ppa:sift/stable
+    sudo apt-get update && sudo apt-get upgrade -y
+    sudo apt-get install mantaray
         
 ####Source from PPA:
 
-    $ sudo apt-add-repository ppa:mantaray/stable
-    $ apt-get source mantaray
+    sudo apt-add-repository ppa:mantaray/stable
+    apt-get source mantaray
     
 ####GitHub:
 
-    $ git clone https://github.com/mantarayforensics/mantaray.git
-    $ cd mantaray
+    git clone https://github.com/mantarayforensics/mantaray.git
+    cd mantaray
     
 Follow PPA directions to install dependencies
 
@@ -58,7 +66,7 @@ How To Run MantaRay
 ==================================
 From command line (as user with sudo privileges) in PPA:
 
-    $ sudo mantaray
+    sudo mantaray
 
 
 A popup window should appear. Pressing continue will begin running the script.
@@ -67,15 +75,15 @@ Check For Updates
 ==================================
 Using apt-get:
 
-    $ sudo apt-get update && sudo apt-get upgrade
+    sudo apt-get update && sudo apt-get upgrade
 
 Using mantaray-updater:
 
-    $ sudo mantaray-updater
+    sudo mantaray-updater
     
 GitHub:
 
-    $ git pull origin master
+    git pull origin master
 
 Errors and Bugs
 ==================================

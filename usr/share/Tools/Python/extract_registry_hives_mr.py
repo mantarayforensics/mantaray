@@ -386,7 +386,7 @@ def process_unallocated_clusters(value, key, Image_Path, outfile, case_number, f
 	#print("\nThe blkls command is: " + blkls_command + "\n")
 	outfile.write("\nThe blkls command is: " + blkls_command + "\n")
 	
-	foremost_command = "foremost -q -d -o " + "'" + folder_path  + "/Partition_" + str(key) + "/unallocated_files" + "'" +" -c /usr/local/src/Manta_Ray/Tools/conf_files/foremost.conf"
+	foremost_command = "foremost -q -d -o " + "'" + folder_path  + "/Partition_" + str(key) + "/unallocated_files" + "'" +" -c /usr/share/Manta_Ray/Tools/conf_files/foremost.conf"
 	#print("The foremost_command is: " + foremost_command + "\n")
 	outfile.write("\nThe foremost_command is: " + foremost_command + "\n")
 

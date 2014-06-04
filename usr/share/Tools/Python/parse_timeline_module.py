@@ -47,20 +47,17 @@ def parse_timeline_module(folder_path, case_number, outfile):
 	out_file = folder_path + "/"+ case_number + "_timeline_modules.csv"
 	csv_file_modules = open(out_file, 'wt+')
 
-	print("Processing Timelines...")
-
 	#skip header row
 	next(infile)
 	#loop through input file
 	for line in infile:
 		#split line on space
 		line1 = line.replace('\n', ' ')
-		#print(line1)
+		print(line1)
 		line_split = line1.split(',',7)
 		date_time = line_split[0]
 
-		#added code from doug.koster to parse the date format
-		#allows date and time to be sortable in excel
+		#clean up date/time so it is sortable in excel
 		if (re.search("Mon ", date_time)):
 			date_time_dave = date_time.replace("Mon ","")
 		elif (re.search("Tue ", date_time)):
@@ -76,36 +73,38 @@ def parse_timeline_module(folder_path, case_number, outfile):
 		elif (re.search("Sun ", date_time)):
 			date_time_dave = date_time.replace("Sun ","")
 
-
 		if not (re.search("Xxx", date_time)):
-			#convert date format
-			date_time_dave_1 = date_time_dave.replace(" ","/",2)
-			date_time = date_time_dave_1
+			#convert date/time format
+			date_time_dave1 = date_time_dave.replace(" ", "/",2)
+			date_time = date_time_dave1
+
 			if (re.search("Jan", date_time)):
-				date_time_dave = date_time.replace("Jan","01")
+				date_time_dave = date_time.replace("Jan", "01")
 			elif (re.search("Feb", date_time)):
-				date_time_dave = date_time.replace("Feb","02")
+				date_time_dave = date_time.replace("Feb", "02")
 			elif (re.search("Mar", date_time)):
-				date_time_dave = date_time.replace("Mar","03")
+				date_time_dave = date_time.replace("Mar", "03")
 			elif (re.search("Apr", date_time)):
-				date_time_dave = date_time.replace("Apr","04")
+				date_time_dave = date_time.replace("Apr", "04")
 			elif (re.search("May", date_time)):
-				date_time_dave = date_time.replace("May","05")
+				date_time_dave = date_time.replace("May", "05")
 			elif (re.search("Jun", date_time)):
-				date_time_dave = date_time.replace("Jun","06")
+				date_time_dave = date_time.replace("Jun", "06")
 			elif (re.search("Jul", date_time)):
-				date_time_dave = date_time.replace("Jul","07")
+				date_time_dave = date_time.replace("Jul", "07")
 			elif (re.search("Aug", date_time)):
-				date_time_dave = date_time.replace("Aug","08")
+				date_time_dave = date_time.replace("Aug", "08")
 			elif (re.search("Sep", date_time)):
-				date_time_dave = date_time.replace("Sep","09")
+				date_time_dave = date_time.replace("Sep", "09")
 			elif (re.search("Oct", date_time)):
-				date_time_dave = date_time.replace("Oct","10")
+				date_time_dave = date_time.replace("Oct", "10")
 			elif (re.search("Nov", date_time)):
-				date_time_dave = date_time.replace("Nov","11")
+				date_time_dave = date_time.replace("Nov", "11")
 			elif (re.search("Dec", date_time)):
-				date_time_dave = date_time.replace("Dec","12")
+				date_time_dave = date_time.replace("Dec", "12")
+
 			date_time = date_time_dave
+
 
 		size = line_split[1]
 		type1 = line_split[2]
@@ -124,7 +123,7 @@ def parse_timeline_module(folder_path, case_number, outfile):
 			module_name = file_name.split(']')
 			module_name1 = module_name[0].replace('[','')
 			module_name1 = module_name[0].replace('"','')
-			#print("The module is: " + module_name1 + "]")
+			print("The module is: " + module_name1 + "]")
 
 			#create new line for output file
 			newline = date_time + ',' + size + "," + type1 + ',' + mode + ',' + uid + ',' + gid + ',' + meta + ',' + module_name1 + '],' + file_name
@@ -132,7 +131,7 @@ def parse_timeline_module(folder_path, case_number, outfile):
 		
 		else:
 			newline = date_time + ',' + size + "," + type1 + ',' + mode + ',' + uid + ',' + gid + ',' + meta + ',' +'' + ',' + file_name
-			#print("The module is: N/A")		
+			print("The module is: N/A")		
 			csv_file_modules.write(newline + '\n')
 
 	csv_file_modules.close()
@@ -143,8 +142,8 @@ def parse_timeline_module(folder_path, case_number, outfile):
 	subprocess.call([sed_command], shell=True)
 	csv_file_modules.close()
 	
-	print("Timeline Processing Completed")
-
 	#close file
 	infile.close()
+
+	return "'"+ folder_path + "/" + case_number + "_timeline_modules.csv" + "'"
 	

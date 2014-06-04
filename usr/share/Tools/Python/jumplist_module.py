@@ -79,14 +79,14 @@ def jumplist_module(full_path, outfile, folder_path, offset):
 	
 	#process Jumplist files with jl.pl
 	if(offset != "FOLDER"):
-		jl_command = "perl /usr/local/src/windows-perl/jl.pl -u " + "'" + profile + "'" + " -f " + "'" + full_path + "'" + " >> " + "'" + folder_path + "/Processed_Files_" + str(offset) + "/JUMPLIST_DATA/jumplist_metadata.txt" + "'"
-		jl_command_tln = "perl /usr/local/src/windows-perl/jl.pl -u " + "'" + profile + "'" + " -t -f " + "'" + full_path + "'" + " >> " + "'" + folder_path +  "/Processed_Files_" + str(offset) + "/JUMPLIST_DATA/jumplist_metadata_tln.txt" + "'"
-		parse_command = "perl /usr/local/src/windows-perl/parse.pl -f " + "'" + folder_path + "/Processed_Files_" + str(offset) + "/JUMPLIST_DATA/jumplist_metadata_tln.txt" + "'" + "> " + "'" + folder_path + "/Processed_Files_" + str(offset) + "/JUMPLIST_DATA/jumplist_timeline.txt" + "'"
+		jl_command = "perl /usr/share/windows-perl/jl.pl -u " + "'" + profile + "'" + " -f " + "'" + full_path + "'" + " >> " + "'" + folder_path + "/Processed_Files_" + str(offset) + "/JUMPLIST_DATA/jumplist_metadata.txt" + "'"
+		jl_command_tln = "perl /usr/share/windows-perl/jl.pl -u " + "'" + profile + "'" + " -t -f " + "'" + full_path + "'" + " >> " + "'" + folder_path +  "/Processed_Files_" + str(offset) + "/JUMPLIST_DATA/jumplist_metadata_tln.txt" + "'"
+		parse_command = "perl /usr/share/windows-perl/parse.pl -f " + "'" + folder_path + "/Processed_Files_" + str(offset) + "/JUMPLIST_DATA/jumplist_metadata_tln.txt" + "'" + "> " + "'" + folder_path + "/Processed_Files_" + str(offset) + "/JUMPLIST_DATA/jumplist_timeline.txt" + "'"
 		outfile.write("The jl_command_tln is: " + jl_command_tln)
 	else:
-		jl_command = "perl /usr/local/src/windows-perl/jl.pl -u " + "'" + profile + "'" + " -f " + "'" + full_path + "'" + " >> " + "'" + folder_path + "/Processed_Files_FOLDER/JUMPLIST_DATA/jumplist_metadata.txt" + "'"
-		jl_command_tln = "perl /usr/local/src/windows-perl/jl.pl -u " + "'" + profile + "'" + " -t -f " + "'" + full_path + "'" + " >> " + "'" + folder_path +  "/Processed_Files_FOLDER/JUMPLIST_DATA/jumplist_metadata_tln.txt" + "'"
-		parse_command = "perl /usr/local/src/windows-perl/parse.pl -f " + "'" + folder_path + "/Processed_Files_FOLDER/JUMPLIST_DATA/jumplist_metadata_tln.txt" + "'" + "> " + "'" + folder_path + "/Processed_Files_FOLDER/JUMPLIST_DATA/jumplist_timeline.txt" + "'"
+		jl_command = "perl /usr/share/windows-perl/jl.pl -u " + "'" + profile + "'" + " -f " + "'" + full_path + "'" + " >> " + "'" + folder_path + "/Processed_Files_FOLDER/JUMPLIST_DATA/jumplist_metadata.txt" + "'"
+		jl_command_tln = "perl /usr/share/windows-perl/jl.pl -u " + "'" + profile + "'" + " -t -f " + "'" + full_path + "'" + " >> " + "'" + folder_path +  "/Processed_Files_FOLDER/JUMPLIST_DATA/jumplist_metadata_tln.txt" + "'"
+		parse_command = "perl /usr/share/windows-perl/parse.pl -f " + "'" + folder_path + "/Processed_Files_FOLDER/JUMPLIST_DATA/jumplist_metadata_tln.txt" + "'" + "> " + "'" + folder_path + "/Processed_Files_FOLDER/JUMPLIST_DATA/jumplist_timeline.txt" + "'"
 		outfile.write("The jl_command_tln is: " + jl_command_tln)
 		
 	subprocess.call([jl_command_tln], shell=True)
