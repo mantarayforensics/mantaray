@@ -16,7 +16,7 @@ update_and_install(){
 	sudo apt-get update && sudo apt-get upgrade -y  || { echo "Upgrade command failed - Is dpkg locked? Please re-run the bootsrap script"; exit 1; }
 
 	## Add Repositories
-	sudo apt-add-repository -y ppa:mantaray/dev
+	sudo apt-add-repository -y ppa:mantaray/stable
 	sudo apt-add-repository -y ppa:sift/stable
 
 	## Stop popup windows
