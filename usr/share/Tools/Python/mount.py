@@ -85,7 +85,7 @@ def mount(value,key,Image, outfile, mount_point):
 		#under 3.x kernel we need to use losetup when attempting to mount hfs+ partitions within disk images
 
 		#use parted to get size of partition
-		parted_command = "echo unit B print q | parted " + Image + " | grep " + key + " | grep hfs+ | awk '{print $4'} | sed s/B//"
+		parted_command = "echo unit B print q | parted " + Image + " | grep " + key + " | grep hfs+ | awk '{print $4}' | sed s/B//"
 		partition_size = subprocess.check_output([parted_command], shell=True)
 
 		#decode partition size

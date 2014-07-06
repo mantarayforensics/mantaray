@@ -141,7 +141,7 @@ def process_overt_deleted_files(value, key, Image_Path, outfile, folder_path, lo
 
 	
 	#run fls to get information for files
-	fls_command = "fls -Fpr -f ntfs -i raw -o " + str(key_bytes) + " " + Image_Path + " | grep -i -r '" + searchfile + "' | sed s/:// | sed s/*// > "+ log_folder_path + "/"+ temp_file + ".txt"
+	fls_command = "fls -Fpr -f ntfs -i raw -o " + str(key_bytes) + " " + Image_Path + " | grep -i '" + searchfile + "' | sed s/:// | sed s/*// > "+ log_folder_path + "/"+ temp_file + ".txt"
 	#print ("\nThe fls command is: " + fls_command + "\n")
 	print("\nSearching...")
 	outfile.write("The fls command is: " + fls_command + "\n")

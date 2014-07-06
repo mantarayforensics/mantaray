@@ -131,7 +131,7 @@ def process_overt_deleted_files(value, key, Image_Path, outfile, folder_path, bl
 
 
 	#run fls to get information for MFT files
-	fls_command = "fls -Fpr -f ntfs -i raw -o " + str(key_bytes) + " " + Image_Path + " | grep -i -r '\$MFT$' | sed s/:// | sed s/*// > /tmp/fls_output_ntfs_" + temp_time + ".txt"
+	fls_command = "fls -Fpr -f ntfs -i raw -o " + str(key_bytes) + " " + Image_Path + " | grep -i '\$MFT$' | sed s/:// | sed s/*// > /tmp/fls_output_ntfs_" + temp_time + ".txt"
 	#print ("\nThe fls command is: " + fls_command + "\n")
 	print("\nSearching for $MFT files")
 	outfile.write("The fls command is: " + fls_command + "\n")
@@ -143,7 +143,7 @@ def process_overt_deleted_files(value, key, Image_Path, outfile, folder_path, bl
 	process_fls_output(value, key, Image_Path, block_size, folder_path, item, "MFT", outfile, temp_time)
 
 	#run fls to get information for Logfiles files
-	fls_command = "fls -Fpr -f ntfs -i raw -o " + str(key_bytes) + " " + Image_Path + " | grep -i -r '\$LogFile$' | sed s/:// | sed s/*// > /tmp/fls_output_ntfs_" + temp_time +".txt"
+	fls_command = "fls -Fpr -f ntfs -i raw -o " + str(key_bytes) + " " + Image_Path + " | grep -i '\$LogFile$' | sed s/:// | sed s/*// > /tmp/fls_output_ntfs_" + temp_time +".txt"
 	#print ("\nThe fls command is: " + fls_command + "\n")
 	print("\nSearching for $LogFiles files")
 	outfile.write("The fls command is: " + fls_command + "\n")
@@ -155,7 +155,7 @@ def process_overt_deleted_files(value, key, Image_Path, outfile, folder_path, bl
 	process_fls_output(value, key, Image_Path, block_size, folder_path, item, "LogFile", outfile, temp_time)
 
 	#run fls to get information for $UsrJrnl files
-	fls_command = "fls -Fpr -f ntfs -i raw -o " + str(key_bytes) + " " + Image_Path + " | grep -i -r '\$UsnJrnl.\$J$' | sed s/:// | sed s/*// > /tmp/fls_output_ntfs_" + temp_time + ".txt"
+	fls_command = "fls -Fpr -f ntfs -i raw -o " + str(key_bytes) + " " + Image_Path + " | grep -i '\$UsnJrnl.\$J$' | sed s/:// | sed s/*// > /tmp/fls_output_ntfs_" + temp_time + ".txt"
 	#print ("\nThe fls command is: " + fls_command + "\n")
 	print("\nSearching for $UsrJrnl files")
 	outfile.write("The fls command is: " + fls_command + "\n")

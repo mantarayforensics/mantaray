@@ -310,17 +310,10 @@ def mr_registry(case_number, folder_to_process, root_folder_path, winver):
 			process_other_hives(abs_file_path, software_plugins, file_name, hive_name_info, folder_path, outfile, winver)
 		elif(re.search("SYSTEM", file_name)):
 			hive_name_info = "SYSTEM_INFO"
-<<<<<<< HEAD
-			process_other_hives(abs_file_path, system_plugins, file_name, hive_name_info, folder_path, outfile)
-		elif(re.search("SECURITY", file_name)):
-			hive_name_info = "SECURITY_INFO"
-			process_other_hives(abs_file_path, security_plugins, file_name, hive_name_info, folder_path, outfile)
-=======
 			process_other_hives(abs_file_path, system_plugins, file_name, hive_name_info, folder_path, outfile, winver)
 		elif(re.search("SECURITY", file_name)):
 			hive_name_info = "SECURITY_INFO"
 			process_other_hives(abs_file_path, security_plugins, file_name, hive_name_info, folder_path, outfile, winver)
->>>>>>> v1.3.9
 		
 		#Print Progress Percentage
 		o = o + 1

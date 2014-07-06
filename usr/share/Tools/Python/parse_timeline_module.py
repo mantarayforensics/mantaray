@@ -53,7 +53,7 @@ def parse_timeline_module(folder_path, case_number, outfile):
 	for line in infile:
 		#split line on space
 		line1 = line.replace('\n', ' ')
-		print(line1)
+		#print(line1)
 		line_split = line1.split(',',7)
 		date_time = line_split[0]
 
@@ -123,7 +123,7 @@ def parse_timeline_module(folder_path, case_number, outfile):
 			module_name = file_name.split(']')
 			module_name1 = module_name[0].replace('[','')
 			module_name1 = module_name[0].replace('"','')
-			print("The module is: " + module_name1 + "]")
+			#print("The module is: " + module_name1 + "]")
 
 			#create new line for output file
 			newline = date_time + ',' + size + "," + type1 + ',' + mode + ',' + uid + ',' + gid + ',' + meta + ',' + module_name1 + '],' + file_name
@@ -131,7 +131,7 @@ def parse_timeline_module(folder_path, case_number, outfile):
 		
 		else:
 			newline = date_time + ',' + size + "," + type1 + ',' + mode + ',' + uid + ',' + gid + ',' + meta + ',' +'' + ',' + file_name
-			print("The module is: N/A")		
+			#print("The module is: N/A")		
 			csv_file_modules.write(newline + '\n')
 
 	csv_file_modules.close()

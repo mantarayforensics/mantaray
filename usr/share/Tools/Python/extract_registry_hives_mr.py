@@ -294,7 +294,7 @@ def process_overt_deleted_files(value, key, Image_Path, outfile, folder_path, bl
 
 
 	#run fls to get information for OVERT NTUSER hives
-	fls_command = "fls -Fpr -f ntfs -i raw -o " + str(key_bytes) + " " + Image_Path + " | grep -i -r 'ntuser.dat$\|_Registry_USER_NTUSER\|ntuser.bak$\|ntuser.sav$\|ntuser.old$' | grep -v -i log | sed s/:// > /tmp/fls_output_" + temp_time + ".txt"
+	fls_command = "fls -Fpr -f ntfs -i raw -o " + str(key_bytes) + " " + Image_Path + " | grep -i 'ntuser.dat$\|_Registry_USER_NTUSER\|ntuser.bak$\|ntuser.sav$\|ntuser.old$' | grep -v -i log | sed s/:// > /tmp/fls_output_" + temp_time + ".txt"
 	#print ("\nThe fls command is: " + fls_command + "\n")
 	print("\nSearching for " + file_loc + " NTUSER hives")
 	outfile.write("The fls command is: " + fls_command + "\n")
@@ -306,7 +306,7 @@ def process_overt_deleted_files(value, key, Image_Path, outfile, folder_path, bl
 	process_fls_output_ntuser(value, key, Image_Path, block_size, folder_path, item, outfile, temp_time)
 
 	#run fls to get information for SYSTEM hives
-	fls_command = "fls -Fpr -f ntfs -i raw -o " + str(key_bytes) + " " + Image_Path + " | grep -i -r 'system$\|system.sav$\|system.dat$\|system.old$\|system.bak$\|_Registry_Machine_SYSTEM$' | grep -v -i 'log\|FontCache-System.dat\|AnalyzeSystem' | sed s/:// > /tmp/fls_output_" + temp_time + ".txt"
+	fls_command = "fls -Fpr -f ntfs -i raw -o " + str(key_bytes) + " " + Image_Path + " | grep -i 'system$\|system.sav$\|system.dat$\|system.old$\|system.bak$\|_Registry_Machine_SYSTEM$' | grep -v -i 'log\|FontCache-System.dat\|AnalyzeSystem' | sed s/:// > /tmp/fls_output_" + temp_time + ".txt"
 	#print ("\nThe fls command is: " + fls_command + "\n")
 	print("\nSearching for " + file_loc + " SYSTEM hives")
 	outfile.write("The fls command is: " + fls_command + "\n")
@@ -318,7 +318,7 @@ def process_overt_deleted_files(value, key, Image_Path, outfile, folder_path, bl
 	process_fls_output(value, key, Image_Path, block_size, folder_path, item, outfile, temp_time)
 
 	#run fls to get information for SOFTWARE hives
-	fls_command = "fls -Fpr -f ntfs -i raw -o " + str(key_bytes) + " " + Image_Path + " | grep -i -r 'software$\|software.sav$\|software.dat$\|software.old$\|software.bak$\|_Registry_Machine_SOFTWARE$' | grep -v -i log | sed s/:// > /tmp/fls_output_" + temp_time + ".txt"
+	fls_command = "fls -Fpr -f ntfs -i raw -o " + str(key_bytes) + " " + Image_Path + " | grep -i 'software$\|software.sav$\|software.dat$\|software.old$\|software.bak$\|_Registry_Machine_SOFTWARE$' | grep -v -i log | sed s/:// > /tmp/fls_output_" + temp_time + ".txt"
 	#print ("\nThe fls command is: " + fls_command + "\n")
 	print("\nSearching for " + file_loc + " SOFTWARE hives")
 	outfile.write("The fls command is: " + fls_command + "\n")
@@ -330,7 +330,7 @@ def process_overt_deleted_files(value, key, Image_Path, outfile, folder_path, bl
 	process_fls_output(value, key, Image_Path, block_size, folder_path, item, outfile, temp_time)
 
 	#run fls to get information for SECURITY hives
-	fls_command = "fls -Fpr -f ntfs -i raw -o " + str(key_bytes) + " " + Image_Path + " | grep -i -r 'security$\|security.sav$\|security.dat$\|security.old$\|security.bak$\|_Registry_Machine_SECURITY$' | grep -v -i log | sed s/:// > /tmp/fls_output_" + temp_time + ".txt"
+	fls_command = "fls -Fpr -f ntfs -i raw -o " + str(key_bytes) + " " + Image_Path + " | grep -i 'security$\|security.sav$\|security.dat$\|security.old$\|security.bak$\|_Registry_Machine_SECURITY$' | grep -v -i log | sed s/:// > /tmp/fls_output_" + temp_time + ".txt"
 	#print ("\nThe fls command is: " + fls_command + "\n")
 	print("\nSearching for " + file_loc + " SECURITY hives")
 	outfile.write("The fls command is: " + fls_command + "\n")
@@ -342,7 +342,7 @@ def process_overt_deleted_files(value, key, Image_Path, outfile, folder_path, bl
 	process_fls_output(value, key, Image_Path, block_size, folder_path, item, outfile, temp_time)
 
 	#run fls to get information for SAM hives (don't include files that end in .sam)
-	fls_command = "fls -Fpr -f ntfs -i raw -o " + str(key_bytes) + " " + Image_Path + " | grep -i -r 'sam$\|sam.sav$\|sam.dat$\|sam.old$\|sam.bak$\|_Registry_Machine_SAM$' | grep -v -i 'log\|\.sam' | sed s/:// > /tmp/fls_output_" + temp_time + ".txt"
+	fls_command = "fls -Fpr -f ntfs -i raw -o " + str(key_bytes) + " " + Image_Path + " | grep -i 'sam$\|sam.sav$\|sam.dat$\|sam.old$\|sam.bak$\|_Registry_Machine_SAM$' | grep -v -i 'log\|\.sam' | sed s/:// > /tmp/fls_output_" + temp_time + ".txt"
 	#print ("\nThe fls command is: " + fls_command + "\n")
 	print("\nSearching for " + file_loc + " SAM hives")
 	outfile.write("The fls command is: " + fls_command + "\n")
@@ -354,7 +354,7 @@ def process_overt_deleted_files(value, key, Image_Path, outfile, folder_path, bl
 	process_fls_output(value, key, Image_Path, block_size, folder_path, item, outfile, temp_time)
 
 	#run fls to get information for USRCLASS hives
-	fls_command = "fls -Fpr -f ntfs -i raw -o " + str(key_bytes) + " " + Image_Path + " | grep -i -r 'usrclass.dat$\|_Registry_USER_USRCLASS\|usrclass.bak\|usrclass.sav\|usrclass.old' | grep -v -i log | sed s/:// > /tmp/fls_output_" + temp_time + ".txt"
+	fls_command = "fls -Fpr -f ntfs -i raw -o " + str(key_bytes) + " " + Image_Path + " | grep -i 'usrclass.dat$\|_Registry_USER_USRCLASS\|usrclass.bak\|usrclass.sav\|usrclass.old' | grep -v -i log | sed s/:// > /tmp/fls_output_" + temp_time + ".txt"
 	#print ("\nThe fls command is: " + fls_command + "\n")
 	print("\nSearching for " + file_loc + " USRCLASS hives")
 	outfile.write("The fls command is: " + fls_command + "\n")
