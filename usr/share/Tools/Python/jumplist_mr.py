@@ -173,11 +173,12 @@ def jumplist_mr(item_to_process, case_number, root_folder_path, evidence):
 			
 							#process Jumplist files with jl.pl
 							#jl_command = "perl /usr/share/windows-perl/jl.pl -u " + "'" + profile + "'" + " -f " + full_path + " >> " + "'" + folder_path + "/jumplist_metadata.txt" + "'"
-							jl_command_tln = "perl /usr/share/windows-perl/jl.pl -u " + "'" + profile + "'" + " -t -f " + quoted_full_path + " >> " + "'" + folder_path + "/jumplist_metadata_tln.txt" + "'"
+							jl_command_tln = "perl /usr/share/windows-perl/jl2.pl " + quoted_full_path + " >> " + "'" + folder_path + "/jumplist_metadata_tln.txt" + "'"
 							outfile.write("The jl_command_tln is: " + jl_command_tln + "\n")
 							subprocess.call([jl_command_tln], shell=True)
 						else:
-							print("Scanning file: " + filenames + ".  This file is not a jumplist.")
+							continue
+							#print("Scanning file: " + filenames + ".  This file is not a jumplist.")
 				#unmount and remove mount points
 				if(os.path.exists(mount_point)): 
 					subprocess.call(['sudo umount -f ' + mount_point], shell=True)
