@@ -38,6 +38,7 @@ from GUI_Timeline_mr import *
 from remove_duplicates_mr import *
 from carve_unallocated_mr import *
 from volatility_mr import *
+from volley import *
 from exifdata_mr import *
 from done import *
 from extract_ntfs_artifacts_mr import *
@@ -737,10 +738,12 @@ for x in processing_scripts_list:
 	elif x == 'Volatility':
 		if(debug_mode == "ON"):
 			volatility_mr(case_number, folder_path,  evidence_path.strip(), profile_to_use)
+			volley_mr(case_number, folder_path,  evidence_path.strip(), profile_to_use)
 			gui_outfile.write("Volatility...".ljust(35) + "completed successfully".ljust(55) + "\n")
 		else:
 			try:
-				volatility_mr(case_number, folder_path,  evidence_path.strip())
+				volatility_mr(case_number, folder_path, evidence_path.strip())
+				volley_mr(case_number, folder_path,  evidence_path.strip(), profile_to_use)
 				gui_outfile.write("Volatility...".ljust(35) + "completed successfully".ljust(55) + "\n")
 			except:
 				print("Call to Volatility failed")
