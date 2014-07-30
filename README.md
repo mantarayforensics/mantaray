@@ -89,5 +89,5 @@ Errors and Bugs
 ==================================
 If MantaRay crashes, please re-run it in debug mode and send a screenshot
 of the crash along with any other details you can provide to the 
-MantaRay Forum http://mantarayforensics.com/forums/
-or report to our GitHub https://github.com/mantarayforensics/mantaray/issues
+[MantaRay Forum](http://mantarayforensics.com/forums/)
+or report to our [GitHub Issue Tab](https://github.com/mantarayforensics/mantaray/issues)

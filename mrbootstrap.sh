@@ -1,3 +1,4 @@
+#!/bin/sh
 SUDO_USER=$USER
 
 usage() {
