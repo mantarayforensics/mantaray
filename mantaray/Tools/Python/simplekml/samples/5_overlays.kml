@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:xal="urn:oasis:names:tc:ciq:xsdschema:xAL:2.0">
+    <Document id="feat_1">
+        <name>5_overlays</name>
+        <GroundOverlay id="feat_2">
+            <gx:LatLonQuad>
+                <coordinates>18.410524,-33.903972 18.411429,-33.904171 18.411757,-33.902944 18.41085,-33.902767</coordinates>
+            </gx:LatLonQuad>
+            <Icon>
+                <href>resources/smile.png</href>
+            </Icon>
+            <name>GroundOverlay Test</name>
+        </GroundOverlay>
+        <ScreenOverlay id="feat_3">
+            <Icon>
+                <href>resources/simplekml-logo.png</href>
+            </Icon>
+            <overlayXY x="0" xunits="fraction" y="1" yunits="fraction"/>
+            <size x="-1" xunits="fraction" y="-1" yunits="fraction"/>
+            <screenXY x="15" xunits="pixel" y="15" yunits="insetPixels"/>
+            <name>ScreenOverlay Test</name>
+        </ScreenOverlay>
+        <PhotoOverlay id="feat_4">
+            <Style id="stylesel_0">
+                <IconStyle>
+                    <scale>1</scale>
+                    <colorMode>normal</colorMode>
+                    <heading>0</heading>
+                    <Icon>
+                        <href>http://maps.google.com/mapfiles/kml/shapes/camera.png</href>
+                    </Icon>
+                </IconStyle>
+            </Style>
+            <styleUrl>#stylesel_0</styleUrl>
+            <Camera>
+                <altitudeMode>clampToGround</altitudeMode>
+                <altitude>50</altitude>
+                <longitude>18.410858</longitude>
+                <latitude>-33.904446</latitude>
+            </Camera>
+            <Icon>
+                <href>resources/stadium.jpg</href>
+            </Icon>
+            <Point id="geom_0">
+                <coordinates>18.410858,-33.90444,0.0</coordinates>
+            </Point>
+            <name>PhotoOverlay Test</name>
+            <ViewVolume>
+                <topFov>15</topFov>
+                <near>1</near>
+                <rightFov>25</rightFov>
+                <bottomFov>-15</bottomFov>
+                <leftFov>-25</leftFov>
+            </ViewVolume>
+        </PhotoOverlay>
+    </Document>
+</kml>

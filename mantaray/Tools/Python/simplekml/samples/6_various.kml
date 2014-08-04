@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:xal="urn:oasis:names:tc:ciq:xsdschema:xAL:2.0">
+    <Document id="feat_1">
+        <name>6_various</name>
+        <open>1</open>
+        <NetworkLink id="feat_2">
+            <Link>
+                <href>http://fakelink.com/fakedata</href>
+            </Link>
+            <name>Broken NetworkLink</name>
+        </NetworkLink>
+        <Document id="feat_3">
+            <Style id="stylesel_0">
+                <ListStyle>
+                    <listItemType>radioFolder</listItemType>
+                </ListStyle>
+            </Style>
+            <name>Document</name>
+            <styleUrl>#stylesel_0</styleUrl>
+            <TimeStamp>
+                <when>2011</when>
+            </TimeStamp>
+            <atom:author>Kyle Lancaster</atom:author>
+            <visibility>1</visibility>
+            <Snippet maxLines="1">Snippet content that should be more than one line, hopefully</Snippet>
+            <phoneNumber>555-1234</phoneNumber>
+            <atom:link>http://code.google.com/p/simplekml/wiki/Document</atom:link>
+            <address>Cape Town, South Africa</address>
+            <open>1</open>
+            <description>A document description.</description>
+        </Document>
+        <Folder id="feat_4">
+            <Style id="stylesel_1">
+                <IconStyle>
+                    <scale>1</scale>
+                    <colorMode>normal</colorMode>
+                    <hotSpot x="0.5" xunits="fraction" y="0.5" yunits="fraction"/>
+                    <heading>0</heading>
+                    <Icon>
+                        <href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>
+                    </Icon>
+                </IconStyle>
+            </Style>
+            <name>Geometry</name>
+            <open>1</open>
+            <Placemark id="feat_5">
+                <name>Point</name>
+                <styleUrl>#stylesel_1</styleUrl>
+                <Camera>
+                    <altitudeMode>relativeToGround</altitudeMode>
+                    <tilt>10</tilt>
+                    <altitude>20000</altitude>
+                    <longitude>1.0</longitude>
+                    <latitude>1.0</latitude>
+                    <gx:TimeStamp>
+                        <when>2010</when>
+                    </gx:TimeStamp>
+                    <heading>45</heading>
+                </Camera>
+                <Point id="geom_0">
+                    <extrude>1</extrude>
+                    <altitudeMode>relativeToGround</altitudeMode>
+                    <coordinates>1.0,1.0,0.0</coordinates>
+                </Point>
+            </Placemark>
+            <Placemark id="feat_6">
+                <name>LineString</name>
+                <LineString id="geom_1">
+                    <tessellate>1</tessellate>
+                    <extrude>1</extrude>
+                    <altitudeMode>relativeToGround</altitudeMode>
+                    <coordinates>1.01,1.01,100 1.12,1.12,100</coordinates>
+                </LineString>
+                <LookAt>
+                    <altitudeMode>relativeToGround</altitudeMode>
+                    <tilt>5</tilt>
+                    <altitude>50000</altitude>
+                    <longitude>1.05</longitude>
+                    <range>50</range>
+                    <latitude>1.05</latitude>
+                </LookAt>
+            </Placemark>
+        </Folder>
+        <Placemark id="feat_7">
+            <name>Model</name>
+            <Model id="geom_2">
+                <Location>
+                    <latitude>1</latitude>
+                    <altitude>0</altitude>
+                    <longitude>1</longitude>
+                </Location>
+            </Model>
+            <description>Model placemark without a model!</description>
+        </Placemark>
+    </Document>
+</kml>

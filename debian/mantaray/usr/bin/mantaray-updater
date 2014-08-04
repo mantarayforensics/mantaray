@@ -1,0 +1,4 @@
+#!/bin/bash
+sudo apt-add-repository ppa:mantaray/stable -y
+sudo apt-add-repository ppa:sift/stable -y
+sudo apt-get update && sudo apt-get upgrade -y mantaray

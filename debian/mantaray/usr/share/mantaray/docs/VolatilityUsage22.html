@@ -1,0 +1,541 @@
+
+ 
+
+
+
+ 
+
+
+
+ 
+ 
+ <!DOCTYPE html>
+<html>
+<head>
+ <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
+ <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" >
+ 
+ <meta name="ROBOTS" content="NOARCHIVE">
+ 
+ <link rel="icon" type="image/vnd.microsoft.icon" href="https://ssl.gstatic.com/codesite/ph/images/phosting.ico">
+ 
+ 
+ <link rel="canonical" href="http://code.google.com/p/volatility/wiki/VolatilityUsage22" />
+ 
+ <script type="text/javascript">
+ 
+ 
+ 
+ 
+ var codesite_token = null;
+ 
+ 
+ var CS_env = {"domainName":null,"token":null,"relativeBaseUrl":"","projectName":"volatility","projectHomeUrl":"/p/volatility","assetVersionPath":"https://ssl.gstatic.com/codesite/ph/2339290658563340828","profileUrl":null,"loggedInUserEmail":null,"assetHostPath":"https://ssl.gstatic.com/codesite/ph"};
+ var _gaq = _gaq || [];
+ _gaq.push(
+ ['siteTracker._setAccount', 'UA-18071-1'],
+ ['siteTracker._trackPageview']);
+ 
+ _gaq.push(
+ ['projectTracker._setAccount', 'UA-35156709-1'],
+ ['projectTracker._trackPageview']);
+ 
+ (function() {
+ var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+ ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+ (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ga);
+ })();
+ 
+ </script>
+ 
+ 
+ <title>VolatilityUsage22 - 
+ volatility -
+ 
+ Basic Volatility Usage - 
+ An advanced memory forensics framework - Google Project Hosting
+ </title>
+ <link type="text/css" rel="stylesheet" href="https://ssl.gstatic.com/codesite/ph/2339290658563340828/css/core.css">
+ 
+ <link type="text/css" rel="stylesheet" href="https://ssl.gstatic.com/codesite/ph/2339290658563340828/css/ph_detail.css" >
+ 
+ 
+ 
+ <link type="application/atom+xml" rel="alternate" href="/feeds/p/volatility/svnchanges/basic?path=/wiki/VolatilityUsage22.wiki">
+ 
+ 
+<!--[if IE]>
+ <link type="text/css" rel="stylesheet" href="https://ssl.gstatic.com/codesite/ph/2339290658563340828/css/d_ie.css" >
+<![endif]-->
+ <style type="text/css">
+ .menuIcon.off { background: no-repeat url(https://ssl.gstatic.com/codesite/ph/images/dropdown_sprite.gif) 0 -42px }
+ .menuIcon.on { background: no-repeat url(https://ssl.gstatic.com/codesite/ph/images/dropdown_sprite.gif) 0 -28px }
+ .menuIcon.down { background: no-repeat url(https://ssl.gstatic.com/codesite/ph/images/dropdown_sprite.gif) 0 0; }
+ 
+ 
+ #maincol {
+ padding-top: 0;
+ padding-bottom: 0;
+ }
+
+ 
+ </style>
+</head>
+<body class="t6">
+<script type="text/javascript">
+ window.___gcfg = {lang: 'en'};
+ (function() 
+ {var po = document.createElement("script");
+ po.type = "text/javascript"; po.async = true;po.src = "https://apis.google.com/js/plusone.js";
+ var s = document.getElementsByTagName("script")[0];
+ s.parentNode.insertBefore(po, s);
+ })();
+</script>
+<div class="headbg">
+
+ <div id="gaia">
+ 
+
+ <span>
+ 
+ 
+ <a href="#" id="projects-dropdown" onclick="return false;"><u>My favorites</u> <small>&#9660;</small></a>
+ | <a href="https://www.google.com/accounts/ServiceLogin?service=code&amp;ltmpl=phosting&amp;continue=https%3A%2F%2Fcode.google.com%2Fp%2Fvolatility%2Fwiki%2FVolatilityUsage22&amp;followup=https%3A%2F%2Fcode.google.com%2Fp%2Fvolatility%2Fwiki%2FVolatilityUsage22" onclick="_CS_click('/gb/ph/signin');"><u>Sign in</u></a>
+ 
+ </span>
+
+ </div>
+
+ <div class="gbh" style="left: 0pt;"></div>
+ <div class="gbh" style="right: 0pt;"></div>
+ 
+ 
+ <div style="height: 1px"></div>
+<!--[if lte IE 7]>
+<div style="text-align:center;">
+Your version of Internet Explorer is not supported. Try a browser that
+contributes to open source, such as <a href="http://www.firefox.com">Firefox</a>,
+<a href="http://www.google.com/chrome">Google Chrome</a>, or
+<a href="http://code.google.com/chrome/chromeframe/">Google Chrome Frame</a>.
+</div>
+<![endif]-->
+
+
+
+ <table style="padding:0px; margin: 0px 0px 10px 0px; width:100%" cellpadding="0" cellspacing="0"
+ itemscope itemtype="http://schema.org/CreativeWork">
+ <tr style="height: 58px;">
+ 
+ 
+ 
+ <td id="plogo">
+ <link itemprop="url" href="/p/volatility">
+ <a href="/p/volatility/">
+ 
+ 
+ <img src="/p/volatility/logo?cct=1355428397"
+ alt="Logo" itemprop="image">
+ 
+ </a>
+ </td>
+ 
+ <td style="padding-left: 0.5em">
+ 
+ <div id="pname">
+ <a href="/p/volatility/"><span itemprop="name">volatility</span></a>
+ </div>
+ 
+ <div id="psum">
+ <a id="project_summary_link"
+ href="/p/volatility/"><span itemprop="description">An advanced memory forensics framework</span></a>
+ 
+ </div>
+ 
+ 
+ </td>
+ <td style="white-space:nowrap;text-align:right; vertical-align:bottom;">
+ 
+ <form action="/hosting/search">
+ <input size="30" name="q" value="" type="text">
+ 
+ <input type="submit" name="projectsearch" value="Search projects" >
+ </form>
+ 
+ </tr>
+ </table>
+
+</div>
+
+ 
+<div id="mt" class="gtb"> 
+ <a href="/p/volatility/" class="tab ">Project&nbsp;Home</a>
+ 
+ 
+ 
+ 
+ <a href="/p/volatility/downloads/list" class="tab ">Downloads</a>
+ 
+ 
+ 
+ 
+ 
+ <a href="/p/volatility/wiki/VolatilityIntroduction?tm=6" class="tab active">Wiki</a>
+ 
+ 
+ 
+ 
+ 
+ <a href="/p/volatility/issues/list"
+ class="tab ">Issues</a>
+ 
+ 
+ 
+ 
+ 
+ <a href="/p/volatility/source/checkout"
+ class="tab ">Source</a>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ <div class=gtbc></div>
+</div>
+<table cellspacing="0" cellpadding="0" width="100%" align="center" border="0" class="st">
+ <tr>
+ 
+ 
+ 
+ <td class="subt">
+ <div class="issueDetail">
+<div class="isf">
+ 
+ <span class="inIssueList"> 
+ <span>Search</span>
+ <form action="/p/volatility/w/list" method="GET" style="display:inline">
+ <select id="can" name="can" >
+ <option disabled="disabled">Search within:</option>
+ 
+ <option value="1" >&nbsp;All wiki pages</option>
+ <option value="3" >&nbsp;Featured pages</option>
+ <option value="2" selected="selected">&nbsp;Current pages</option>
+ 
+ 
+ <option value="4" >&nbsp;Deprecated pages</option>
+ 
+ </select>
+ <span>for</span>
+ <span id="qq"><input type="text" size="38" id="searchq" name="q" value=""
+ autocomplete="off" ></span>
+ 
+ 
+ 
+ <input type="submit" value="Search" >
+ </form>
+ </span>
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+</div>
+</div>
+
+ </td>
+ 
+ 
+ 
+ 
+ 
+ 
+ <td align="right" valign="top" class="bevel-right"></td>
+ </tr>
+</table>
+
+
+<script type="text/javascript">
+ var cancelBubble = false;
+ function _go(url) { document.location = url; }
+</script>
+<div id="maincol"
+ 
+ 
+ style="padding:0 3px 3px 0; margin:0"
+ 
+ 
+>
+
+ 
+
+
+
+
+
+
+ 
+<style type="text/css">
+ #wikimaincol { padding-top: 6px; padding-left:1em}
+ #sidebarcontainer {
+ padding: 1.5em 2px 2px 2px;
+ min-width: 15em;
+ max-width: 20em;
+ overflow:hidden;
+}
+ .sidebartop ul { margin:0 0 0 .5em; padding-left:0 !important; list-style:none}
+ .sidebartop ul ul { margin-left:1em; padding-left:0; list-style:none; display:none}
+ .sidebartop li { margin:0 0 2px 0; padding:1px; padding-left:14px; cursor:pointer}
+ .sidebartop li a { padding:2px}
+ .sidebartop li { background: url(https://ssl.gstatic.com/codesite/ph/images/plus.gif) no-repeat 1px 3px}
+ .sidebartop li.treeopen { background: url(https://ssl.gstatic.com/codesite/ph/images/minus.gif) no-repeat 1px 3px}
+ .sidebartop li.treeleaf { background:none}
+ .currentpagelink { 
+ font-weight: bold;
+ text-decoration: none;
+ color: black !important; 
+ background: #c3d9ff;
+ }
+ .sidebartop ul.treeleafcontainer { display:block;}
+ .sidebarcontent { 
+ vertical-align:top;
+ padding-right: 3px;
+ border-right: 2px solid #ccc;
+ }
+</style>
+
+
+
+ <style type="text/css">
+ .delcom { background: #e8e8e8 }
+ .commentcontent {
+ margin: 2em;
+ padding: 0px 10px;
+ width: 66em;
+ }
+ .artifactcomment {
+ border-top: 3px solid #c3d9ff;
+ }
+ #commentform {
+ border-top: 3px solid #c3d9ff;
+ }
+ </style>
+
+<div id="wikipage">
+<table>
+ <tr>
+ 
+ 
+ <td class="sidebarcontent">
+ <div class="vt expand" id="wikisidebar">
+ <div>
+ 
+ <div style="float:right;">
+ <a class="ifExpand" style="font-size:130%; color:blue; text-decoration:none"
+ href="#" onclick="_DW_toggleSidebar(this); return false;"
+ title="Hide sidebar"><b>&lsaquo;&lsaquo;</b></a>
+ </div>
+ <div class="ifCollapse" style="padding:0 2px">
+ <a style="font-size:130%; color:blue; text-decoration:none"
+ href="#" onclick="_DW_toggleSidebar(this); return false;"
+ title="Show sidebar"><b>&rsaquo;&rsaquo;</b></a>
+ </div>
+ 
+ 
+ <div id="sidebarcontainer" class="sidebartop ifExpand">
+ <ul><li><a href="/p/volatility/wiki/VolatilityIntroduction">Introduction</a> </li><li>Getting Started </li><ul><li><a href="/p/volatility/wiki/VolatilityInstallation">Installation</a> </li><li><a href="/p/volatility/wiki/LinuxMemoryForensics">Linux</a> </li><li><a href="/p/volatility/wiki/MacMemoryForensics">Mac</a> </li><li><a href="/p/volatility/wiki/AndroidMemoryForensics">Android</a> </li></ul><li>Releases </li><ul><li><a href="/p/volatility/wiki/Release23">Volatility 2.3</a> </li><ul><li><a href="/p/volatility/wiki/VolatilityUsage23">Basic Usage</a> </li><li>Command Reference  </li><ul><li><a href="/p/volatility/wiki/CommandReference23">Windows Core</a> </li><li><a href="/p/volatility/wiki/CommandReferenceGui23">Windows GUI</a> </li><li><a href="/p/volatility/wiki/CommandReferenceMal23">Windows Malware</a> </li><li><a href="/p/volatility/wiki/CommandReferenceRegistryApi23">Windows Registry</a> </li><li><a href="/p/volatility/wiki/LinuxCommandReference23">Linux</a> </li><li><a href="/p/volatility/wiki/MacCommandReference23">Mac OSX</a> </li></ul></ul><li><a href="/p/volatility/wiki/Release22">Volatility 2.2</a> </li><ul><li><a href="/p/volatility/wiki/VolatilityUsage22">Basic Usage</a> </li><li>Command Reference  </li><ul><li><a href="/p/volatility/wiki/CommandReference22">Windows Core</a> </li><li><a href="/p/volatility/wiki/CommandReferenceGui22">Windows GUI</a> </li><li><a href="/p/volatility/wiki/CommandReferenceMal22">Windows Malware</a> </li><li><a href="/p/volatility/wiki/CommandReferenceRegistryApi22">Windows Registry</a> </li><li><a href="/p/volatility/wiki/LinuxCommandReference22">Linux</a> </li></ul><li><a href="/p/volatility/wiki/DeveloperGuide22">Developer Guide</a> </li><ul><li><a href="/p/volatility/wiki/PluginInterface22">Plugin Interface</a> </li><li><a href="/p/volatility/wiki/AddressSpaces22">Address Spaces</a> </li></ul></ul><li><a href="/p/volatility/wiki/Release21">Volatility 2.1</a> </li><ul><li><a href="/p/volatility/wiki/VolatilityUsage21">Basic Usage</a> </li><li><a href="/p/volatility/wiki/CommandReference21">Command Reference</a> </li><li><a href="/p/volatility/wiki/DeveloperGuide21">Developer Guide</a> </li></ul><li><a href="/p/volatility/wiki/Release20">Volatility 2.0</a> </li><ul><li><a href="/p/volatility/wiki/VolatilityUsage20">Basic Usage</a> </li><li><a href="/p/volatility/wiki/CommandReference20">Command Reference</a> </li><li><a href="/p/volatility/wiki/DeveloperGuide20">Developer Guide</a> </li><ul><li><a href="/p/volatility/wiki/PluginInterface20">Plugin Interface</a> </li><li><a href="/p/volatility/wiki/AddressSpaces20">Address Spaces</a> </li><li><a href="/p/volatility/wiki/VolatilityObjects20">Objects</a> </li><li><a href="/p/volatility/wiki/VolatilityMagic20">Volatility Magic</a> </li><li><a href="/p/volatility/wiki/VolatilityScanning20">Scanners</a> </li><li><a href="/p/volatility/wiki/ConvertingPluginsFromVol13ToVol20">Plugin Conversion</a> </li><li><a href="/p/volatility/wiki/CachingSystem20">Caching System</a> </li></ul></ul></ul><li><a href="/p/volatility/wiki/SampleMemoryImages">Memory Samples</a> </li><li><a href="/p/volatility/wiki/StyleGuide">Style Guide</a> </li><li><a href="/p/volatility/wiki/VolatilityRoadmap">Roadmap</a> </li><li><a href="/p/volatility/wiki/VolatilityDocumentationProject">Community Docs</a> </li><li><a href="/p/volatility/wiki/VolatilityBranches">Branches</a> </li><ul><li><a href="/p/volatility/wiki/TechPreviewBranch">Tech Preview</a> </li></ul><li><a href="/p/volatility/wiki/LinuxProfiles">Linux Profiles</a> </li><li><a href="/p/volatility/wiki/AddressSpaceReference">Physical AS</a> </li><ul><li><a href="/p/volatility/wiki/FirewireAddressSpace">Firewire</a> </li><li><a href="/p/volatility/wiki/CrashAddressSpace">Crash Dumps</a> </li><li><a href="/p/volatility/wiki/HiberAddressSpace">Hibernation</a> </li><li><a href="/p/volatility/wiki/EWFAddressSpace">EWF Files</a> </li><li><a href="/p/volatility/wiki/LimeAddressSpace">LiME (Linux)</a> </li><li><a href="/p/volatility/wiki/MachOAddressSpace">Macho (Mac OSX)</a> </li><li><a href="/p/volatility/wiki/ArmAddressSpace">ARM (x86)</a> </li><li><a href="/p/volatility/wiki/VirtualBoxCoreDump">VirtualBoxELF64</a> </li><li><a href="/p/volatility/wiki/VMwareSnapshotFile">VMware Snapshot</a> </li><li><a href="/p/volatility/wiki/HpakAddressSpace">Hpak (FDPro)</a> </li></ul><li><a href="/p/volatility/wiki/VolatilityTeam">Volatility Team</a> </li><li><a href="/p/volatility/wiki/PluginContest">Plugin Contest HOF</a> </li></ul>
+ </div>
+ </div>
+</div>
+
+ </td>
+ 
+ <td style="vertical-align:top; padding-left:5px">
+ 
+ <div id="wikiheader">
+ 
+ <span style="font-size:120%;font-weight:bold">VolatilityUsage22</span>
+ &nbsp;
+ <div> 
+ 
+ <i>Basic Volatility Usage</i>
+ 
+ 
+ 
+ <div id="wikiauthor" style="float:right">
+ Updated <span title="Thu Dec 13 07:26:53 2012">
+ Dec 13, 2012</span>
+ 
+ by 
+
+ <a class="userlink"
+ href="/u/michael.hale@gmail.com/">michael.hale@gmail.com</a
+>
+ 
+ </div>
+ </div>
+ </div>
+ 
+ <div id="wikicontent">
+ <div class="vt" id="wikimaincol">
+ <p><ul><li><a href="#Using_Volatility">Using Volatility</a></li><li><a href="#Global_Options">Global Options</a></li><ul><li><a href="#Displaying_Help">Displaying Help</a></li><li><a href="#Selecting_a_Profile">Selecting a Profile</a></li><li><a href="#Alternatives_to_Command_Line_Options">Alternatives to Command Line Options</a></li><li><a href="#Enabling_Debug_Messages">Enabling Debug Messages</a></li><li><a href="#Using_the_Cache">Using the Cache</a></li><li><a href="#Setting_the_Timezone">Setting the Timezone</a></li><li><a href="#Setting_the_DTB">Setting the DTB</a></li><li><a href="#Setting_the_KDBG_Address">Setting the KDBG Address</a></li><li><a href="#Setting_the_KPCR_Address">Setting the KPCR Address</a></li><li><a href="#Enabling_Write_Support">Enabling Write Support</a></li><li><a href="#Specifying_Additional_Plugin_Directories">Specifying Additional Plugin Directories</a></li><li><a href="#Choosing_an_Output_Format">Choosing an Output Format</a></li></ul><li><a href="#Plugin_Specific_Options">Plugin Specific Options</a></li><li><a href="#Using_Volatility_as_a_Library">Using Volatility as a Library</a></li></ul> </p><h1><a name="Using_Volatility"></a>Using Volatility<a href="#Using_Volatility" class="section_anchor"></a></h1><p>The most basic volatility commands are constructed as shown below. Replace <i>plugin</i> with the name of the plugin to use, <i>image</i> with the file path to your memory image, and <i>profile</i> with the name of the profile (such as Win7SP1x64).  </p><pre class="prettyprint">$ python vol.py [plugin] -f [image] --profile=[profile] </pre><p>Here is an example:  </p><pre class="prettyprint">$ python vol.py pslist -f /path/to/memory.img --profile=Win7SP1x64</pre><p>For everything beyond this example, such as controlling the output format, listing the available plugins and profiles, or supplying plugin-specific options, see the rest of the text below.  </p><h1><a name="Global_Options"></a>Global Options<a href="#Global_Options" class="section_anchor"></a></h1><p>There are several command-line options that are global (i.e. they apply to all plugins). This section is for folks who are new to Volatility or anyone who wants to become more familiar with what functionality can be tweaked.  </p><h2><a name="Displaying_Help"></a>Displaying Help<a href="#Displaying_Help" class="section_anchor"></a></h2><p>You can display the main help menu by passing -h or --help on command-line. This shows the global options and lists the plugins available to the currently specified profile. If you do not specify a profile, you&#x27;ll be working with the default, WinXPSP2x86, thus you&#x27;ll only see plugins that are valid for that operating system and architecture (for example, you won&#x27;t see linux plugins or windows plugins that only work on Vista). To specify a profile other than the default, see Selecting a Profile below. Developer note: to restrict plugins per profile, see the <a href="/p/volatility/wiki/PluginInterface22#Restricting_Plugins_Per_Profile">Restricting Plugins Per Profile</a> page.  </p><p>The remainder of this section will discuss the various options in greater detail.  </p><pre class="prettyprint">$ python vol.py -h
+Volatile Systems Volatility Framework 2.1_rc1
+
+Usage: Volatility - A memory forensics analysis platform.
+
+Options:
+  -h, --help            list all available options and their default values.
+                        Default values may be set in the configuration file
+                        (/etc/volatilityrc)
+  --conf-file=/Users/Michael/.volatilityrc
+                        User based configuration file
+  -d, --debug           Debug volatility
+  --plugins=PLUGINS     Additional plugin directories to use (colon separated)
+  --info                Print information about all registered objects
+  --cache-directory=/Users/Michael/.cache/volatility
+                        Directory where cache files are stored
+  --cache               Use caching
+  --tz=TZ               Sets the timezone for displaying timestamps
+  -f FILENAME, --filename=FILENAME
+                        Filename to use when opening an image
+  --profile=WinXPSP2x86
+                        Name of the profile to load
+  -l LOCATION, --location=LOCATION
+                        A URN location from which to load an address space
+  -w, --write           Enable write support
+  --use-old-as          Use the legacy address spaces
+  --dtb=DTB             DTB Address
+  --cache-dtb           Cache virtual to physical mappings
+  --output=text         Output in this format (format support is module
+                        specific)
+  --output-file=OUTPUT_FILE
+                        write output in this file
+  -v, --verbose         Verbose information
+  -k KPCR, --kpcr=KPCR  Specify a specific KPCR address
+  -g KDBG, --kdbg=KDBG  Specify a specific KDBG virtual address
+
+	Supported Plugin Commands:
+
+		apihooks       	Detect API hooks in process and kernel memory
+		bioskbd        	Reads the keyboard buffer from Real Mode memory
+		callbacks      	Print system-wide notification routines
+		cmdscan        	Extract command history by scanning for _COMMAND_HISTORY
+		connections    	Print list of open connections [Windows XP and 2003 Only]
+[snip]</pre><h2><a name="Selecting_a_Profile"></a>Selecting a Profile<a href="#Selecting_a_Profile" class="section_anchor"></a></h2><p>Volatility needs to know what type of system your memory dump came from, so it knows which data structures, algorithms, and symbols to use. A default profile of WinXPSP2x86 is set internally, so if you&#x27;re analyzing a Windows XP SP2 x86 memory dump, you do not need to supply --profile at all. However, for all others, you must specify the proper profile name. If you do not know what type of system the memory dump is from, use the <a href="http://code.google.com/p/volatility/wiki/CommandReference22#imageinfo" rel="nofollow">imageinfo</a> or <a href="http://code.google.com/p/volatility/wiki/CommandReference22#kdbgscan" rel="nofollow">kdbgscan</a> plugins for a suggestion.  </p><p>If you want to see a list of supported profile names, do the following: </p><pre class="prettyprint">$ python vol.py --info
+
+[snip]
+
+Profiles
+--------
+VistaSP0x64     - A Profile for Windows Vista SP0 x64
+VistaSP0x86     - A Profile for Windows Vista SP0 x86
+VistaSP1x64     - A Profile for Windows Vista SP1 x64
+VistaSP1x86     - A Profile for Windows Vista SP1 x86
+VistaSP2x64     - A Profile for Windows Vista SP2 x64
+VistaSP2x86     - A Profile for Windows Vista SP2 x86
+Win2003SP0x86   - A Profile for Windows 2003 SP0 x86
+Win2003SP1x64   - A Profile for Windows 2003 SP1 x64
+Win2003SP1x86   - A Profile for Windows 2003 SP1 x86
+Win2003SP2x64   - A Profile for Windows 2003 SP2 x64
+Win2003SP2x86   - A Profile for Windows 2003 SP2 x86
+Win2008R2SP0x64 - A Profile for Windows 2008 R2 SP0 x64
+Win2008R2SP1x64 - A Profile for Windows 2008 R2 SP1 x64
+Win2008SP1x64   - A Profile for Windows 2008 SP1 x64
+Win2008SP1x86   - A Profile for Windows 2008 SP1 x86
+Win2008SP2x64   - A Profile for Windows 2008 SP2 x64
+Win2008SP2x86   - A Profile for Windows 2008 SP2 x86
+Win7SP0x64      - A Profile for Windows 7 SP0 x64
+Win7SP0x86      - A Profile for Windows 7 SP0 x86
+Win7SP1x64      - A Profile for Windows 7 SP1 x64
+Win7SP1x86      - A Profile for Windows 7 SP1 x86
+WinXPSP1x64     - A Profile for Windows XP SP1 x64
+WinXPSP2x64     - A Profile for Windows XP SP2 x64
+WinXPSP2x86     - A Profile for Windows XP SP2 x86
+WinXPSP3x86     - A Profile for Windows XP SP3 x86</pre><h2><a name="Alternatives_to_Command_Line_Options"></a>Alternatives to Command Line Options<a href="#Alternatives_to_Command_Line_Options" class="section_anchor"></a></h2><p>If you&#x27;re about to enter a lengthy engagement and don&#x27;t want to type the path to your memory dump and the corresponding profile name each time, there are two alternatives: environment variables and configuration files. If an option is not supplied on command-line, Volatility will try to get it from an environment variable and if that fails - from a configuration file.  </p><p>Note also that to avoid confusion, the (-h/--help) option also lists the current value of each parameter so you can easily check what value is being used (from the environment or the config files).  </p><h3><a name="Environment_Variables"></a>Environment Variables<a href="#Environment_Variables" class="section_anchor"></a></h3><p>On a Linux or OS X system you can set options by exporting them in your shell, as shown below: </p><pre class="prettyprint">$ export VOLATILITY_PROFILE=Win7SP0x86
+$ export VOLATILITY_LOCATION=file:///tmp/myimage.img
+$ ./vol.py pslist
+$ ./vol.py files</pre><h3><a name="Configuration_Files"></a>Configuration Files<a href="#Configuration_Files" class="section_anchor"></a></h3><p>Configuration files are typically &quot;volatilityrc&quot; in the current directory or ~/.volatilityrc (user&#x27;s home directory), or at user specified path (using the --conf-file option). An example of the file contents is shown below:  </p><pre class="prettyprint">[DEFAULT]
+PROFILE=Win7SP0x86
+LOCATION=file:///tmp/myimage.img</pre><h2><a name="Enabling_Debug_Messages"></a>Enabling Debug Messages<a href="#Enabling_Debug_Messages" class="section_anchor"></a></h2><p>If something isn&#x27;t happening in Volatility the way you&#x27;d expect, try running the command with -d/--debug. This will enable the printing of debug messages to standard error. If you <strong>really</strong> need to debug Volatility (as in using pdb debugger), then add -d -d -d to your commands.  </p><h2><a name="Using_the_Cache"></a>Using the Cache<a href="#Using_the_Cache" class="section_anchor"></a></h2><p>The cache allows Volatility to store arbitrary objects and constants for later retrieval. This can include, DTB, KDBG, or KPCR addresses, entire x86 page translation tables, or even hibernation decompression data structures. To enable use of the cache, add --cache to your commands. This feature pickles (serializes) the data in files on your disk, so if you want to choose the location of cache files, use --cache-directory. For more information, see the caching system page in the developer guide for your release version. </p><h2><a name="Setting_the_Timezone"></a>Setting the Timezone<a href="#Setting_the_Timezone" class="section_anchor"></a></h2><p>Timestamps extracted from memory can either be in system-local time, or in Universal Time Coordinates (UTC).  If they&#x27;re in UTC, volatility can be instructed to display them in a time zone of the analyst&#x27;s choosing.  To choose a timezone, use one of the standard timezone names (such as Europe/London, US/Eastern or most Olson timezones) with the --tz=TIMEZONE flag. </p><p>Please note that specifying a timezone will not affect how system-local times are displayed.  If you identify a time that you know is UTC-based, please file it as an issue in the issue tracker. </p><h2><a name="Setting_the_DTB"></a>Setting the DTB<a href="#Setting_the_DTB" class="section_anchor"></a></h2><p>The DTB (Directory Table Base) is what Volatility uses to translate virtual addresses to physical addresses. By default, a kernel DTB is used (from the Idle/System process). If you want to use a different process&#x27;s DTB when accessing data, supply the address to --dtb=ADDRESS.  </p><h2><a name="Setting_the_KDBG_Address"></a>Setting the KDBG Address<a href="#Setting_the_KDBG_Address" class="section_anchor"></a></h2><p><strong>This is a Windows-only option</strong> </p><p>Volatility scans for the KDDEBUGGER_DATA64 structure using hard-coded signatures &quot;KDBG&quot; and a series of sanity checks. These signatures are not critical for the operating system to function properly, thus malware can overwrite them in attempt to throw off tools that <strong>do</strong> rely on the signature. Additionally, in some cases there may be more than one KDDEBUGGER_DATA64 (for example if you apply a major OS update and don&#x27;t reboot), which can cause confusion and lead to incorrect process and module listings, among other problems. If you know the address add KDDEBUGGER_DATA64, you can specify it with --kdbg=ADDRESS and this override the automated scans. For more information, see the <a href="http://code.google.com/p/volatility/wiki/CommandReference22#kdbgscan" rel="nofollow">kdbgscan</a> plugin.  </p><h2><a name="Setting_the_KPCR_Address"></a>Setting the KPCR Address<a href="#Setting_the_KPCR_Address" class="section_anchor"></a></h2><p><strong>This is a Windows-only option</strong> </p><p>There is one KPCR (Kernel Processor Control Region) for each CPU on a system. Some Volatility plugins display per-processor information. Thus if you want to display data for a specific CPU, for example CPU 3 instead of CPU 1, you can pass the address of that CPU&#x27;s KPCR with --kpcr=ADDRESS. To locate the KPCRs for all CPUs, see the <a href="http://code.google.com/p/volatility/wiki/CommandReference22#kpcrscan" rel="nofollow">kpcrscan</a> plugin. Also note that starting in Volatility 2.2, many of the plugins such as <a href="http://code.google.com/p/volatility/wiki/CommandReference22#idt" rel="nofollow">idt</a> and <a href="http://code.google.com/p/volatility/wiki/CommandReference22#gdt" rel="nofollow">gdt</a> automatically iterate through the list of KPCRs. </p><h2><a name="Enabling_Write_Support"></a>Enabling Write Support<a href="#Enabling_Write_Support" class="section_anchor"></a></h2><p>Write support in Volatility should be used with caution. Therefore, to actually enable it, you must not only type --write on command-line but you must type a &quot;password&quot; in response to a question that you&#x27;ll be prompted with. In most cases you will not want to use write support since it can lead to corruption or modification of data in your memory dump. However, special cases exist that make this feature really interesting. For example, you could cleanse a live system of certain malware by writing to RAM over firewire, or you could break into a locked workstation by patching bytes in the winlogon DLLs.  </p><h2><a name="Specifying_Additional_Plugin_Directories"></a>Specifying Additional Plugin Directories<a href="#Specifying_Additional_Plugin_Directories" class="section_anchor"></a></h2><p>Volatility&#x27;s plugin architecture can load plugin files from multiple directories at once. In the Volatility source code, most plugins are located in volatility/plugins. However, there is another directory (volatility/contrib) which is reserved for contributions from third party developers, or weakly supported plugins that simply aren&#x27;t enabled by default. To access these plugins you just type --plugins=contrib/plugins on command-line. It also enables you to create a separate directory of your own plugins that you can manage without having to add/remove/modify files in the core volatility directories.  </p><p>Note: the parameter to --plugins can also be a zip file containing the plugins such as --plugins=myplugins.zip. Due to the way plugins are loaded, the external plugins directory or zip file must be specified before any plugin-specific arguments (including the name of the plugin). </p><h2><a name="Choosing_an_Output_Format"></a>Choosing an Output Format<a href="#Choosing_an_Output_Format" class="section_anchor"></a></h2><p>By default, plugins use text renderers to standard output.  If you want to redirect to a file, you can of course use the console&#x27;s redirection (i.e. &gt; out.txt) or you could use --output-file=out.txt. The reason you can also choose --output=FORMAT is for allowing plugins to also render output as HTML, JSON, SQL, or whatever you choose. However, there are no plugins with those alternate output formats pre-configured for use, so you&#x27;ll need to add a function named render_html, render_json, render_sql, respectively to each plugin before using --output=HTML.  </p><h1><a name="Plugin_Specific_Options"></a>Plugin Specific Options<a href="#Plugin_Specific_Options" class="section_anchor"></a></h1><p>Many plugins accept arguments of their own, which are independent of the global options.  To see the list of available options, type both the plugin name and -h/--help on command-line.  </p><pre class="prettyprint">$ python vol.py dlllist -h</pre><h1><a name="Using_Volatility_as_a_Library"></a>Using Volatility as a Library<a href="#Using_Volatility_as_a_Library" class="section_anchor"></a></h1><p>Although its possible to use Volatility as a library, we hope to support it better in the future. Currently, if you need to import volatility from one of your other python scripts, you can use the following example code: </p><pre class="prettyprint">$ python
+&gt;&gt;&gt; import volatility.conf as conf
+&gt;&gt;&gt; import volatility.registry as registry
+&gt;&gt;&gt; registry.PluginImporter()
+&lt;volatility.registry.PluginImporter object at 0x7f9608f3ac10&gt;
+&gt;&gt;&gt; config = conf.ConfObject()
+&gt;&gt;&gt; import volatility.commands as commands
+&gt;&gt;&gt; import volatility.addrspace as addrspace
+&gt;&gt;&gt; registry.register_global_options(config, commands.Command)
+&gt;&gt;&gt; registry.register_global_options(config, addrspace.BaseAddressSpace)
+&gt;&gt;&gt; config.parse_options()
+&gt;&gt;&gt; config.PROFILE=&quot;WinXPSP2x86&quot;
+&gt;&gt;&gt; config.LOCATION = &quot;file:///media/memory/private/image.dmp&quot;
+&gt;&gt;&gt; import volatility.plugins.taskmods as taskmods
+&gt;&gt;&gt; p = taskmods.PSList(config)
+&gt;&gt;&gt; for process in p.calculate():
+...   print process
+... </pre>
+ </div>
+ </div>
+ </td><tr>
+</table>
+ </div>
+
+
+ 
+ 
+ 
+ <form name="delcom" action="../w/delComment.do" method="POST">
+ <input type="hidden" name="sequence_num" value="" >
+ <input type="hidden" name="create_time" value="" >
+ <input type="hidden" name="mode" value="" >
+ <input type="hidden" name="pagename" value="VolatilityUsage22" >
+ <input type="hidden" name="token" value="" >
+ </form>
+
+
+ <script src="https://ssl.gstatic.com/codesite/ph/2339290658563340828/js/prettify/prettify.js"></script>
+ <script type="text/javascript">
+ prettyPrint();
+ </script>
+
+<script type="text/javascript" src="https://ssl.gstatic.com/codesite/ph/2339290658563340828/js/dit_scripts.js"></script>
+
+
+
+  
+ 
+ 
+ <script type="text/javascript" src="https://ssl.gstatic.com/codesite/ph/2339290658563340828/js/ph_core.js"></script>
+ 
+ <script type="text/javascript" src="https://ssl.gstatic.com/codesite/ph/2339290658563340828/js/ph_dwiki.js"></script>
+ 
+ 
+ 
+ 
+</div> 
+
+<div id="footer" dir="ltr">
+ <div class="text">
+ <a href="/projecthosting/terms.html">Terms</a> -
+ <a href="http://www.google.com/privacy.html">Privacy</a> -
+ <a href="/p/support/">Project Hosting Help</a>
+ </div>
+</div>
+ <div class="hostedBy" style="margin-top: -20px;">
+ <span style="vertical-align: top;">Powered by <a href="http://code.google.com/projecthosting/">Google Project Hosting</a></span>
+ </div>
+
+ 
+ 
+
+
+ 
+ </body>
+</html>
+
+
