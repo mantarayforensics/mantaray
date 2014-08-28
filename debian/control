@@ -7,5 +7,5 @@ Build-Depends: debhelper (>= 8.0.0), python3-tk (>= 3.2.0)
 Package: mantaray
 Architecture: any
 Description: MantaRay is a forensic workflow automation system.
-Depends: python-tk, python3-tk, python3.2, python2.7, bulk-extractor, log2timeline-perl, regripper, libevt, libevt-tools, libevtx, libevtx-tools, libewf, dos2unix, liblightgrep, libolecf, libolecf-tools, libregf, libregf-tools, libvshadow, libvshadow-tools, python-plaso, sift, sleuthkit, python-volatility, volatility-extras, cryptsetup, e2fslibs-dev, extundelete, kdiff3, libxml2-dev, libfuse-dev, libfvde, libfvde-tools, zenity, fuse-utils, tofrodos, mac-robber, ent, libssl-dev, openjdk-6-jdk, fdupes, dconf-tools, afuse, liblightgrep, flex, windows-perl, foremost, libewf-tools, pytsk3
+Depends: python-tk, python3-tk, python3.2, python2.7, bulk-extractor, log2timeline-perl, regripper, libevt, libevtx, libewf, dos2unix, liblightgrep, libolecf, libplist1, libregf, libvshadow, python-plaso, sift, sleuthkit, python-volatility, cryptsetup, e2fslibs-dev, extundelete, kdiff3, libxml2-dev, libfuse-dev, libfvde, zenity, fuse-utils, tofrodos, mac-robber, ent, libssl-dev, openjdk-6-jdk, fdupes, dconf-tools, libplist-utils, afuse, liblightgrep, flex, windows-perl, foremost
 
