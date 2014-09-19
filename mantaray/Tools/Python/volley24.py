@@ -130,7 +130,7 @@ def main(fin, profile, num_thread, out):
     elif profile.startswith("Mac"):
         # removed mac_volshell 
 	# Needs --dump-dir "mac_notesapp",
-        plugins = ["mac_adium","mac_apihooks","mac_apihooks_kernel","mac_arp","mac_bash","mac_bash_env",
+        plugins = ["mac_adium", "mac_apihooks","mac_apihooks_kernel","mac_arp","mac_bash","mac_bash_env",
                    "mac_bash_hash","mac_calendar","mac_check_mig_table","mac_check_syscall_shadow",
                    "mac_check_syscalls","mac_check_sysctl","mac_check_trap_table","mac_contacts","mac_dead_procs",
                    "mac_dead_sockets","mac_dead_vnodes","mac_dmesg","mac_dump_file","mac_dump_maps","mac_dyld_maps",
@@ -141,7 +141,30 @@ def main(fin, profile, num_thread, out):
                    "mac_notifiers","mac_pgrp_hash_table","mac_pid_hash_table","mac_print_boot_cmdline","mac_proc_maps",
                    "mac_procdump","mac_psaux","mac_pslist","mac_pstree","mac_psxview","mac_recover_filesystem",
                    "mac_route","mac_socket_filters","mac_strings","mac_tasks","mac_trustedbsd","mac_version","mac_yarascan"]
-        pid_plugins = ["mac_proc_maps"]
+        pid_plugins = ["mac_proc_maps", "mac_adium", "mac_api_hooks", "mac_bash", "mac_bash_env", "mac_bash_hash",
+                       "mac_calendar", "mac_contacts", "mac_dead_procs", "mac_dead_sockets", "mac_dead_vnodes",
+                       "mac_dump_maps", "mac_dyld_maps", "mac_keychaindump", "mac_ldrmodules", "mac_librarydump",
+                       "mac_list_sessions", "mac_lsof", "mac_memdump", "mac_netstat", "mac_pgrp_hash_table",
+                       "mac_pid_hash_table", "mac_procdump", "mac_psaux", "mac_pslist", "mac_pstree", "mac_strings",
+                       "mac_tasks"]
+        plugins_dump = ["mac_adium", "mac_dump_maps", "mac_librarydump", "mac_malfind", "mac_memdump", "mac_moddump"
+                       "mac_procdump", "mac_recover_filesystem", "mac_yarascan"]
+        """
+        Extra Features to research in future:
+        mac_yara: Has a lot of features about yara info
+        mac_strings: -S STRING_FILE file output in string format | -S use psscan if no offest provided | -o HEX offset of Physical addr
+        mac_moddump: -r DUmp matching REGEX | -i Ignore case in matches
+        mac_keychaindump: use chainbreaker to open related keychain files
+        mac_trustedbsd: -a ADDR, show info on VAD at or containing this address
+        mac_socket_filters: -a ADDR, show info on VAD at or containing this address
+        mac_notifiers: -a ADDR, show info on VAD at or containing this address
+        mac_lsmod: -a ADDR, show info on VAD at or containing this address
+        mac_ip_filters: -a ADDR, show info on VAD at or containing this address
+        mac_dump_file: -q FILE_OFFSET, virtual addr of vnode structure from mac_list_files | -O OUTFILE, output file path
+        mac_bash: -A scan all processes, not just those named in bash | -P print unallocated entries
+        mac_bash_hash: -A scan all processes, not just those named in bash
+        mac_check_syscalls: -i Path to unistd_{32,64}.h from the target machine
+        """
 
     else:
         print "Invalid Profile Selected"
