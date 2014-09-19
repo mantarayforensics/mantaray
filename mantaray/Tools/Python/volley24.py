@@ -102,13 +102,35 @@ def main(fin, profile, num_thread, out):
                    "userassist","userhandles","vadinfo","vadtree","vadwalk","vboxinfo","verinfo","vmwareinfo","windows",
                    "wintree","wndscan","yarascan"]
 
-        # poolpeek needs --tag to find
-        # malfind needs `-y` to be specified
-        # impscan needs `--base` to be specified
-
         pid_plugins = ["dlllist", "envars", "getsids", "handles", "iehistory", "impscan", "joblinks", "ldrmodules",
                        "malfind", "memmap", "notepad", "privs", "pslist", "strings", "threads", "userhandles", "vadinfo",
-                       "vadtree", "vadwalk", "yarascan"]
+                       "vadtree", "vadwalk", "yarascan", "dumpfiles", "dumpcerts", ""]
+
+        plugins_dump = ["dlldump", "dumpfiles", "dumpcerts", "evtlogs", "malfind", "memdump", "mftparser", "moddump",
+                        "notepad", "procdump", "screenshot", "truecryptmaster", "vaddump", "verinfo", "yarascan"]
+        """
+        Extra features to add in the future:
+        dumpcerts: --ssl uses openssl for parsing | --physical to scan deallocated space
+        dumpfiles: --summary-file=FILE for output | --filter to select type (see docs)
+        evtlogs: --save-evt to save as .evt file
+        mftparser: --nocheck to include entries with NULL timestamps
+        patcher: -x XML input to patch binaries
+        pooltracker: --whitelist to eliminate known files | --show-free to show unallocated tags
+        printkey: --key=KEY to print a reg key , sub keys, and values
+        procdump: -m to carve as a memory sample instead of exe/disk | -u to bypass sanity checks when creating disk image
+        psxview: -R apply known good rules
+        screenshot: --show-unallocated to skip unallocated (test)
+        shellbags: --machine=NAME will add name to header
+        strings: --string-file=FILE to output in strings format | --scan to scan with PSScan for PIDs
+        threads: -L to list all available tags
+        timeliner: --output=XLSX,MACTIME (only xlsxl if openpyxl is installed) | --hive=HIVE to gather timestamps from | --user=USER to gather timestamps from | --machine=NAME to add to header | --type=EvtLog,IEHistory,ImageDate,LoadTime,Process,Shimcache,Socket,Symlink,Thread,TimeDateStamp,Userassist,_CMHIVE,_CM_KEY_BODY,_HBASE_BLOCK | --highlight=HIGHLIGT will highlight specified malicious items
+        callbacks: -V scan virtual space instead of phsycial
+        bigpools: -t TAG to find
+        poolpeek: needs --tag to find
+        malfind: needs `-y` to be specified
+        impscan: needs `--base` to be specified
+        """
+
 
     elif profile.startswith("Lin"):
         # removed linux_volshell
@@ -136,7 +158,7 @@ def main(fin, profile, num_thread, out):
         plugins_dump = ["linux_dump_map", "linux_library_dump", "linux_moddump", "linux_pkt_queues", "linux_procdump",
                         "linux_recover_filesystem", "linux_sk_buff_cache", "linux_yarascan"]
         """
-        Extra Info
+        Extra Features to research in future:
         linux_vma_cache: -u show unallocated
         linux_tmpfs: -S SB super block to process | -L list available superblocks
         linux_strings: -S STRING_FILE file output in string format | -S use psscan if no offest provided | -o HEX offset of Physical addr
