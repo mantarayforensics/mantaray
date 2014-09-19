@@ -27,6 +27,9 @@ import datetime
 import os
 import sys
 import vol_get_pids
+import easygui
+
+
 
 
 def run_pid_plugin(fin, profile, plug, out, count, plugins, pid, profile_path):
@@ -36,10 +39,10 @@ def run_pid_plugin(fin, profile, plug, out, count, plugins, pid, profile_path):
     ::NOTE::
     * --plugins= must precede -f in command for the profiles to be loaded correctly
     """
-    subprocess.call(["vol --plugins='" + profile_path + "' -f " + fin + " --profile=" + profile + " " + plug + " -p " + pid + " --output-file=" + out +
-                     plug + ".txt"], shell=True)
-    print "[Thread ", datetime.datetime.now(), "] Completed PID " + pid + " " + plug + ", ", count, " of ", \
-        len(plugins)-1
+    subprocess.call(["vol --plugins='" + profile_path + "' -f " + fin + " --profile=" + profile + " " + plug + " -p " + pid + " --output-file=" + out + plug + ".txt"], shell=True, stderr=ERRFILE)
+    status =  str("[Thread " + str(datetime.datetime.now()) + "] Completed PID " + pid + " " + plug + ", " + str(count) + " of " + str(len(plugins)-1))
+    print str(status)
+    OUTFILE.write(str(status))
 
 
 def run_plugin(fin, profile, plug, out, count, plugins, profile_path):
@@ -49,19 +52,41 @@ def run_plugin(fin, profile, plug, out, count, plugins, profile_path):
     ::NOTE::
     * --plugins= must precede -f in command for the profiles to be loaded correctly
     """
-    subprocess.call(["vol --plugins=" + profile_path + " -f " + fin + "  --profile=" + profile + " " + plug + " > " + out + plug + ".txt"],
-                    shell=True)
-    print "[Thread ", datetime.datetime.now(), "] Completed " + plug + ", ", count, " of ", len(plugins)-1
-
+    subprocess.call(["vol --plugins=" + profile_path + " -f " + fin + "  --profile=" + profile + " " + plug + " > " + out + plug + ".txt"], shell=True, stderr=ERRFILE)
+    status = str("[Thread " + str(datetime.datetime.now()) + "] Completed " + plug + ", " + str(count) + " of " + str(len(plugins)-1))
+    print str(status)
+    OUTFILE.write(str(status))
 
 def main(fin, profile, num_thread, out):
+    global OUTFILE
+    global ERRFILE
+
+    # Set Logfile & Error Log
+    log_file = out + "/Volatility_logfile.txt"
+    OUTFILE = open(log_file, 'w')
+    log_file = out + "/Volatility_errors_logfile.txt"
+    ERRFILE = open(log_file, 'w')
+
     if profile.__contains__("x64"):
-        profile_path = "/usr/share/mantaray/volatility_profiles/x64"
+        profile_path = "/usr/share/mantaray.20140905/volatility_profiles/x64"
     elif profile.__contains__("x86"):
         profile_path = "/usr/share/mantaray/volatility_profiles/x86/"
     else:
-        print "Invalid Profile"
+        print "Scanning for suggested profile...\n[Warn] This may take a while depending on file size\n[Warn] " \
+              "This scan only works with Windows Profiles"
+
+        #run first volatility command to get image type
+        print("Checking RAM image for imageinfo information...This may take a few minutes....\n")
+        imageinfo = subprocess.check_output(["vol -f " + fin + " imageinfo"], shell=True, universal_newlines=True)
+        print("The value of imageinfo is: " + imageinfo)
+        OUTFILE.write("The value of imageinfo is: " + imageinfo)
+
+        #have user specify the image type
+        profile = easygui.enterbox(msg="Please Enter the profile to use", title='Profile Type',default='',strip=True,image=None,root=None)
+
+        print("Profile selected: " + profile)
         sys.exit(1)
+
 
     if profile.startswith("Win"):
         plugins = ["kpcrscan","atoms","atomscan","auditpol","bigpools","bioskbd","callbacks","clipboard","cmdline",
@@ -86,6 +111,7 @@ def main(fin, profile, num_thread, out):
                        "vadtree", "vadwalk", "yarascan"]
 
     elif profile.startswith("Lin"):
+        # removed linux_volshell
         plugins = ["linux_apihooks","linux_arp","linux_banner","linux_bash","linux_bash_env","linux_bash_hash",
                    "linux_check_afinfo","linux_check_creds","linux_check_evt_arm","linux_check_fop","linux_check_idt",
                    "linux_check_inline_kernel","linux_check_modules","linux_check_syscall","linux_check_syscall_arm",
@@ -98,10 +124,12 @@ def main(fin, profile, num_thread, out):
                    "linux_procdump","linux_process_hollow","linux_psaux","linux_psenv","linux_pslist",
                    "linux_pslist_cache","linux_pstree","linux_psxview","linux_recover_filesystem","linux_route_cache",
                    "linux_sk_buff_cache","linux_slabinfo","linux_strings","linux_threads","linux_tmpfs",
-                   "linux_truecrypt_passphrase","linux_vma_cache","linux_volshell","linux_yarascan"]
+                   "linux_truecrypt_passphrase","linux_vma_cache","linux_yarascan"]
         pid_plugins = ["linux_lsof", "linux_memmap", "linux_proc_maps", "linux_netstat", "linux_yarascan"]
 
     elif profile.startswith("Mac"):
+        # removed mac_volshell 
+	# Needs --dump-dir "mac_notesapp",
         plugins = ["mac_adium","mac_apihooks","mac_apihooks_kernel","mac_arp","mac_bash","mac_bash_env",
                    "mac_bash_hash","mac_calendar","mac_check_mig_table","mac_check_syscall_shadow",
                    "mac_check_syscalls","mac_check_sysctl","mac_check_trap_table","mac_contacts","mac_dead_procs",
@@ -109,15 +137,15 @@ def main(fin, profile, num_thread, out):
                    "mac_find_aslr_shift","mac_ifconfig","mac_ip_filters","mac_keychaindump","mac_ldrmodules",
                    "mac_librarydump","mac_list_files","mac_list_sessions","mac_list_zones","mac_lsmod",
                    "mac_lsmod_iokit","mac_lsmod_kext_map","mac_lsof","mac_machine_info","mac_malfind",
-                   "mac_memdump","mac_moddump","mac_mount","mac_netstat","mac_network_conns","mac_notesapp",
+                   "mac_memdump","mac_moddump","mac_mount","mac_netstat","mac_network_conns",
                    "mac_notifiers","mac_pgrp_hash_table","mac_pid_hash_table","mac_print_boot_cmdline","mac_proc_maps",
                    "mac_procdump","mac_psaux","mac_pslist","mac_pstree","mac_psxview","mac_recover_filesystem",
-                   "mac_route","mac_socket_filters","mac_strings","mac_tasks","mac_trustedbsd","mac_version",
-                   "mac_volshell","mac_yarascan"]
+                   "mac_route","mac_socket_filters","mac_strings","mac_tasks","mac_trustedbsd","mac_version","mac_yarascan"]
         pid_plugins = ["mac_proc_maps"]
 
     else:
         print "Invalid Profile Selected"
+        OUTFILE.write("Invalid Profile Selected")
         sys.exit(1)
 
     start = datetime.datetime.now()
@@ -125,7 +153,10 @@ def main(fin, profile, num_thread, out):
     for count, plug in enumerate(plugins):
         while 1:
             if threading.activeCount() <= num_thread:
-                print "[Thread ", datetime.datetime.now(), "] Starting plugin " + plug
+                status = str("[Thread " +  str(datetime.datetime.now()) + "] Starting plugin " + plug)
+		print str(status)
+                OUTFILE.flush()
+                OUTFILE.write(str(status))
                 t = threading.Thread(target=run_plugin, args=[fin, profile, plug, out, count, plugins, profile_path])
                 t.start()
                 break
@@ -140,6 +171,7 @@ def main(fin, profile, num_thread, out):
             forward = 1
         except:
             print 'Could not parse PID: ' + proc["PID"]
+            OUTFILE.write('Could not parse PID: ' + proc["PID"])
             forward = 0
         if forward:
             path_out = out + "/PID/" + proc["Name"] + "_" + str(pid) + "/"
@@ -148,7 +180,9 @@ def main(fin, profile, num_thread, out):
             for count, pid_plug in enumerate(pid_plugins):
                 while 1:
                     if threading.activeCount() <= num_thread:
-                        print "[Thread ", datetime.datetime.now(), "] Starting PID " + str(pid) + " plugin " + pid_plug
+                        status = str("[Thread " + str(datetime.datetime.now()) + "] Starting PID " + str(pid) + " plugin " + pid_plug)
+                        print str(status)
+                        OUTFILE.write(str(status))
                         t = threading.Thread(target=run_pid_plugin, args=[fin, profile, pid_plug, path_out, count, pid_plugins, str(pid), profile_path])
                         t.start()
                         break
@@ -157,21 +191,28 @@ def main(fin, profile, num_thread, out):
 
     while 1:
         if threading.activeCount() == 1:
-            print "[Main ", datetime.datetime.now(), "] Completed"
-            print "[Main ", datetime.datetime.now(), "] Runtime: ", datetime.datetime.now()-start
+            status = str("[Main " + str(datetime.datetime.now()) + "] Completed")
+            print str(status)
+            OUTFILE.write(str(status))
+            status =  str("[Main " + str(datetime.datetime.now()) + "] Runtime: " + str(datetime.datetime.now()-start))
+            print str(status)
+            OUTFILE.write(str(status))
+            OUTFILE.close()
             break
         else:
             if time.time() % 120 == 0:  # Wait 2 minutes to prompt the user that threads are still running
-                print "[Main ", datetime.datetime.now(), "] waiting for ", threading.activeCount()-1, " threads to finish"
+                status = str("[Main " + str(datetime.datetime.now()) + "] waiting for " + str(threading.activeCount()-1) + " threads to finish")
+                print str(status)
+                OUTFILE.write(str(status))
 
 if __name__ == "__main__":
 
-    parser = argparse.ArgumentParser()
-    parser.add_argument('fin')
-    parser.add_argument('profile')
+    parser = argparse.ArgumentParser(description="Volley24 is a tool used at the command line and with the MantaRau Suite for processing memory images in Volatility 2.4", epilog="Copyright Chapin Bryce, 2014 webmaster@mantarayforensics.com")
+    parser.add_argument('fin', help='File In')
+    parser.add_argument('profile', help='Volatility Profile Name (Using Volatility Syntax)')
     # parser.add_argument('-p', help="Enable processing of a specific PID across plugins")
     parser.add_argument('-t', help="Specify the number of threads to run", required=True, type=int)
-    parser.add_argument('out')
+    parser.add_argument('out', help='Output Directory')
     args = parser.parse_args()
     fin = args.fin
     profile = args.profile

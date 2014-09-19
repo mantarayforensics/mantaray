@@ -18,17 +18,31 @@
 #along with this program.  If not, see http://www.gnu.org/licenses/.     #
 #########################COPYRIGHT INFORMATION############################
 
-import os
-import re
-import subprocess
-import datetime
-
+from easygui import *
+from get_case_number import *
+from get_output_location import *
+from select_file_to_process import *
 from parted import *
+from mount import *
 from mount_ewf import *
-from share.Tools.Python.remove_dupes_module_noask import *
+from done import *
+from unix2dos import *
+from remove_dupes_module_noask import *
 from mmls import *
+from Windows_Time_Converter_module import *
 from check_for_folder import *
 
+
+import os
+from os.path import join
+import re
+import io
+import sys
+import string
+import subprocess
+import datetime
+import shutil
+import struct
 
 ### GET BLOCK SIZE ##############################################################################################
 def get_block_size_mmls(Image_Path, outfile):
@@ -117,7 +131,7 @@ def process_overt_deleted_files(value, key, Image_Path, outfile, folder_path, bl
 
 
 	#run fls to get information for MFT files
-	fls_command = "fls -Fpr -f ntfs -i raw -o " + str(key_bytes) + " " + Image_Path + " | grep -i -r '\$MFT$' | sed s/:// | sed s/*// > /tmp/fls_output_ntfs_" + temp_time + ".txt"
+	fls_command = "fls -Fpr -f ntfs -i raw -o " + str(key_bytes) + " " + Image_Path + " | grep -i '\$MFT$' | sed s/:// | sed s/*// > /tmp/fls_output_ntfs_" + temp_time + ".txt"
 	#print ("\nThe fls command is: " + fls_command + "\n")
 	print("\nSearching for $MFT files")
 	outfile.write("The fls command is: " + fls_command + "\n")
@@ -129,7 +143,7 @@ def process_overt_deleted_files(value, key, Image_Path, outfile, folder_path, bl
 	process_fls_output(value, key, Image_Path, block_size, folder_path, item, "MFT", outfile, temp_time)
 
 	#run fls to get information for Logfiles files
-	fls_command = "fls -Fpr -f ntfs -i raw -o " + str(key_bytes) + " " + Image_Path + " | grep -i -r '\$LogFile$' | sed s/:// | sed s/*// > /tmp/fls_output_ntfs_" + temp_time +".txt"
+	fls_command = "fls -Fpr -f ntfs -i raw -o " + str(key_bytes) + " " + Image_Path + " | grep -i '\$LogFile$' | sed s/:// | sed s/*// > /tmp/fls_output_ntfs_" + temp_time +".txt"
 	#print ("\nThe fls command is: " + fls_command + "\n")
 	print("\nSearching for $LogFiles files")
 	outfile.write("The fls command is: " + fls_command + "\n")
@@ -141,7 +155,7 @@ def process_overt_deleted_files(value, key, Image_Path, outfile, folder_path, bl
 	process_fls_output(value, key, Image_Path, block_size, folder_path, item, "LogFile", outfile, temp_time)
 
 	#run fls to get information for $UsrJrnl files
-	fls_command = "fls -Fpr -f ntfs -i raw -o " + str(key_bytes) + " " + Image_Path + " | grep -i -r '\$UsnJrnl.\$J$' | sed s/:// | sed s/*// > /tmp/fls_output_ntfs_" + temp_time + ".txt"
+	fls_command = "fls -Fpr -f ntfs -i raw -o " + str(key_bytes) + " " + Image_Path + " | grep -i '\$UsnJrnl.\$J$' | sed s/:// | sed s/*// > /tmp/fls_output_ntfs_" + temp_time + ".txt"
 	#print ("\nThe fls command is: " + fls_command + "\n")
 	print("\nSearching for $UsrJrnl files")
 	outfile.write("The fls command is: " + fls_command + "\n")
@@ -326,6 +340,7 @@ def extract_ntfs_artifacts_mr(item_to_process, case_number, root_folder_path, ev
 		else:
 			print("This partition is not formatted NTFS or FAT32")
 			outfile.write("This partition is not formatted NTFS or FAT32\n\n")
+			vssvolume_mnt = "NULL"
 
 	#run fdupes against output path to eliminate dupes
 	remove_dupes_module_noask(folder_path, outfile, str(key))
@@ -360,7 +375,8 @@ def extract_ntfs_artifacts_mr(item_to_process, case_number, root_folder_path, ev
 	outfile.close()
 
 	#delete temp files
-	os.remove('/tmp/fls_output_ntfs_' + temp_time + '.txt')
+	if(os.path.exists('/tmp/fls_output_ntfs_' + temp_time + '.txt')):
+		os.remove('/tmp/fls_output_ntfs_' + temp_time + '.txt')
 	
 	#run text files through unix2dos
 	for root, dirs, files in os.walk(folder_path):

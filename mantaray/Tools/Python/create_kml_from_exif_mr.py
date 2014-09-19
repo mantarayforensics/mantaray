@@ -2,18 +2,30 @@
 #Recurses an entire image file locates files that may contain data of interest
 
 #import modules
-import shutil
-
+from easygui import *
+from get_case_number import *
+from get_output_location import *
+from select_file_to_process import *
+from select_folder_to_process import *
 from parted import *
 from mmls import *
 from mount import *
 from mount_ewf import *
+from done import *
+from unix2dos import *
 from convert_dms_to_decimal import *
 from check_for_folder import *
 from mount_encase_v6_l01 import *
+
+import os
+import re
+import io
+import sys
+import string
+import subprocess
+import shutil
 import simplekml
-
-
+import datetime
 
 ### PROCESS SINGLE FILE #########################################################################################################
 def process_single_file(evidence, outfile, folder_path, key, outfile3):
@@ -56,22 +68,23 @@ def process_single_file(evidence, outfile, folder_path, key, outfile3):
 			print("The longitude is: " + str(longitude))
 
 
-			#add data to kml file
-			kml.newpoint(name=filenames, coords=[(latitude, longitude)])
+			if not(longitude == "NULL") and not (latitude =="NULL"):
+				#add data to kml file
+				kml.newpoint(name=filenames, coords=[(latitude, longitude)])
 
-			#save kml file
-			kml.save("GPS_EXIF_data.kml")			
+				#save kml file
+				kml.save("GPS_EXIF_data.kml")			
 
-			#add filename to list
-			files_of_interest_list.append(filenames)
+				#add filename to list
+				files_of_interest_list.append(filenames)
 
-			#get filesize
-			file_size = os.path.getsize(evidence) 
-			file_size = int(file_size)//1024
-			#calculate MD5 value of file
-			md5value = subprocess.check_output(["md5sum " + quoted_full_path + "| awk '{print $1}'"], shell=True, universal_newlines=True)
-			md5value = md5value.strip()
-			outfile3.write(quoted_full_path + "\t" + md5value + "\t" + str(file_size) + "\n")
+				#get filesize
+				file_size = os.path.getsize(evidence) 
+				file_size = int(file_size)//1024
+				#calculate MD5 value of file
+				md5value = subprocess.check_output(["md5sum " + quoted_full_path + "| awk '{print $1}'"], shell=True, universal_newlines=True)
+				md5value = md5value.strip()
+				outfile3.write(quoted_full_path + "\t" + md5value + "\t" + str(file_size) + "\n")
 
 
 #################################################################################################################################
@@ -291,7 +304,7 @@ def create_kml_from_exif_mr(item_to_process, case_number, root_folder_path, evid
 				#unmount and remove mount points
 				if(os.path.exists(mount_point)): 
 					subprocess.call(['sudo umount -f ' + mount_point], shell=True)
-					os.rmdir(mount_point)
+					#os.rmdir(mount_point)
 				#unmount loopback device if this image was HFS+ - need to run losetup -d <loop_device> before unmounting
 				if not (loopback_device_mount == "NONE"):
 					losetup_d_command = "losetup -d " + loopback_device_mount
