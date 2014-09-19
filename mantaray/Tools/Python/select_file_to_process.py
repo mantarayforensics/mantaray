@@ -19,32 +19,32 @@
 #along with this program.  If not, see http://www.gnu.org/licenses/.     #
 #########################COPYRIGHT INFORMATION############################
 
-from share.Tools.Python.easygui import *
+from easygui import *
 import sys
 
 def select_file_to_process(outfile):
-	#this function asks the user to select a disk image to process via a GUI
-	#if the path to a logfile is passed then write out data to logfile
+    #this function asks the user to select a disk image to process via a GUI
+    #if the path to a logfile is passed then write out data to logfile
 
-	Image_Path = fileopenbox(msg="Select File to Process",title="Select File",default='/mnt/hgfs/*.*')
-	#Image_Path = fileopenbox(msg="Select File to Process",title="Select File",default=None)
-	if Image_Path == None:
-		print ("Image File not specified")
-		sys.exit(0)
-	else:
-		print("*************************************************************************")	
-		print("File selected: " + Image_Path)
-		print("*************************************************************************", end = "\n\n")
+    Image_Path = fileopenbox(msg="Select File to Process",title="Select File",default='/mnt/hgfs/*.*')
+    #Image_Path = fileopenbox(msg="Select File to Process",title="Select File",default=None)
+    if Image_Path == None:
+        print ("Image File not specified")
+        sys.exit(0)
+    else:
+        print("*************************************************************************")
+        print("File selected: " + Image_Path)
+        print("*************************************************************************\n\n")
 
-		if(outfile != "NONE"):
-			outfile.write("File selected: " + Image_Path + "\n\n")
+        if(outfile != "NONE"):
+            outfile.write("File selected: " + Image_Path + "\n\n")
 
-	#add quotes to image path in case of spaces
-	quoted_path = "'" +Image_Path +"'"
+    #add quotes to image path in case of spaces
+    quoted_path = "'" + Image_Path + "'"
 
-	
-	
-	#return the quoted path
-	return quoted_path
+
+
+    #return the quoted path
+    return quoted_path
 
 ### GET IMAGE TO PROCESS #############################################################################################

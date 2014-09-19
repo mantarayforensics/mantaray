@@ -18,17 +18,16 @@
 #along with this program.  If not, see http://www.gnu.org/licenses/.     #
 #########################COPYRIGHT INFORMATION############################
 
-from share.Tools.Python.easygui import *
+from easygui import *
+
 
 def select_folder_to_process(outfile):
-	folder = diropenbox(msg='', title='Select Folder to Process', default='/mnt/hgfs/')
-	
-	#add quotes to image path in case of spaces
-	quoted_path = "'" +folder +"'"
+    folder = diropenbox(msg='', title='Select Folder to Process', default='/mnt/hgfs/')
 
-	if(outfile != "NONE"):
-			outfile.write("Folder selected: " + quoted_path + "\n\n")
+    #add quotes to image path in case of spaces
+    quoted_path = "'" +folder +"'"
 
-	return folder
+    if(outfile != "NONE"):
+            outfile.write("Folder selected: " + quoted_path + "\n\n")
 
-	
+    return folder

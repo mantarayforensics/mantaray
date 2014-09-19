@@ -25,7 +25,7 @@ import re
 import subprocess
 import datetime
 
-from share.Tools.Python.get_case_number import *
+from get_case_number import *
 from select_file_to_process import *
 from parted import *
 from mount_ewf import *
@@ -35,11 +35,11 @@ from mmls import *
 
 def process_shadow_volumes(value, key, Image_Path, outfile_log, case_number, folder_path):
 
-	vshadowinfo_command = "vshadowinfo -o " + str(key) + " " + Image_Path + ">> " + folder_path + "/Partition_" + str(key) + "/shadow_volume_info.txt"
-	print("The vshadow info command is: " + vshadowinfo_command)
+    vshadowinfo_command = "vshadowinfo -o " + str(key) + " " + Image_Path + ">> " + folder_path + "/Partition_" + str(key) + "/shadow_volume_info.txt"
+    print("The vshadow info command is: " + vshadowinfo_command)
 
-	#run command
-	subprocess.call([vshadowinfo_command], shell=True)
+    #run command
+    subprocess.call([vshadowinfo_command], shell=True)
 
 #### MAIN PROGRAM #####################################################################
 
@@ -62,13 +62,13 @@ filename_to_process = (os.path.basename(Image_Path))
 filename_to_process = filename_to_process[:-1]
 
 #check if Image file is in Encase format
-if re.search (".E01", Image_Path):
-	#get date
-	now = datetime.datetime.now()
+if re.search(".E01", Image_Path):
+    #get date
+    now = datetime.datetime.now()
 
-	#set mount point
-	mount_point = "/mnt/" + now.strftime("%Y-%m-%d_%H_%M_%S")
-	Image_Path = mount_ewf(Image_Path, outfile_log, mount_point)
+    #set mount point
+    mount_point = "/mnt/" + now.strftime("%Y-%m-%d_%H_%M_%S")
+    Image_Path = mount_ewf(Image_Path, outfile_log, mount_point)
 
 #call mmls function
 partition_info_dict = mmls(outfile, Image_Path)
@@ -79,42 +79,42 @@ file_size = os.path.getsize("/tmp/mmls_output.txt")
 
 #if filesize of mmls output is 0 then run parted
 if(file_size == 0):
-	print("mmls output was empty, running parted")
-	outfile.write("mmls output was empty, running parted")
-	#call parted function
-	partition_info_dict = parted(outfile, Image_Path)
-	#folder_process = select_folder_to_process(outfile)	
+    print("mmls output was empty, running parted")
+    outfile.write("mmls output was empty, running parted")
+    #call parted function
+    partition_info_dict = parted(outfile, Image_Path)
+    #folder_process = select_folder_to_process(outfile)
 
 else:
 
-	#read through the mmls output and look for GUID Partition Tables (used on MACS)
-	mmls_output_file = open("/tmp/mmls_output.txt", 'r')
-	for line in mmls_output_file:
-		if re.search("GUID Partition Table", line) or re.search("MAC Partition Map", line):
-			print("We found a GUID partition table, need to use parted")
-			outfile.write("We found a GUID partition table, need to use parted\n")
-			#call parted function
-			partition_info_dict = parted(outfile, Image_Path)
+    #read through the mmls output and look for GUID Partition Tables (used on MACS)
+    mmls_output_file = open("/tmp/mmls_output.txt", 'r')
+    for line in mmls_output_file:
+        if re.search("GUID Partition Table", line) or re.search("MAC Partition Map", line):
+            print("We found a GUID partition table, need to use parted")
+            outfile.write("We found a GUID partition table, need to use parted\n")
+            #call parted function
+            partition_info_dict = parted(outfile, Image_Path)
 
-	#close file
-	mmls_output_file.close()
+    #close file
+    mmls_output_file.close()
 
 #loop through dictionary containing partition info (filesystem-> VALUE, offset-> KEY)
 
 for key,value in partition_info_dict.items():
-	if(value == "ntfs"):
-		if not os.path.exists(folder_path + "/Partition_" + str(key)):
-			os.makedirs(folder_path + "/Partition_" + str(key))
-			print("Just created output folder: " + folder_path + "/Partition_" + str(key))
-			outfile_log.write("Just created output folder: " + folder_path + "/Partition_" + str(key) + "\n\n")
-		else:
-			print("Output folder: " + folder_path + "/Partition_" + str(key))
-			
-		#call function to process shadow volume info
-		process_shadow_volumes(value, key, Image_Path, outfile_log, case_number, folder_path)
-	else:
-		print("This partition is not formatted NTFS")
-		outfile_log.write("This partition is not formatted NTFS\n\n")
+    if(value == "ntfs"):
+        if not os.path.exists(folder_path + "/Partition_" + str(key)):
+            os.makedirs(folder_path + "/Partition_" + str(key))
+            print("Just created output folder: " + folder_path + "/Partition_" + str(key))
+            outfile_log.write("Just created output folder: " + folder_path + "/Partition_" + str(key) + "\n\n")
+        else:
+            print("Output folder: " + folder_path + "/Partition_" + str(key))
+
+        #call function to process shadow volume info
+        process_shadow_volumes(value, key, Image_Path, outfile_log, case_number, folder_path)
+    else:
+        print("This partition is not formatted NTFS")
+        outfile_log.write("This partition is not formatted NTFS\n\n")
 
 outfile_log.close()
 
@@ -123,22 +123,22 @@ os.chdir(folder_path)
 
 #run text files through unix2dos
 for root, dirs, files in os.walk(folder_path):
-	for filenames in files:
-		#get file extension
-		fileName, fileExtension = os.path.splitext(filenames)
-		if(fileExtension.lower() == ".txt"):
-			full_path = os.path.join(root, filenames)
-			quoted_full_path = "'"+full_path+"'"
+    for filenames in files:
+        #get file extension
+        fileName, fileExtension = os.path.splitext(filenames)
+        if(fileExtension.lower() == ".txt"):
+            full_path = os.path.join(root, filenames)
+            quoted_full_path = "'"+full_path+"'"
 
-			print("Running unix2dos against file: " + filenames)
-			unix2dos_command = "sudo unix2dos " + filenames
-			subprocess.call([unix2dos_command], shell=True)
+            print("Running unix2dos against file: " + filenames)
+            unix2dos_command = "sudo unix2dos " + filenames
+            subprocess.call([unix2dos_command], shell=True)
 
 #unmount and remove mount points
 if re.search(".E01", Image_Path):
-	if(os.path.exists(mount_point+_ewf")):
-		subprocess.call(['sudo unmount -f ' + mount_point + "_ewf"], shell=True)
-		os.rmdir(mount_point + "_ewf")
+    if(os.path.exists(mount_point+"_ewf")):
+        subprocess.call(['sudo unmount -f ' + mount_point + "_ewf"], shell=True)
+        os.rmdir(mount_point + "_ewf")
 
 #tell user the process is done
 done(folder_path)

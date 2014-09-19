@@ -20,7 +20,7 @@
 #########################COPYRIGHT INFORMATION############################
 
 
-from share.Tools.Python.easygui import *
+from easygui import *
 
 
 def done(folder_path):

@@ -4,7 +4,7 @@
 #import modules
 import shutil
 
-from share.Tools.Python.get_case_number import *
+from get_case_number import *
 from get_output_location import *
 from select_file_to_process import *
 from select_folder_to_process import *

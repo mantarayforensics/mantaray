@@ -19,20 +19,22 @@
 #along with this program.  If not, see http://www.gnu.org/licenses/.     #
 #########################COPYRIGHT INFORMATION############################
 
-from share.Tools.Python.easygui import *
+from easygui import *
+import sys
+
 
 def get_case_number():
-	#global case_number
-	case_number = enterbox(msg="Please Enter Case Number", title='Case Number',default='',strip=True,image=None,root=None)
-	if case_number == None:
-		print ("Cancel chosen")
-		sys.exit(0)
-	if case_number == "":
-		print ("Case number is missing.")
-		sys.exit(0)
+    #global case_number
+    case_number = enterbox(msg="Please Enter Case Number", title='Case Number',default='',strip=True,image=None,root=None)
+    if case_number == None:
+        print ("Cancel chosen")
+        sys.exit(0)
+    if case_number == "":
+        print ("Case number is missing.")
+        sys.exit(0)
 
-	#replace spaces with underscores
-	case_number.replace(" ","_")
-	return case_number
+    #replace spaces with underscores
+    case_number.replace(" ","_")
+    return case_number
 
 ### GET CASE ID ###

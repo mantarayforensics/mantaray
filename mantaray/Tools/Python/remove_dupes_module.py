@@ -23,67 +23,59 @@
 import os
 import subprocess
 
-from share.Tools.Python.done import *
+from done import *
 from unix2dos import *
 
 
 def remove_dupes_module(folder, outfile):
 
-	#add quotes to image path in case of spaces
-	quoted_path = "'" +folder +"'"
+    #add quotes to image path in case of spaces
+    quoted_path = "'" + folder + "'"
 
-	#ask if user wants to backup their files before removing dupes
-	answer = boolbox(msg='Do you want to make a backup copy of your folder before removing the dupes?', title=' ', choices=('Yes', 'No'), image=None)
+    #ask if user wants to backup their files before removing dupes
+    answer = boolbox(msg='Do you want to make a backup copy of your folder before removing the dupes?', title=' ', choices=('Yes', 'No'), image=None)
 
-	if(answer == 1):
-		copy_command = "sudo cp -r " + quoted_path + " /tmp"
-		print("Copying folder to /tmp\n")
-		subprocess.call([copy_command], shell=True)
-	
-		msgbox(msg='(Your folder has been copied to /tmp)', title='Copy Complete ', ok_button='OK', image=None, root=None)
+    if(answer == 1):
+        copy_command = "sudo cp -r " + quoted_path + " /tmp"
+        print("Copying folder to /tmp\n")
+        subprocess.call([copy_command], shell=True)
 
-	no_quotes = quoted_path.replace("'","")
-	log_file_path = "/tmp/duplicates_log.txt"
+        msgbox(msg='(Your folder has been copied to /tmp)', title='Copy Complete ', ok_button='OK', image=None, root=None)
 
-	remove_dupes_command = "sudo fdupes -r -d -N " + quoted_path + " >> /tmp/fdupes_duplicates_log.txt"
-	print ("The remove dupes command is: " + remove_dupes_command, end ="\n\n")
-	print ("Removing duplicate files recursively from folder: " + quoted_path, end ="\n\n")
+    no_quotes = quoted_path.replace("'","")
+    log_file_path = "/tmp/duplicates_log.txt"
+
+    remove_dupes_command = "sudo fdupes -r -d -N " + quoted_path + " >> /tmp/fdupes_duplicates_log.txt"
+    print ("The remove dupes command is: " + remove_dupes_command + "\n\n")
+    print ("Removing duplicate files recursively from folder: " + quoted_path + "\n\n")
 
 
-	#run the remove dupes command
-	subprocess.call([remove_dupes_command], shell=True)
+    #run the remove dupes command
+    subprocess.call([remove_dupes_command], shell=True)
 
-	#get filesize of mmls_output.txt
-	file_size = os.path.getsize("/tmp/fdupes_duplicates_log.txt") 
+    #get filesize of mmls_output.txt
+    file_size = os.path.getsize("/tmp/fdupes_duplicates_log.txt")
 
-	#if filesize of mmls output is 0 then run parted
-	if(file_size == 0):
-		print("No duplicates found\n")
-		outfile = open(log_file_path, 'wt+')
-		outfile.write("No duplicate files found!")
-		os.remove("/tmp/fdupes_duplicates_log.txt")
-		#close outfile
-		outfile.close()
-	else:
-		#if log file exists then run unix2dos against the logfile
-		unix2dos("/tmp/fdupes_duplicates_log.txt")
+    #if filesize of mmls output is 0 then run parted
+    if(file_size == 0):
+        print("No duplicates found\n")
+        outfile = open(log_file_path, 'wt+')
+        outfile.write("No duplicate files found!")
+        os.remove("/tmp/fdupes_duplicates_log.txt")
+        #close outfile
+        outfile.close()
+    else:
+        #if log file exists then run unix2dos against the logfile
+        unix2dos("/tmp/fdupes_duplicates_log.txt")
 
-		
-		
+    #remove empty directories
+    for root,dirs,files in os.walk(no_quotes):
+        for directories in dirs:
+            dir_name = os.path.join(root,directories)
+            #if directory is empty then delete it
+            if not os.listdir(dir_name):
+                os.rmdir(dir_name)
 
-	#remove empty directories	
-	for root,dirs,files in os.walk(no_quotes):
-		for directories in dirs:
-			dir_name = os.path.join(root,directories)
-			#if directory is empty then delete it
-			if not os.listdir(dir_name):
-				os.rmdir(dir_name)
-
-	#move log file to folder
-	move_command = "mv /tmp/*duplicates_log.txt " + quoted_path
-	subprocess.call([move_command], shell=True)
-
-	
-
-	
-
+    #move log file to folder
+    move_command = "mv /tmp/*duplicates_log.txt " + quoted_path
+    subprocess.call([move_command], shell=True)
