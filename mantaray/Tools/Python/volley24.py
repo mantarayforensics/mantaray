@@ -116,7 +116,7 @@ def main(fin, profile, num_thread, out):
                    "linux_check_afinfo","linux_check_creds","linux_check_evt_arm","linux_check_fop","linux_check_idt",
                    "linux_check_inline_kernel","linux_check_modules","linux_check_syscall","linux_check_syscall_arm",
                    "linux_check_tty","linux_cpuinfo","linux_dentry_cache","linux_dmesg","linux_dump_map","linux_elfs",
-                   "linux_enumerate_files","linux_find_file","linux_hidden_modules","linux_ifconfig","linux_info_regs",
+                   "linux_enumerate_files","linux_find_file","linux_hidden_modules","linux_ifconfig",
                    "linux_iomem","linux_kernel_opened_files","linux_keyboard_notifiers","linux_ldrmodules",
                    "linux_library_list","linux_librarydump","linux_list_raw","linux_lsmod","linux_lsof","linux_malfind",
                    "linux_memmap","linux_moddump","linux_mount","linux_mount_cache","linux_netfilter","linux_netstat",
@@ -125,7 +125,39 @@ def main(fin, profile, num_thread, out):
                    "linux_pslist_cache","linux_pstree","linux_psxview","linux_recover_filesystem","linux_route_cache",
                    "linux_sk_buff_cache","linux_slabinfo","linux_strings","linux_threads","linux_tmpfs",
                    "linux_truecrypt_passphrase","linux_vma_cache","linux_yarascan"]
-        pid_plugins = ["linux_lsof", "linux_memmap", "linux_proc_maps", "linux_netstat", "linux_yarascan"]
+
+        pid_plugins = ["linux_apihooks", "linux_bash", "linux_bash_env", "linux_bash_hash", "linux_check_creds",
+                       "linux_dump_map", "linux_elfs", "linux_ldrmodules", "linux_library_list", "linux_library_dump",
+                       "linux_lsof", "linux_malfind", "linux_memmap", "linux_netstat", "linux_pidhashtable",
+                       "linux_pkt_queues", "linux_proc_maps", "linux_proc_maps_rb", "linux_procdump",
+                       "linux_process_hollow", "linux_psaux", "linux_psenv", "linux_pslist", "linux_pslist_cache",
+                       "linux_pstree", "linux_strings", "linux_threads", "linux_truecrypt_passphrase"]
+
+        plugins_dump = ["linux_dump_map", "linux_library_dump", "linux_moddump", "linux_pkt_queues", "linux_procdump",
+                        "linux_recover_filesystem", "linux_sk_buff_cache", "linux_yarascan"]
+        """
+        Extra Info
+        linux_vma_cache: -u show unallocated
+        linux_tmpfs: -S SB super block to process | -L list available superblocks
+        linux_strings: -S STRING_FILE file output in string format | -S use psscan if no offest provided | -o HEX offset of Physical addr
+        linux_sk_buff_cache: -u show unallocated
+        linux_route_cache: -R resolve DNS of remote IP
+        linux_pslist_cache: -u show unallocated
+        linux_process_hollow: -P PATH to known good file
+        linux_plthook: -a display all PLT slots
+        linux_pkt_queues: -U ignore unix sockets
+        linux_netstat: -U ignore unix sockets
+        linux_mount_cache: -u show unallocated
+        linux_moddump: -r REGEX | -i ignore case
+        linux_lsmod: -T show section addresses | -P show module parameters | -c IDC file to be created for module
+        linux_info_regs: Broken and removed from list
+        linux_find_file: -L list all files cached in memory | -i INODE to extract
+        linux_dentry_cache: -u show unallocated
+        linux_check_fop: -i INODE to check
+        linux_apihooks: -a Check all functions, including those with PLT hooks
+        linux_bash_hash: -A scann all processes
+        linux_bash: -A scan all processes, not just those named in bash | -P print unallocated entries | -H HISTORY_LIST
+        """
 
     elif profile.startswith("Mac"):
         # removed mac_volshell 
@@ -148,7 +180,7 @@ def main(fin, profile, num_thread, out):
                        "mac_pid_hash_table", "mac_procdump", "mac_psaux", "mac_pslist", "mac_pstree", "mac_strings",
                        "mac_tasks"]
         plugins_dump = ["mac_adium", "mac_dump_maps", "mac_librarydump", "mac_malfind", "mac_memdump", "mac_moddump"
-                       "mac_procdump", "mac_recover_filesystem", "mac_yarascan"]
+                        "mac_procdump", "mac_recover_filesystem", "mac_yarascan"]
         """
         Extra Features to research in future:
         mac_yara: Has a lot of features about yara info
