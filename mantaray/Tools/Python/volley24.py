@@ -44,9 +44,9 @@ def run_pid_plugin(fin, profile, plug, out, count, plugins, pid, profile_path, d
     else:
         cmd += " --output-file=" + out + plug + ".txt"
     subprocess.call(cmd, shell=True, stderr=ERRFILE)
-    status =  str("[Thread " + str(datetime.datetime.now()) + "] Completed PID " + pid + " " + plug + ", " + str(count) + " of " + str(len(plugins)-1))
-    print str(status)
-    OUTFILE.write(str(status))
+    status = str("[Thread " + str(datetime.datetime.now()) + "] Completed PID " + pid + " " + plug + ", " + str(count) + " of " + str(len(plugins)-1))
+    print(status)
+    OUTFILE.write(status)
 
 
 def run_plugin(fin, profile, plug, out, count, plugins, profile_path, dump_plugin):
@@ -65,8 +65,8 @@ def run_plugin(fin, profile, plug, out, count, plugins, profile_path, dump_plugi
 
     subprocess.call(cmd, shell=True, stderr=ERRFILE)
     status = str("[Thread " + str(datetime.datetime.now()) + "] Completed " + plug + ", " + str(count) + " of " + str(len(plugins)-1))
-    print str(status)
-    OUTFILE.write(str(status))
+    print(status)
+    OUTFILE.write(status)
 
 
 def main(fin, profile, num_thread, out, pid_enabled, dump_enabled):
@@ -85,8 +85,7 @@ def main(fin, profile, num_thread, out, pid_enabled, dump_enabled):
     elif profile.__contains__("x86"):
         profile_path = "/usr/share/mantaray/volatility_profiles/x86/"
     else:
-        print "Scanning for suggested profile...\n[Warn] This may take a while depending on file size\n[Warn] " \
-              "This scan only works with Windows Profiles"
+        print("Scanning for suggested profile...\n[Warn] This may take a while depending on file size\n[Warn] This scan only works with Windows Profiles")
 
         #run first volatility command to get image type
         print("Checking RAM image for imageinfo information...This may take a few minutes....\n")
@@ -234,7 +233,7 @@ def main(fin, profile, num_thread, out, pid_enabled, dump_enabled):
         """
 
     else:
-        print "Invalid Profile Selected"
+        print("Invalid Profile Selected")
         OUTFILE.write("Invalid Profile Selected")
         sys.exit(1)
 
@@ -248,9 +247,9 @@ def main(fin, profile, num_thread, out, pid_enabled, dump_enabled):
         while 1:
             if threading.activeCount() <= num_thread:
                 status = str("[Thread " + str(datetime.datetime.now()) + "] Starting plugin " + plug)
-                print str(status)
+                print(status)
                 OUTFILE.flush()
-                OUTFILE.write(str(status))
+                OUTFILE.write(status)
                 t = threading.Thread(target=run_plugin, args=[fin, profile, plug, out, count, plugins, profile_path,  plugins_dump])
                 t.start()
                 break
@@ -265,7 +264,7 @@ def main(fin, profile, num_thread, out, pid_enabled, dump_enabled):
                 pid = int(proc["PID"])
                 forward = 1
             except:
-                print 'Could not parse PID: ' + proc["PID"]
+                print('Could not parse PID: ' + proc["PID"])
                 OUTFILE.write('Could not parse PID: ' + proc["PID"])
                 forward = 0
             if forward:
@@ -276,8 +275,8 @@ def main(fin, profile, num_thread, out, pid_enabled, dump_enabled):
                     while 1:
                         if threading.activeCount() <= num_thread:
                             status = str("[Thread " + str(datetime.datetime.now()) + "] Starting PID " + str(pid) + " plugin " + pid_plug)
-                            print str(status)
-                            OUTFILE.write(str(status))
+                            print(status)
+                            OUTFILE.write(status)
                             t = threading.Thread(target=run_pid_plugin, args=[fin, profile, pid_plug, path_out, count, pid_plugins, str(pid), profile_path, plugins_dump])
                             t.start()
                             break
@@ -287,18 +286,18 @@ def main(fin, profile, num_thread, out, pid_enabled, dump_enabled):
     while 1:
         if threading.activeCount() == 1:
             status = str("[Main " + str(datetime.datetime.now()) + "] Completed")
-            print str(status)
-            OUTFILE.write(str(status))
+            print(status)
+            OUTFILE.write(status)
             status = str("[Main " + str(datetime.datetime.now()) + "] Runtime: " + str(datetime.datetime.now()-start))
-            print str(status)
-            OUTFILE.write(str(status))
+            print(status)
+            OUTFILE.write(status)
             OUTFILE.close()
             break
         else:
             if time.time() % 120 == 0:  # Wait 2 minutes to prompt the user that threads are still running
                 status = str("[Main " + str(datetime.datetime.now()) + "] waiting for " + str(threading.activeCount()-1) + " threads to finish")
-                print str(status)
-                OUTFILE.write(str(status))
+                print(status)
+                OUTFILE.write(status)
 
 if __name__ == "__main__":
 

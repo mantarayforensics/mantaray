@@ -563,12 +563,13 @@ for x in processing_scripts_list:
 
         ## Allow user to select PID/DUMP options
         processing_options_cmd = """zenity --list --checklist --title "Mantaray - ManTech Triage & Analysis System        MantaRayForensics.com  |  v1.4" --text="The below options provide additional processing options for memory images with Volatility 2.4. \n Though they will provide more information, it will also take more time depending on the resources allocated." --column="Selection" --column="Name" --column="Description" --separator="," FALSE "PID Processing" "Run available plugins across the discovered PIDs" FALSE "Dump Data" "Use the dump directory function to export data from the memory image." """
-        proc_options = subprocess.call(processing_options_cmd, shell=True)
+        proc_options = subprocess.check_output(processing_options_cmd, shell=True)
+        proc_options_array = proc_options.decode('utf-8').split(",")
         pid_enabled = False
         dump_enabled = False
-        if "PID Processing" in proc_options:
+        if "PID Processing" in proc_options_array:
             pid_enabled = True
-        elif "Dump Data" in proc_options:
+        elif "Dump Data" in proc_options_array:
             dump_enabled = True
 
         ## Allow user to select resources to run
@@ -580,7 +581,7 @@ for x in processing_scripts_list:
             sys.exit(0)
 
         ## convert user answer to number of cores to use
-        speed = speed.strip()
+        speed = vol_processor.strip()
         #calculate number of processors to use (Speed-Slow, Speed-Fast, Speed-Med
         calc_cores_command = "cat /proc/cpuinfo | grep processor | wc -l"
         num_of_cores = subprocess.check_output([calc_cores_command], shell=True)
@@ -595,7 +596,7 @@ for x in processing_scripts_list:
         elif(speed == "Speed-Med"):
             num_threads = int(num_of_cores)//2
         elif(speed == "Speed-Fast"):
-            num_threads = num_of_cores
+            num_threads = int(num_of_cores)
 
         print("Volatility Performance: " + vol_processor.strip())
         gui_outfile.write("Volatility Performance:" + "\t" + vol_processor.strip() + "\n")
@@ -741,11 +742,11 @@ for x in processing_scripts_list:
                     gui_outfile.write("Foremost failed...Please reprocess with Debug Mode ON - running MantaRay from command line as root\n")
     elif x == 'Volatility':
         if(debug_mode == "ON"):
-            volley24.main(evidence_path.strip(), profile_to_use, num_threads, folder_path,  pid_enabled, dump_enabled)
+            volley24.main(evidence_path.strip(), profile_to_use, num_threads, folder_path + "/",  pid_enabled, dump_enabled)
             gui_outfile.write("Volatility...".ljust(35) + "completed successfully".ljust(55) + "\n")
         else:
             try:
-                volley24.main(evidence_path.strip(), profile_to_use, num_threads, folder_path,  pid_enabled, dump_enabled)
+                volley24.main(evidence_path.strip(), profile_to_use, num_threads, folder_path + "/",  pid_enabled, dump_enabled)
                 gui_outfile.write("Volatility...".ljust(35) + "completed successfully".ljust(55) + "\n")
             except:
                 print("Call to Volatility failed")
