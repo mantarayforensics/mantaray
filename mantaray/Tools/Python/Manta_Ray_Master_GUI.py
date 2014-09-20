@@ -28,6 +28,7 @@ from GUI_Timeline_mr import *
 from remove_duplicates_mr import *
 from carve_unallocated_mr import *
 from volatility_mr import *
+import volley24
 from exifdata_mr import *
 from extract_ntfs_artifacts_mr import *
 from create_kml_from_exif_mr import *
@@ -560,6 +561,45 @@ for x in processing_scripts_list:
             gui_outfile.write("Volatility Profile Selection: Imageinfo Selected by user")
             profile_to_use = "NOPROFILESELECTED"
 
+        ## Allow user to select PID/DUMP options
+        processing_options_cmd = """zenity --list --checklist --title "Mantaray - ManTech Triage & Analysis System        MantaRayForensics.com  |  v1.4" --text="The below options provide additional processing options for memory images with Volatility 2.4. \n Though they will provide more information, it will also take more time depending on the resources allocated." --column="Selection" --column="Name" --column="Description" --separator="," FALSE "PID Processing" "Run available plugins across the discovered PIDs" FALSE "Dump Data" "Use the dump directory function to export data from the memory image." """
+        proc_options = subprocess.call(processing_options_cmd, shell=True)
+        pid_enabled = False
+        dump_enabled = False
+        if "PID Processing" in proc_options:
+            pid_enabled = True
+        elif "Dump Data" in proc_options:
+            dump_enabled = True
+
+        ## Allow user to select resources to run
+        try:
+            vol_processor = subprocess.check_output(['zenity --list --radiolist --title "MantaRay - ManTech Triage & Analysis System		MantaRayForensics.com" --column="Selection" --column="Processor Performance" --column="Description" --separator="," FALSE "Speed-Slow" "Minimum Processing Cores" TRUE "Speed-Med" "Medium Processing Cores (Recommended)" FALSE "Speed-Fast" "Maximum Processing Cores (Warning - Processor Intensive)" --text="Processing Performance - Volatility" --width 800 --height 400'], shell=True, universal_newlines=True)
+        except:
+            print ("Cancel/Exit chosen")
+            gui_outfile.write("Volatility Processor: Processor Options - Aborted by user - Cancel/Exit chosen")
+            sys.exit(0)
+
+        ## convert user answer to number of cores to use
+        speed = speed.strip()
+        #calculate number of processors to use (Speed-Slow, Speed-Fast, Speed-Med
+        calc_cores_command = "cat /proc/cpuinfo | grep processor | wc -l"
+        num_of_cores = subprocess.check_output([calc_cores_command], shell=True)
+        num_of_cores = num_of_cores.decode(encoding='UTF-8')
+        num_of_cores = num_of_cores.strip()
+        print("This VM has " + str(num_of_cores) +" cores")
+
+        if(num_of_cores == "1"):
+            num_threads = 1
+        elif(speed == "Speed-Slow"):
+            num_threads = 1
+        elif(speed == "Speed-Med"):
+            num_threads = int(num_of_cores)//2
+        elif(speed == "Speed-Fast"):
+            num_threads = num_of_cores
+
+        print("Volatility Performance: " + vol_processor.strip())
+        gui_outfile.write("Volatility Performance:" + "\t" + vol_processor.strip() + "\n")
+
 
 #add code to Master outfile to break section between input and tool success
 gui_outfile.write("\n\n*************************** PROCESSING STATUS ***************************\n")
@@ -592,7 +632,7 @@ for x in processing_scripts_list:
                     print("Call to bulk_extractor failed")
                     gui_outfile.write("Bulk_Extractor failed...Please reprocess with Debug Mode ON - running MantaRay from command line as root\n")
         elif(whitelist_path == "") and (keyword_list_path != ""):
-            if(debub_mode):
+            if(debug_mode == "ON"):
                 be_mr(evidence_type, case_number, folder_path, evidence_path.strip(), "NONE", bulkextractor_processor, keyword_list_path.strip())
                 gui_outfile.write("Bulk_Extractor...".ljust(35) + "completed successfully".ljust(55) + "\n")
             else:
@@ -701,11 +741,11 @@ for x in processing_scripts_list:
                     gui_outfile.write("Foremost failed...Please reprocess with Debug Mode ON - running MantaRay from command line as root\n")
     elif x == 'Volatility':
         if(debug_mode == "ON"):
-            volatility_mr(case_number, folder_path,  evidence_path.strip(), profile_to_use)
+            volley24.main(evidence_path.strip(), profile_to_use, num_threads, folder_path,  pid_enabled, dump_enabled)
             gui_outfile.write("Volatility...".ljust(35) + "completed successfully".ljust(55) + "\n")
         else:
             try:
-                volatility_mr(case_number, folder_path,  evidence_path.strip())
+                volley24.main(evidence_path.strip(), profile_to_use, num_threads, folder_path,  pid_enabled, dump_enabled)
                 gui_outfile.write("Volatility...".ljust(35) + "completed successfully".ljust(55) + "\n")
             except:
                 print("Call to Volatility failed")

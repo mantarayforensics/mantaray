@@ -30,36 +30,49 @@ import vol_get_pids
 import easygui
 
 
-
-
-def run_pid_plugin(fin, profile, plug, out, count, plugins, pid, profile_path):
+def run_pid_plugin(fin, profile, plug, out, count, plugins, pid, profile_path, dump_plugin):
     """
     Will run a volatility plugin for a PID within a thread.
 
     ::NOTE::
     * --plugins= must precede -f in command for the profiles to be loaded correctly
     """
-    subprocess.call(["vol --plugins='" + profile_path + "' -f " + fin + " --profile=" + profile + " " + plug + " -p " + pid + " --output-file=" + out + plug + ".txt"], shell=True, stderr=ERRFILE)
+    cmd = "vol --plugins='" + profile_path + "' -f " + fin + " --profile=" + profile + " " + plug + " -p " + pid
+    if plug in dump_plugin:
+        os.mkdirs(out + pid + plug)
+        cmd += " -D " + out + pid + plug
+    else:
+        cmd += " --output-file=" + out + plug + ".txt"
+    subprocess.call(cmd, shell=True, stderr=ERRFILE)
     status =  str("[Thread " + str(datetime.datetime.now()) + "] Completed PID " + pid + " " + plug + ", " + str(count) + " of " + str(len(plugins)-1))
     print str(status)
     OUTFILE.write(str(status))
 
 
-def run_plugin(fin, profile, plug, out, count, plugins, profile_path):
+def run_plugin(fin, profile, plug, out, count, plugins, profile_path, dump_plugin):
     """
     Will run a volatility plugin within a thread.
 
     ::NOTE::
     * --plugins= must precede -f in command for the profiles to be loaded correctly
     """
-    subprocess.call(["vol --plugins=" + profile_path + " -f " + fin + "  --profile=" + profile + " " + plug + " > " + out + plug + ".txt"], shell=True, stderr=ERRFILE)
+    cmd = "vol --plugins=" + profile_path + " -f " + fin + "  --profile=" + profile + " " + plug
+    if plug in dump_plugin:
+        os.mkdirs(out + plug)
+        cmd += " -D " + out + plug
+    else:
+        cmd += " --output-file=" + out + plug + ".txt"
+
+    subprocess.call(cmd, shell=True, stderr=ERRFILE)
     status = str("[Thread " + str(datetime.datetime.now()) + "] Completed " + plug + ", " + str(count) + " of " + str(len(plugins)-1))
     print str(status)
     OUTFILE.write(str(status))
 
-def main(fin, profile, num_thread, out):
+
+def main(fin, profile, num_thread, out, pid_enabled, dump_enabled):
     global OUTFILE
     global ERRFILE
+
 
     # Set Logfile & Error Log
     log_file = out + "/Volatility_logfile.txt"
@@ -86,7 +99,6 @@ def main(fin, profile, num_thread, out):
 
         print("Profile selected: " + profile)
         sys.exit(1)
-
 
     if profile.startswith("Win"):
         plugins = ["kpcrscan","atoms","atomscan","auditpol","bigpools","bioskbd","callbacks","clipboard","cmdline",
@@ -130,7 +142,6 @@ def main(fin, profile, num_thread, out):
         malfind: needs `-y` to be specified
         impscan: needs `--base` to be specified
         """
-
 
     elif profile.startswith("Lin"):
         # removed linux_volshell
@@ -182,8 +193,7 @@ def main(fin, profile, num_thread, out):
         """
 
     elif profile.startswith("Mac"):
-        # removed mac_volshell 
-	# Needs --dump-dir "mac_notesapp",
+        # removed mac_volshell
         plugins = ["mac_adium", "mac_apihooks","mac_apihooks_kernel","mac_arp","mac_bash","mac_bash_env",
                    "mac_bash_hash","mac_calendar","mac_check_mig_table","mac_check_syscall_shadow",
                    "mac_check_syscalls","mac_check_sysctl","mac_check_trap_table","mac_contacts","mac_dead_procs",
@@ -194,13 +204,16 @@ def main(fin, profile, num_thread, out):
                    "mac_memdump","mac_moddump","mac_mount","mac_netstat","mac_network_conns",
                    "mac_notifiers","mac_pgrp_hash_table","mac_pid_hash_table","mac_print_boot_cmdline","mac_proc_maps",
                    "mac_procdump","mac_psaux","mac_pslist","mac_pstree","mac_psxview","mac_recover_filesystem",
-                   "mac_route","mac_socket_filters","mac_strings","mac_tasks","mac_trustedbsd","mac_version","mac_yarascan"]
+                   "mac_route","mac_socket_filters","mac_strings","mac_tasks","mac_trustedbsd","mac_version",
+                   "mac_yarascan"]
+
         pid_plugins = ["mac_proc_maps", "mac_adium", "mac_api_hooks", "mac_bash", "mac_bash_env", "mac_bash_hash",
                        "mac_calendar", "mac_contacts", "mac_dead_procs", "mac_dead_sockets", "mac_dead_vnodes",
                        "mac_dump_maps", "mac_dyld_maps", "mac_keychaindump", "mac_ldrmodules", "mac_librarydump",
                        "mac_list_sessions", "mac_lsof", "mac_memdump", "mac_netstat", "mac_pgrp_hash_table",
                        "mac_pid_hash_table", "mac_procdump", "mac_psaux", "mac_pslist", "mac_pstree", "mac_strings",
                        "mac_tasks"]
+
         plugins_dump = ["mac_adium", "mac_dump_maps", "mac_librarydump", "mac_malfind", "mac_memdump", "mac_moddump"
                         "mac_procdump", "mac_recover_filesystem", "mac_yarascan"]
         """
@@ -225,16 +238,20 @@ def main(fin, profile, num_thread, out):
         OUTFILE.write("Invalid Profile Selected")
         sys.exit(1)
 
+    # Remove all plugins for dump if it is disabled so they cannot match and run.
+    if not dump_enabled:
+        plugins_dump = []
+
     start = datetime.datetime.now()
 
     for count, plug in enumerate(plugins):
         while 1:
             if threading.activeCount() <= num_thread:
-                status = str("[Thread " +  str(datetime.datetime.now()) + "] Starting plugin " + plug)
-		print str(status)
+                status = str("[Thread " + str(datetime.datetime.now()) + "] Starting plugin " + plug)
+                print str(status)
                 OUTFILE.flush()
                 OUTFILE.write(str(status))
-                t = threading.Thread(target=run_plugin, args=[fin, profile, plug, out, count, plugins, profile_path])
+                t = threading.Thread(target=run_plugin, args=[fin, profile, plug, out, count, plugins, profile_path,  plugins_dump])
                 t.start()
                 break
             else:
@@ -242,36 +259,37 @@ def main(fin, profile, num_thread, out):
 
     pids_to_process = vol_get_pids.get_pids(fin, profile)
 
-    for proc in pids_to_process:
-        try:
-            pid = int(proc["PID"])
-            forward = 1
-        except:
-            print 'Could not parse PID: ' + proc["PID"]
-            OUTFILE.write('Could not parse PID: ' + proc["PID"])
-            forward = 0
-        if forward:
-            path_out = out + "/PID/" + proc["Name"] + "_" + str(pid) + "/"
-            os.makedirs(path_out)
+    if pid_enabled:
+        for proc in pids_to_process:
+            try:
+                pid = int(proc["PID"])
+                forward = 1
+            except:
+                print 'Could not parse PID: ' + proc["PID"]
+                OUTFILE.write('Could not parse PID: ' + proc["PID"])
+                forward = 0
+            if forward:
+                path_out = out + "/PID/" + proc["Name"] + "_" + str(pid) + "/"
+                os.makedirs(path_out)
 
-            for count, pid_plug in enumerate(pid_plugins):
-                while 1:
-                    if threading.activeCount() <= num_thread:
-                        status = str("[Thread " + str(datetime.datetime.now()) + "] Starting PID " + str(pid) + " plugin " + pid_plug)
-                        print str(status)
-                        OUTFILE.write(str(status))
-                        t = threading.Thread(target=run_pid_plugin, args=[fin, profile, pid_plug, path_out, count, pid_plugins, str(pid), profile_path])
-                        t.start()
-                        break
-                    else:
-                        time.sleep(4)
+                for count, pid_plug in enumerate(pid_plugins):
+                    while 1:
+                        if threading.activeCount() <= num_thread:
+                            status = str("[Thread " + str(datetime.datetime.now()) + "] Starting PID " + str(pid) + " plugin " + pid_plug)
+                            print str(status)
+                            OUTFILE.write(str(status))
+                            t = threading.Thread(target=run_pid_plugin, args=[fin, profile, pid_plug, path_out, count, pid_plugins, str(pid), profile_path, plugins_dump])
+                            t.start()
+                            break
+                        else:
+                            time.sleep(4)
 
     while 1:
         if threading.activeCount() == 1:
             status = str("[Main " + str(datetime.datetime.now()) + "] Completed")
             print str(status)
             OUTFILE.write(str(status))
-            status =  str("[Main " + str(datetime.datetime.now()) + "] Runtime: " + str(datetime.datetime.now()-start))
+            status = str("[Main " + str(datetime.datetime.now()) + "] Runtime: " + str(datetime.datetime.now()-start))
             print str(status)
             OUTFILE.write(str(status))
             OUTFILE.close()
@@ -284,15 +302,16 @@ def main(fin, profile, num_thread, out):
 
 if __name__ == "__main__":
 
-    parser = argparse.ArgumentParser(description="Volley24 is a tool used at the command line and with the MantaRau Suite for processing memory images in Volatility 2.4", epilog="Copyright Chapin Bryce, 2014 webmaster@mantarayforensics.com")
-    parser.add_argument('fin', help='File In')
-    parser.add_argument('profile', help='Volatility Profile Name (Using Volatility Syntax)')
-    # parser.add_argument('-p', help="Enable processing of a specific PID across plugins")
+    parser = argparse.ArgumentParser(description="Volley24 is a tool used at the command line and with the MantaRay Suite for processing memory images in Volatility 2.4", epilog="Copyright Chapin Bryce, 2014 webmaster@mantarayforensics.com")
+    parser.add_argument('-P', help="Enable processing of a specific PID across plugins")
+    parser.add_argument('-d', help="Enable plugins to dump data from memory images")
     parser.add_argument('-t', help="Specify the number of threads to run", required=True, type=int)
+    parser.add_argument('fin', help='Memory Image')
+    parser.add_argument('-p', metavar='PROFILE', help='Volatility Profile Name (Using Volatility Syntax)', required=True)
     parser.add_argument('out', help='Output Directory')
     args = parser.parse_args()
     fin = args.fin
-    profile = args.profile
+    profile = args.p
     num_thread = args.t
     out = args.out
-    main(fin, profile, num_thread, out)
+    main(fin, profile, num_thread, out, args.P, args.d)
