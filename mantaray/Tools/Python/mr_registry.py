@@ -89,6 +89,7 @@ def process_usrclass(abs_file_path, usrclass_plugins, file_name, folder_path, ou
 
 ### PROCESS OTHER HIVES ######################################################################
 
+
 def process_other_hives(abs_file_path, plugins, file_name, hive_name_info, folder_path, outfile):
 
     #get file metadata
@@ -130,6 +131,7 @@ def process_other_hives(abs_file_path, plugins, file_name, hive_name_info, folde
 
 ### PROCESS NTUSER HIVES ######################################################################
 
+
 def process_ntuser(abs_file_path, ntuser_plugins, file_name, folder_path, outfile):
     profile_name = get_profile_name(abs_file_path)
 
@@ -145,8 +147,6 @@ def process_ntuser(abs_file_path, ntuser_plugins, file_name, folder_path, outfil
     if not os.path.exists(folder_path + "/NTUSER_INFO/" + profile_name):
         os.mkdir(folder_path + "/NTUSER_INFO/" + profile_name)
         print("Creating directory: " + folder_path + "/NTUSER_INFO/" + profile_name)
-
-
 
     #process URSCLASS with plugins
     with open(ntuser_plugins) as fh:
@@ -216,6 +216,8 @@ def get_metadata(abs_file_path, file_name):
 
     return str(atime), md5
 #################################################################################################
+
+
 def mr_registry(case_number, folder_to_process, root_folder_path):
     print("The case_name is: " + case_number)
     print("The output folder is: " + root_folder_path)
@@ -252,6 +254,7 @@ def mr_registry(case_number, folder_to_process, root_folder_path):
     try:
         subprocess.call([ls_command], shell=True, stdout = f, stderr=subprocess.STDOUT)
         f.close()
+
     except:
         print("Call to ls command failed")
         f.close()
@@ -283,11 +286,7 @@ def mr_registry(case_number, folder_to_process, root_folder_path):
             hive_name_info = "SECURITY_INFO"
             process_other_hives(abs_file_path, security_plugins, file_name, hive_name_info, folder_path, outfile)
 
-
     f.close()
-
-
-
 
     #run text files through unix2dos
     for root, dirs, files in os.walk(folder_path):
@@ -307,4 +306,3 @@ def mr_registry(case_number, folder_to_process, root_folder_path):
     #delete /tmp/ls_output.txt
     if (os.path.exists("/tmp/ls_output_" + temp_time + ".txt")):
         os.remove("/tmp/ls_output_" + temp_time +".txt")
-

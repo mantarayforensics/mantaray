@@ -33,12 +33,15 @@ from check_for_folder import *
 
 
 ### GET BLOCK SIZE ##############################################################################################
+
+
 def get_block_size_mmls(Image_Path, outfile, temp_time):
     block_size = subprocess.check_output(['mmls -i raw ' + Image_Path + " | grep Units | awk '{print $4}' | sed s/-byte//"], shell=True, universal_newlines=True)
     block_size = block_size.strip()
     print("The block size is: " + str(block_size))
     outfile.write("The block size is: " + str(block_size) + "\n\n")
     return block_size
+
 
 def get_block_size_parted(outfile, temp_time):
     block_size_command = "sudo cat /tmp/timeline_partition_info_" + temp_time +".txt | grep -a " + "'"+"Sector size"+"'" + " | awk {'print $4'} | sed s_B/.*__"
@@ -51,6 +54,8 @@ def get_block_size_parted(outfile, temp_time):
 ### END GET BLOCK SIZE ##########################################################################################
 
 ### PROCESS FLS OUTPUT USRCLASS ############################################################
+
+
 def process_fls_output_usrclass(value, key, Image_Path, block_size, folder_path, item, outfile, temp_time):
     #divide offset by block size so it is in correct format for fls
     key_bytes = int(key)//int(block_size)
@@ -114,8 +119,6 @@ def process_fls_output_usrclass(value, key, Image_Path, block_size, folder_path,
                 icat_command = "icat -r -i raw -f " + value + " -o " + str(key_bytes) + " -b " + block_size + " " + Image_Path + " " + inode_number + " > " + "'" + folder_path + "/" + inode_number + "_Partition_" + str(key) + "_SHADOW_VOLUME_" + item + "_" + "OVERT_" + user_name + "_USRCLASS.DAT" + "'"
                 print("File Name: " + file_name.ljust(10) + "\t" "Inode number: " + inode_number.ljust(10) + "\t UserName: " + user_name.ljust(10))
 
-
-
         outfile.write("The icat command is: " + icat_command + "\n")
 
         #run icat command
@@ -129,6 +132,8 @@ def process_fls_output_usrclass(value, key, Image_Path, block_size, folder_path,
 ##########################################################################################
 
 ### PROCESS FLS OUTPUT NTUSER ############################################################
+
+
 def process_fls_output_ntuser(value, key, Image_Path, block_size, folder_path, item, outfile, temp_time):
     #divide offset by block size so it is in correct format for fls
     key_bytes = int(key)//int(block_size)
@@ -191,8 +196,6 @@ def process_fls_output_ntuser(value, key, Image_Path, block_size, folder_path, i
                 icat_command = "icat -r -i raw -f " + value + " -o " + str(key_bytes) + " -b " + block_size + " " + Image_Path + " " + inode_number + " > " + "'" + folder_path + "/" + inode_number + "_Partition_" + str(key) + "_SHADOW_VOLUME_" + item + "_" + "OVERT_" + user_name + "_NTUSER.DAT" + "'"
                 print("File Name: " + file_name.ljust(10) + "\t" "Inode number: " + inode_number.ljust(10) + "\t UserName: " + user_name.ljust(10))
 
-
-
         outfile.write("The icat command is: " + icat_command + "\n")
 
         #run icat command
@@ -204,6 +207,8 @@ def process_fls_output_ntuser(value, key, Image_Path, block_size, folder_path, i
 ##########################################################################################
 
 ### PROCESS FLS OUTPUT ###### ############################################################
+
+
 def process_fls_output(value, key, Image_Path, block_size, folder_path, item, outfile, temp_time):
     #divide offset by block size so it is in correct format for fls
     key_bytes = int(key)//int(block_size)
@@ -235,7 +240,6 @@ def process_fls_output(value, key, Image_Path, block_size, folder_path, item, ou
         inode_number = re.sub('^ +','', inode_number)
         inode_number = re.sub('\(', '', inode_number)
         inode_number = re.sub('\)','', inode_number)
-
 
         #get file_name
         file_name = newList[-1]
@@ -274,12 +278,11 @@ def process_fls_output(value, key, Image_Path, block_size, folder_path, item, ou
 
 ### PROCESS OVERT / DELETED HIVES ##############################################################################
 
+
 def process_overt_deleted_files(value, key, Image_Path, outfile, folder_path, block_size, item, file_loc, temp_time):
 
     #divide offset by block size so it is in correct format for fls
     key_bytes = int(key)//int(block_size)
-
-
 
     #run fls to get information for OVERT NTUSER hives
     fls_command = "fls -Fpr -f ntfs -i raw -o " + str(key_bytes) + " " + Image_Path + " | grep -i -r 'ntuser.dat$\|_Registry_USER_NTUSER\|ntuser.bak$\|ntuser.sav$\|ntuser.old$' | grep -v -i log | sed s/:// > /tmp/fls_output_" + temp_time + ".txt"
@@ -353,11 +356,11 @@ def process_overt_deleted_files(value, key, Image_Path, outfile, folder_path, bl
     #process fls output
     process_fls_output_usrclass(value, key, Image_Path, block_size, folder_path, item, outfile, temp_time)
 
-
-
 ### END PROCESS OVERT / DELETED HIVES ##############################################################################
 
 ### PROCESS UNALLOCATED FILES ##############################################################################
+
+
 def process_unallocated_clusters(value, key, Image_Path, outfile, case_number, folder_path, block_size):
 
     #convert filesystem information into format required by foremost
@@ -374,7 +377,7 @@ def process_unallocated_clusters(value, key, Image_Path, outfile, case_number, f
     #print("\nThe blkls command is: " + blkls_command + "\n")
     outfile.write("\nThe blkls command is: " + blkls_command + "\n")
 
-    foremost_command = "foremost -q -d -o " + "'" + folder_path  + "/Partition_" + str(key) + "/unallocated_files" + "'" +" -c /usr/local/src/Manta_Ray/Tools/conf_files/foremost.conf"
+    foremost_command = "foremost -q -d -o " + "'" + folder_path  + "/Partition_" + str(key) + "/unallocated_files" + "'" +" -c /usr/share/mantaray/Tools/conf_files/foremost.conf"
     #print("The foremost_command is: " + foremost_command + "\n")
     outfile.write("\nThe foremost_command is: " + foremost_command + "\n")
 
@@ -412,9 +415,11 @@ def process_unallocated_clusters(value, key, Image_Path, outfile, case_number, f
                 os.rename(abs_file_path, destination)
 
 
-### END PROCEss UNALLOCATED FILES ##########################################################################
+### END PROCESS UNALLOCATED FILES ##########################################################################
 
 ### CHECK FOR VALID REGISTRY HIVES ######################################
+
+
 def check_for_valid_hives(folder_path, outfile):
     for root, dirs, files in os.walk(folder_path):
         for file_name in files:
@@ -435,6 +440,7 @@ def check_for_valid_hives(folder_path, outfile):
 #########################################################################
 
 ### RESET REGISTRY HIVE TIMESTAMPS ##########################################################################
+
 
 def reset_registry_hive_timestamps(folder_path, outfile):
     #reset timestamps
@@ -472,10 +478,10 @@ def reset_registry_hive_timestamps(folder_path, outfile):
                     outfile.write("About to move file with no last accessed time: " + abs_file_path + " to: " + destination)
                     os.rename(abs_file_path, destination)
 
-
 #############################################################################################################
 
 ## GET HIVE TYPE ##########################################################
+
 
 def get_hive_type(folder_path, outfile, temp_time, key):
 
@@ -509,10 +515,10 @@ def get_hive_type(folder_path, outfile, temp_time, key):
     if (os.path.exists("/tmp/hives_to_rename_" + temp_time)):
         shutil.rmtree("/tmp/hives_to_rename_" + temp_time)
 
-
 ###########################################################################
 
 ### GET HIVE USERNAME #####################################################
+
 
 def get_hive_type_and_username(temp_time, file_name, outfile, abs_file_path, folder_path):
 
@@ -572,8 +578,8 @@ def get_hive_type_and_username(temp_time, file_name, outfile, abs_file_path, fol
 
                 destination = abs_file_path + "_" + ntuser_name_decode + "_NTUSER.dat"
                 os.rename(abs_file_path, destination)
-            else:
 
+            else:
                 print(file_name + ": is NTUSER.  NTUSER name is: UNKOWN -- renaming\n")
                 outfile.write(file_name + ": is NTUSER.  NTUSER name is: UNKNOWN -- renaming\n")
                 destination = abs_file_path + "_Unknown_UserName_NTUSER.dat"
@@ -636,6 +642,7 @@ def get_hive_type_and_username(temp_time, file_name, outfile, abs_file_path, fol
 
 ### CHECK FOR SHADOW VOLUMES ################################################
 
+
 def check_for_shadow_volumes(Image_Path, key, block_size, outfile, folder_path, temp_time):
 
     #set shadow volume variables
@@ -694,6 +701,7 @@ def check_for_shadow_volumes(Image_Path, key, block_size, outfile, folder_path, 
 
 #### MOUNT INDIVIDUAL SHADOW VOLUMES ########################################
 
+
 def mount_shadow_volumes(vssvolume_mnt, outfile, folder_path, temp_time):
 
     print("Vssvolume_mnt: " + vssvolume_mnt)
@@ -723,6 +731,7 @@ def mount_shadow_volumes(vssvolume_mnt, outfile, folder_path, temp_time):
 
 ### MAIN PROGRAM ########################################################################################################################
 
+
 def extract_registry_hives_mr(item_to_process, case_number, root_folder_path, evidence, options):
     print("The item to process is: " + item_to_process)
     print("The case_name is: " + case_number)
@@ -741,7 +750,6 @@ def extract_registry_hives_mr(item_to_process, case_number, root_folder_path, ev
     #create output folder path
     folder_path = root_folder_path + "/" + "Extracted_Registry_Hives"
     check_for_folder(folder_path, "NONE")
-
 
     #open a log file for output
     log_file = folder_path + "/Extracted_Registry_Hives_logfile.txt"
@@ -775,7 +783,6 @@ def extract_registry_hives_mr(item_to_process, case_number, root_folder_path, ev
         block_size = get_block_size_parted(outfile, temp_time)
 
     else:
-
         #get block_size since mmls was successful
         block_size = get_block_size_mmls(Image_Path, outfile, temp_time)
 
@@ -862,7 +869,5 @@ def extract_registry_hives_mr(item_to_process, case_number, root_folder_path, ev
         os.remove("/tmp/fls_output_" + temp_time + ".txt")
     if (os.path.exists("/tmp/hives_to_rename_" + temp_time)):
         shutil.rmtree("/tmp/hives_to_rename_" + temp_time)
-
-
 
     return(folder_path)
