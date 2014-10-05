@@ -308,8 +308,3 @@ def mr_registry(case_number, folder_to_process, root_folder_path):
     #delete /tmp/ls_output.txt
     if (os.path.exists("/tmp/ls_output_" + temp_time + ".txt")):
         os.remove("/tmp/ls_output_" + temp_time +".txt")
-
-if __name__ == "__main__":
-    import sys
-
-    mr_registry(sys.argv[1], sys.argv[2], sys.argv[3])

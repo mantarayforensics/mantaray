@@ -362,8 +362,3 @@ def create_kml_from_exif_mr(item_to_process, case_number, root_folder_path, evid
         if(os.path.exists(mount_point+"_ewf")):
             subprocess.call(['sudo umount -f ' + mount_point + "_ewf"], shell=True)
             os.rmdir(mount_point+"_ewf")
-
-if __name__ == "__main__":
-    import sys
-
-    create_kml_from_exif_mr(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4])
