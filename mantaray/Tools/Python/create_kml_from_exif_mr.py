@@ -69,7 +69,6 @@ def process_single_file(evidence, outfile, folder_path, key, outfile3):
             print("The latitude is: " + str(latitude))
             print("The longitude is: " + str(longitude))
 
-
             if not(longitude == "NULL") and not (latitude =="NULL"):
                 #add data to kml file
                 kml.newpoint(name=filenames, coords=[(latitude, longitude)])
@@ -87,8 +86,6 @@ def process_single_file(evidence, outfile, folder_path, key, outfile3):
                 md5value = subprocess.check_output(["md5sum " + quoted_full_path + "| awk '{print $1}'"], shell=True, universal_newlines=True)
                 md5value = md5value.strip()
                 outfile3.write(quoted_full_path + "\t" + md5value + "\t" + str(file_size) + "\n")
-
-
 #################################################################################################################################
 
 ### PROCESS ######################################################################################################################
@@ -104,7 +101,6 @@ def process(mount_point, outfile, folder_path, key, outfile3):
     #create output folder for processed files if it doesn't exist
     if not os.path.exists(folder_path + "/Processed_files_" + str(key)):
         os.mkdir(folder_path + "/Processed_files_" + str(key))
-
 
     #scan directory tree for files of interest
     for root, dirs, files in os.walk(mount_point):
@@ -138,7 +134,6 @@ def process(mount_point, outfile, folder_path, key, outfile3):
                     print("The latitude is: " + str(latitude))
                     print("The longitude is: " + str(longitude))
 
-
                     #add data to kml file
                     kml.newpoint(name=filenames, coords=[(latitude, longitude)])
 
@@ -155,6 +150,7 @@ def process(mount_point, outfile, folder_path, key, outfile3):
                     md5value = subprocess.check_output(["md5sum " + quoted_full_path + "| awk '{print $1}'"], shell=True, universal_newlines=True)
                     md5value = md5value.strip()
                     outfile3.write(quoted_full_path + "\t" + md5value + "\t" + str(file_size) + "\n")
+
 ### PROCESS ######################################################################################################################
 
 
@@ -166,6 +162,7 @@ def unique(list):
     return y
 
 ## MAIN PROGRAM ####################################################################################################################
+
 
 def create_kml_from_exif_mr(item_to_process, case_number, root_folder_path, evidence):
     print("The item to process is: " + item_to_process)
@@ -179,7 +176,6 @@ def create_kml_from_exif_mr(item_to_process, case_number, root_folder_path, evid
     #create output folder path
     folder_path = root_folder_path + "/" + "KML_From_EXIF"
     check_for_folder(folder_path, "NONE")
-
 
     #open a log file for output
     log_file = folder_path + "/KML_From_EXIF_logfile.txt"
@@ -195,8 +191,6 @@ def create_kml_from_exif_mr(item_to_process, case_number, root_folder_path, evid
 
     #write out column headers to xls file
     outfile3.write("Name\tMD5\tFile Size (kb)\n")
-
-
 
     if(item_to_process == "Directory"):
         #select folder to process
@@ -242,8 +236,10 @@ def create_kml_from_exif_mr(item_to_process, case_number, root_folder_path, evid
             cmd_false = "sudo gsettings set org.gnome.desktop.media-handling automount false && sudo gsettings set org.gnome.desktop.media-handling automount-open false"
             try:
                 subprocess.call([cmd_false], shell=True)
+
             except:
                 print("Automount false failed")
+
             Image_Path = mount_ewf(Image_Path, outfile, mount_point)
 
         #call mmls function
@@ -304,7 +300,6 @@ def create_kml_from_exif_mr(item_to_process, case_number, root_folder_path, evid
                 #call process subroutine
                 process(mount_point, outfile, folder_path, key, outfile3)
 
-
                 #unmount and remove mount points
                 if(os.path.exists(mount_point)):
                     subprocess.call(['sudo umount -f ' + mount_point], shell=True)
@@ -324,7 +319,6 @@ def create_kml_from_exif_mr(item_to_process, case_number, root_folder_path, evid
     unique(files_of_interest_list)
     for files in files_of_interest_list:
         outfile3.write(files + "\n")
-
 
     #program cleanup
     outfile.close()
@@ -369,4 +363,7 @@ def create_kml_from_exif_mr(item_to_process, case_number, root_folder_path, evid
             subprocess.call(['sudo umount -f ' + mount_point + "_ewf"], shell=True)
             os.rmdir(mount_point+"_ewf")
 
+if __name__ == "__main__":
+    import sys
 
+    create_kml_from_exif_mr(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4])

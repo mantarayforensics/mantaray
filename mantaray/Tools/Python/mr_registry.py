@@ -26,8 +26,9 @@ import datetime
 from check_for_folder import *
 from Windows_Time_Converter_module import *
 
-
 ### GET USER PROFILE NAME #######################################################################
+
+
 def get_profile_name(file_name):
     file_name = '"' + file_name + '"'
     print("The filename is: " + file_name)
@@ -41,6 +42,7 @@ def get_profile_name(file_name):
 ### GET USER PROFILE NAME #######################################################################
 
 ### PROCESS USRCLASS HIVES ######################################################################
+
 
 def process_usrclass(abs_file_path, usrclass_plugins, file_name, folder_path, outfile):
 
@@ -306,3 +308,8 @@ def mr_registry(case_number, folder_to_process, root_folder_path):
     #delete /tmp/ls_output.txt
     if (os.path.exists("/tmp/ls_output_" + temp_time + ".txt")):
         os.remove("/tmp/ls_output_" + temp_time +".txt")
+
+if __name__ == "__main__":
+    import sys
+
+    mr_registry(sys.argv[1], sys.argv[2], sys.argv[3])

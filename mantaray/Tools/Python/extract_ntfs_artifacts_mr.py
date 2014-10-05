@@ -251,7 +251,7 @@ def mount_shadow_volumes(vssvolume_mnt, outfile, folder_path):
         partition_info_dict, temp_time = parted(outfile, vssvolume_mnt + "/"+item)
         block_size = get_block_size_parted(outfile, temp_time)
         for key, value in partition_info_dict.items():
-            print("About to process registry hives from: " + item)
+            print("About to process files from: " + item)
             process_overt_deleted_files(value, key, vssvolume_mnt+"/"+item, outfile, folder_path, block_size, item, temp_time)
 #############################################################################
 
