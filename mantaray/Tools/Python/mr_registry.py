@@ -108,7 +108,7 @@ def process_other_hives(abs_file_path, plugins, file_name, hive_name_info, folde
 
             line = line.strip()
 
-            if not (re.search("#", line)):
+            if not (re.search("#", line) or line == "productpolicy"):
 
                 #write out filename and atime to output file
                 outfile_rr = open(folder_path + "/" + hive_name_info + "/" + line + ".txt", 'a')
