@@ -32,27 +32,20 @@ from check_for_folder import *
 
 
 ##### GET ACCOUNT PROFILE NAME ##########################################################################################################################
-def get_account_profile_names(account, outfile):
-	#Takes absolute path to Jumplist file and returns the profile name
+## Rewrite
 
-	print("The account name passed to the function is: " + account)
+
+def get_account_profile_names(account, outfile):
+
+#	print("The account name passed to the function is: " + account)
 	outfile.write("The account name passed to the function is: " + account + "\n")
 
-	#get substring
-	account_sub = account[:-105]
-	outfile.write("The account-sub name passed to the function is: " + account_sub + "\n")
+	#seperate username from string
+	account_sub = account.split("Users/")
+	username = account_sub[1].split("/AppData")
+	outfile.write("The account-sub name passed to the function is: " + username[0] + "\n")
 
-
-	#get length
-	account_sub_string_length = len(account_sub)
-
-	#find offset of rightmost slash
-	rightmost_slash_location = account_sub.rindex('/')
-
-	#calculate substring	
-	username = account_sub[(rightmost_slash_location+1):account_sub_string_length]
-
-	return username
+	return username[0]
 
 
 ##### GET ACCOUNT PROFILE NAME ##########################################################################################################################
@@ -162,12 +155,13 @@ def jumplist_mr(item_to_process, case_number, root_folder_path, evidence):
 							outfile.write("The profile is: " + profile + "\n")
 			
 							#process Jumplist files with jl.pl
-							#jl_command = "perl /usr/local/src/windows-perl/jl.pl -u " + "'" + profile + "'" + " -f " + full_path + " >> " + "'" + folder_path + "/jumplist_metadata.txt" + "'"
-							jl_command_tln = "perl /usr/local/src/windows-perl/jl.pl -u " + "'" + profile + "'" + " -t -f " + quoted_full_path + " >> " + "'" + folder_path + "/jumplist_metadata_tln.txt" + "'"
+							#jl_command = "perl /usr/share/windows-perl/jl.pl -u " + "'" + profile + "'" + " -f " + full_path + " >> " + "'" + folder_path + "/jumplist_metadata.txt" + "'"
+							jl_command_tln = "perl /usr/share/windows-perl/jl.pl -u " + "'" + profile + "'" + " -f " + quoted_full_path + " >> " + "'" + folder_path + "/jumplist_metadata_tln.txt" + "'"
 							outfile.write("The jl_command_tln is: " + jl_command_tln + "\n")
 							subprocess.call([jl_command_tln], shell=True)
 						else:
-							print("Scanning file: " + filenames + ".  This file is not a jumplist.")
+                                                        pass
+#							print("Scanning file: " + filenames + ".  This file is not a jumplist.")
 				#unmount and remove mount points
 				if(os.path.exists(mount_point)): 
 					subprocess.call(['sudo umount -f ' + mount_point], shell=True)
@@ -187,9 +181,9 @@ def jumplist_mr(item_to_process, case_number, root_folder_path, evidence):
 				if not (loopback_device_mount == "NONE"):
 					losetup_d_command = "losetup -d " + loopback_device_mount
 					subprocess.call([losetup_d_command], shell=True)
-			#create timeline
-			parse_command = "perl /usr/local/src/windows-perl/parse.pl -f " + "'" + folder_path + "/jumplist_metadata_tln.txt" + "'" + "> " + "'" + folder_path + "/jumplist_timeline.txt" + "'"
-			subprocess.call([parse_command], shell=True)
+			#create timeline - removed due to instability
+			#parse_command = "perl /usr/share/windows-perl/parse.pl -f " + "'" + folder_path + "/jumplist_metadata_tln.txt" + "'" + "> " + "'" + folder_path + "/jumplist_timeline.txt" + "'"
+			#subprocess.call([parse_command], shell=True)
 
 	#unmount and remove mount points
 	#if(os.path.exists(mount_point)):
