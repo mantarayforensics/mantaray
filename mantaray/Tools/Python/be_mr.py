@@ -126,12 +126,12 @@ def be_mr(item_to_process, case_number, folder_path, evidence, whitelist_locatio
         subprocess.call([be_command], shell=True)
 
         #run fiwalk
-        fiwalk_command = "fiwalk -x " + evidence + " >" + '"' + folder_path + "/Bulk_Extractor_Results/fiwalk_output.xml" + "'"
+        fiwalk_command = "fiwalk -x " + evidence + " > \'" + folder_path + "/Bulk_Extractor_Results/fiwalk_output.xml\'"
         print("Running fiwalk: " + fiwalk_command)
         subprocess.call([fiwalk_command], shell=True)
 
         #run identify_filenames.py
-        identify_filenames_command = "python3 /usr/share/bulk_extractor/python/identify_filenames.py --all --imagefile " + evidence + " --xmlfile " + '"' + folder_path + "/Bulk_Extractor_Results/fiwalk_output.xml" + '"' + " "  + '"' + folder_path + "/Bulk_Extractor_Results" + '"' + " " + '"' + folder_path + "/Bulk_Extractor_Results/annotated_results/" + '"'
+        identify_filenames_command = 'python3 /usr/share/bulk-extractor/python/identify_filenames.py --all --image_filename ' + evidence + ' --xmlfile \"' + folder_path + '/Bulk_Extractor_Results/fiwalk_output.xml\" \"' + folder_path + '/Bulk_Extractor_Results\" \"' + folder_path + '/Bulk_Extractor_Results/annotated_results/\"'
         print("Running identify_filenames.py: " + identify_filenames_command)
         subprocess.call([identify_filenames_command], shell=True)
 
