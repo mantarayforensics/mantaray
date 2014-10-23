@@ -19,6 +19,8 @@
 #########################COPYRIGHT INFORMATION############################
 
 import sys
+import os
+import subprocess
 from be_mr import *
 from jumplist_mr import *
 from entropy_mr import *
@@ -545,32 +547,118 @@ for x in processing_scripts_list:
 
     elif x == 'Volatility':
 
-        try:
-            select_profile = subprocess.check_output(['zenity --question --title "MantaRay - ManTech Triage & Analysis System		MantaRayForensics.com" --text="If the OS profile is known, select yes and then enter it on the following prompt. Otherwise select no and the imageinfo scan will provide suggestions for the source image." --width 800 --height 200'], shell=True, universal_newlines=True)
+        ###############################################
+        ####### Volatility Profile Selection ##########
 
+        # Get available profiles 1
+
+        vol_chk_cmd = "vol.py --info"
+        raw_output = subprocess.check_output([vol_chk_cmd], shell=True, stderr=None).decode()
+
+        # Parse output 
+        raw_output = raw_output.split("Plugins")
+
+        raw_output = raw_output[0].split("\n")
+
+        profile_array = []
+        for item in raw_output:
+            if item:
+                if item.__contains__("Profiles") or item.__contains__("-------"):
+                    pass
+                else:
+                    item2 = item.split("-")
+                    profile_array.append(item2[0].strip(" "))
+
+        # Build zentiy command
+
+        zen_cmd = """zenity --list --radiolist --title "MantaRay - ManTech Triage & Analysis System        MantaRayForensics.com" --column="Selection" --column="Profile Name" --separator="," True "Select Custom Profile" """
+
+        for profile in profile_array:
+            zen_cmd += 'False "' + profile + '" '
+
+        zen_cmd += """--text="Volatility Profile Selection\n\nIf you do not see the profile desired, please choose 'Select Custom Profile' to import a new profile." --width 800 --height 400"""
+
+        selected_profile = subprocess.check_output([zen_cmd], shell=True, universal_newlines=True)
+
+        if selected_profile.strip() == "Select Custom Profile":
+            ### Allow user to add new profile ###
+
+            # Prompt to select .zip file if mac/linux
+
+            extra_profile = subprocess.check_output(['zenity --file-selection --filename="/home" --file-filter=""*.zip" "*.ZIP"" --title "Select Volatility Profile .zip file to load"'], shell=True, universal_newlines=True).decode()
+
+            extra_profile = extra_profile.strip()
+
+            if not os.path.isfile(extra_profile):
+                print (extra_profile)
+                sys.exit(1)
+
+            zen_cmd = """zenity --list --radiolist --title "MantaRay - ManTech Triage & Analysis System        MantaRayForensics.com" --column="Selection" --column="Profile Name" --separator="," False "Windows" False "Macintosh" False "Linux" --text="Volatility Profile Selection\n\n Pleas select OS Type of the Memory image" --width 800 --height 400"""
+            os_selection = subprocess.check_output([zen_cmd], shell=True).strip()
+            os_selection = os_selection.decode()
+            if os_selection == "Windows":
+                os_selection = "windows"
+            elif os_selection == "Macintosh":
+                os_selection = "mac"
+            elif os_selection == "Linux":
+                os_selection = "linux"
             try:
-                profile_to_use = enterbox(msg="Please Enter the profile name. Use the format Win7SP1x64 for a Microsoft Windows 7, Service Pack 1 64-bit. See the Command reference guide in /usr/share/mantaray/docs/VolatilityCommandReference23.rst", title='Enter Profile Name',default='',strip=True,image=None,root=None)
+                subprocess.call("sudo cp " + extra_profile + " '/usr/lib/python2.7/dist-packages/volatility/plugins/overlays/" + os_selection + "/'", shell=True)
+            except :
+                print ("Unable to copy custom profile\nPlease manually place file in volatility installation directory or /usr/lib/python2.7/dist-packages/volatility/plugins/overlays/" + os_selection)
 
-            except:
-                print ("Cancel/Exit chosen")
-                gui_outfile.write("Volatility Profile Selection: Profile Naming Aborted by user - Cancel/Exit chosen")
-                sys.exit(0)
+            # Get available profiles 2
 
-        except:
-            print ("Cancel/Exit chosen")
-            gui_outfile.write("Volatility Profile Selection: Imageinfo Selected by user")
-            profile_to_use = "NOPROFILESELECTED"
+            vol_chk_cmd = "vol.py --info"
+            raw_output = subprocess.check_output([vol_chk_cmd], shell=True).decode()
+
+            # Parse output 
+            raw_output = raw_output.split("Plugins")
+
+            raw_output = raw_output[0].split("\n")
+
+            profile_array = []
+            for item in raw_output:
+                if item:
+                    if item.__contains__("Profiles") or item.__contains__("-------"):
+                        pass
+                    else:
+                        item2 = item.split("-")
+                        profile_array.append(item2[0].strip(" "))
+
+            # Build zentiy command
+
+            zen_cmd = """zenity --list --radiolist --title "MantaRay - ManTech Triage & Analysis System        MantaRayForensics.com" --column="Selection" --column="Profile Name" --separator="," """
+
+            for profile in profile_array:
+                zen_cmd += 'False "' + profile + '" '
+
+            zen_cmd += """--text="Volatility Profile Selection\n\nIf you do not see the profile desirred, please place the .zip file in\nvolatility/overlay/linux for linux profiles, \nvolatility/overlay/mac for mac profiles, or\nvolatility/overlay/windows for windows profiles.\n\nVolatility will likely be installed in\n/usr/lib.python2.7/dist-packages/volatility/ though this path may vary depending on your build " --width 800 --height 400"""
+
+            selected_profile = subprocess.check_output([zen_cmd], shell=True, universal_newlines=True).decode()
+
+            print ("Selected Volatility Profile: " + selected_profile)
+
+            ####### Volatility Profile Selection ##########
+            ###############################################
 
         ## Allow user to select PID/DUMP options
         processing_options_cmd = """zenity --list --checklist --title "Mantaray - ManTech Triage & Analysis System        MantaRayForensics.com  |  v1.4" --text="The below options provide additional processing options for memory images with Volatility 2.4. \n Though they will provide more information, it will also take more time depending on the resources allocated." --column="Selection" --column="Name" --column="Description" --separator="," FALSE "PID Processing" "Run available plugins across the discovered PIDs" FALSE "Dump Data" "Use the dump directory function to export data from the memory image." """
         proc_options = subprocess.check_output(processing_options_cmd, shell=True)
-        proc_options_array = proc_options.decode('utf-8').split(",")
+        proc_options = proc_options.strip()
+        proc_options_array = proc_options.decode().split(",")
         pid_enabled = False
         dump_enabled = False
         if "PID Processing" in proc_options_array:
             pid_enabled = True
-        elif "Dump Data" in proc_options_array:
+        if "Dump Data" in proc_options_array:
             dump_enabled = True
+
+        if pid_enabled:
+            print("PID Processing: Enabled")
+
+        if dump_enabled:
+            print("Dump Plugins: Enabled")
 
         ## Allow user to select resources to run
         try:
@@ -742,11 +830,11 @@ for x in processing_scripts_list:
                     gui_outfile.write("Foremost failed...Please reprocess with Debug Mode ON - running MantaRay from command line as root\n")
     elif x == 'Volatility':
         if(debug_mode == "ON"):
-            volley24.main(evidence_path.strip(), profile_to_use, num_threads, folder_path + "/",  pid_enabled, dump_enabled)
+            volley24.main(evidence_path.strip(), selected_profile.strip(), num_threads, folder_path + "/",  pid_enabled, dump_enabled)
             gui_outfile.write("Volatility...".ljust(35) + "completed successfully".ljust(55) + "\n")
         else:
             try:
-                volley24.main(evidence_path.strip(), profile_to_use, num_threads, folder_path + "/",  pid_enabled, dump_enabled)
+                volley24.main(evidence_path.strip(), selected_profile.strip(), num_threads, folder_path + "/",  pid_enabled, dump_enabled)
                 gui_outfile.write("Volatility...".ljust(35) + "completed successfully".ljust(55) + "\n")
             except:
                 print("Call to Volatility failed")
@@ -809,9 +897,9 @@ for x in processing_scripts_list:
 
 
 
-gui_outfile.close()	
+gui_outfile.close()    
 
 #tell the user the process is done:
-done(folder_path)	
+done(folder_path)    
 
 

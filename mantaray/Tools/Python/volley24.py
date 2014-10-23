@@ -30,40 +30,45 @@ import vol_get_pids
 import easygui
 
 
-def run_pid_plugin(fin, profile, plug, out, count, plugins, pid, profile_path, dump_plugin):
+def run_pid_plugin(fin, profile, plug, out, count, plugins, pid, dump_plugin):
     """
     Will run a volatility plugin for a PID within a thread.
 
     ::NOTE::
     * --plugins= must precede -f in command for the profiles to be loaded correctly
     """
-    cmd = "vol --plugins='" + profile_path + "' -f " + fin + " --profile=" + profile + " " + plug + " -p " + pid
+    cmd = "vol.py -f " + fin + " --profile=" + profile + " " + plug + " -p " + pid
+
     if plug in dump_plugin:
-        os.mkdirs(out + pid + plug)
-        cmd += " -D " + out + pid + plug
-    else:
-        cmd += " --output-file=" + out + plug + ".txt"
+        dump_path = out + "/" + pid + "/" + plug + "/"
+        os.makedirs(dump_path)
+        cmd += " --dump-dir=" + dump_path
+
+    cmd += " --output-file=" + out + plug + ".txt"
+
     subprocess.call(cmd, shell=True, stderr=ERRFILE)
     status = str("[Thread " + str(datetime.datetime.now()) + "] Completed PID " + pid + " " + plug + ", " + str(count) + " of " + str(len(plugins)-1))
     print(status)
     OUTFILE.write(status)
 
 
-def run_plugin(fin, profile, plug, out, count, plugins, profile_path, dump_plugin):
+def run_plugin(fin, profile, plug, out, count, plugins, dump_plugin):
     """
     Will run a volatility plugin within a thread.
 
     ::NOTE::
     * --plugins= must precede -f in command for the profiles to be loaded correctly
     """
-    cmd = "vol --plugins=" + profile_path + " -f " + fin + "  --profile=" + profile + " " + plug
-    if plug in dump_plugin:
-        os.mkdirs(out + plug)
-        cmd += " -D " + out + plug
-    else:
-        cmd += " --output-file=" + out + plug + ".txt"
+    cmd = "vol.py -f " + fin + " --profile=" + profile + " " + plug
 
-    subprocess.call(cmd, shell=True, stderr=ERRFILE)
+    if plug in dump_plugin:
+        dump_path = out + "/" + plug + "/"
+        os.makedirs(dump_path)
+        cmd = cmd + " --dump-dir=" + dump_path
+
+    cmd = cmd + " --output-file=" + out + plug + ".txt"
+
+    subprocess.call([cmd], shell=True, stderr=ERRFILE)
     status = str("[Thread " + str(datetime.datetime.now()) + "] Completed " + plug + ", " + str(count) + " of " + str(len(plugins)-1))
     print(status)
     OUTFILE.write(status)
@@ -74,43 +79,27 @@ def main(fin, profile, num_thread, out, pid_enabled, dump_enabled):
     global ERRFILE
 
 
+    out = out + 'Volatility/'
+    os.makedirs(out)
+
     # Set Logfile & Error Log
     log_file = out + "/Volatility_logfile.txt"
     OUTFILE = open(log_file, 'w')
     log_file = out + "/Volatility_errors_logfile.txt"
     ERRFILE = open(log_file, 'w')
 
-    if profile.__contains__("x64"):
-        profile_path = "/usr/share/mantaray.20140905/volatility_profiles/x64"
-    elif profile.__contains__("x86"):
-        profile_path = "/usr/share/mantaray/volatility_profiles/x86/"
-    else:
-        print("Scanning for suggested profile...\n[Warn] This may take a while depending on file size\n[Warn] This scan only works with Windows Profiles")
-
-        #run first volatility command to get image type
-        print("Checking RAM image for imageinfo information...This may take a few minutes....\n")
-        imageinfo = subprocess.check_output(["vol -f " + fin + " imageinfo"], shell=True, universal_newlines=True)
-        print("The value of imageinfo is: " + imageinfo)
-        OUTFILE.write("The value of imageinfo is: " + imageinfo)
-
-        #have user specify the image type
-        profile = easygui.enterbox(msg="Please Enter the profile to use", title='Profile Type',default='',strip=True,image=None,root=None)
-
-        print("Profile selected: " + profile)
-        sys.exit(1)
-
     if profile.startswith("Win"):
         plugins = ["kpcrscan","atoms","atomscan","auditpol","bigpools","bioskbd","callbacks","clipboard","cmdline",
-                   "cmdscan","connections","connscan","consoles","crashinfo","deskscan","devicetree","dlllist",
-                   "driverirp","driverscan","envars","eventhooks","evtlogs","filescan","gahti",
+                   "cmdscan","connections","connscan","consoles","crashinfo","deskscan","devicetree","dlllist","dlldump",
+                   "driverirp","driverscan","dumpfiles","dumpcerts","envars","eventhooks","evtlogs","filescan","gahti",
                    "gditimers","gdt","getservicesids","getsids","handles","hibinfo","hivelist",
                    "hivescan","hpakextract","hpakinfo","idt","iehistory","imageinfo","impscan","joblinks","kdbgscan",
-                   "ldrmodules","limeinfo","machoinfo","malfind","mbrparser","memmap","messagehooks","mftparser","modscan",
-                   "modules","multiscan","mutantscan","netscan","notepad","objtypescan","patcher","poolpeek","pooltracker",
-                   "printkey","privs","pslist","psscan","pstree","psxview","screenshot","sessions",
+                   "ldrmodules","limeinfo","machoinfo","malfind","mbrparser","memmap","memdump","messagehooks","mftparser","modscan",
+                   "moddump","modules","multiscan","mutantscan","netscan","notepad","objtypescan","patcher","poolpeek","pooltracker",
+                   "printkey","privs","pslist","psscan","pstree","psxview","procmon","screenshot","sessions",
                    "shellbags","shimcache","sockets","sockscan","ssdt","strings","svcscan","symlinkscan","thrdscan","threads",
                    "timeliner","timers","truecryptmaster","truecryptpassphrase","truecryptsummary","unloadedmodules",
-                   "userassist","userhandles","vadinfo","vadtree","vadwalk","vboxinfo","verinfo","vmwareinfo","windows",
+                   "userassist","userhandles","vaddump","vadinfo","vadtree","vadwalk","vboxinfo","verinfo","vmwareinfo","windows",
                    "wintree","wndscan","yarascan"]
 
         pid_plugins = ["dlllist", "envars", "getsids", "handles", "iehistory", "impscan", "joblinks", "ldrmodules",
@@ -250,7 +239,7 @@ def main(fin, profile, num_thread, out, pid_enabled, dump_enabled):
                 print(status)
                 OUTFILE.flush()
                 OUTFILE.write(status)
-                t = threading.Thread(target=run_plugin, args=[fin, profile, plug, out, count, plugins, profile_path,  plugins_dump])
+                t = threading.Thread(target=run_plugin, args=[fin, profile, plug, out, count, plugins, plugins_dump])
                 t.start()
                 break
             else:
@@ -277,7 +266,7 @@ def main(fin, profile, num_thread, out, pid_enabled, dump_enabled):
                             status = str("[Thread " + str(datetime.datetime.now()) + "] Starting PID " + str(pid) + " plugin " + pid_plug)
                             print(status)
                             OUTFILE.write(status)
-                            t = threading.Thread(target=run_pid_plugin, args=[fin, profile, pid_plug, path_out, count, pid_plugins, str(pid), profile_path, plugins_dump])
+                            t = threading.Thread(target=run_pid_plugin, args=[fin, profile, pid_plug, path_out, count, pid_plugins, str(pid), plugins_dump])
                             t.start()
                             break
                         else:
@@ -294,7 +283,7 @@ def main(fin, profile, num_thread, out, pid_enabled, dump_enabled):
             OUTFILE.close()
             break
         else:
-            if time.time() % 120 == 0:  # Wait 2 minutes to prompt the user that threads are still running
+            if time.time() % 60 == 0:  # Wait 2 minutes to prompt the user that threads are still running
                 status = str("[Main " + str(datetime.datetime.now()) + "] waiting for " + str(threading.activeCount()-1) + " threads to finish")
                 print(status)
                 OUTFILE.write(status)
@@ -302,8 +291,8 @@ def main(fin, profile, num_thread, out, pid_enabled, dump_enabled):
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Volley24 is a tool used at the command line and with the MantaRay Suite for processing memory images in Volatility 2.4", epilog="Copyright Chapin Bryce, 2014 webmaster@mantarayforensics.com")
-    parser.add_argument('-P', help="Enable processing of a specific PID across plugins")
-    parser.add_argument('-d', help="Enable plugins to dump data from memory images")
+    parser.add_argument('-P', help="Enable processing of a specific PID across plugins", action="store_true")
+    parser.add_argument('-d', help="Enable plugins to dump data from memory images", action="store_true")
     parser.add_argument('-t', help="Specify the number of threads to run", required=True, type=int)
     parser.add_argument('fin', help='Memory Image')
     parser.add_argument('-p', metavar='PROFILE', help='Volatility Profile Name (Using Volatility Syntax)', required=True)
@@ -313,4 +302,8 @@ if __name__ == "__main__":
     profile = args.p
     num_thread = args.t
     out = args.out
+    if not os.path.exists(out):
+        os.makedirs(out)
+    if not out.endswith("/") or out.endswith("\\"):
+        out = out + "/"
     main(fin, profile, num_thread, out, args.P, args.d)

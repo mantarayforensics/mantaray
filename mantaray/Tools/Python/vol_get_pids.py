@@ -21,6 +21,7 @@ import subprocess
 
 
 def get_pids(fin, profile):
+    pslist_plugin = "pslist"
     if profile.startswith("Lin"):
         pslist_plugin = "linux_pslist"
     elif profile.startswith("Mac"):
@@ -29,9 +30,10 @@ def get_pids(fin, profile):
         pslist_plugin = "pslist"
 
     awk_str = """awk '{print $2","$3","$9","$10","$4","$5","$6","$7","$8","$1}'"""
-    get_pids_cmd = "vol -f " + fin + " --profile=" + profile + " " + pslist_plugin + " | " + awk_str
+    get_pids_cmd = "vol.py -f " + fin + " --profile=" + profile + " " + pslist_plugin + " | " + awk_str
 
-    pslists = subprocess.check_output(get_pids_cmd, shell=True)
+    pslists = subprocess.check_output([get_pids_cmd], shell=True)
+    pslists = pslists.decode()
     pslist_array = pslists.split()
 
     pids = []
