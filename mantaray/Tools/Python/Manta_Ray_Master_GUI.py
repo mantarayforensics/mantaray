@@ -553,15 +553,20 @@ for x in processing_scripts_list:
         # Get available profiles 1
 
         vol_chk_cmd = "vol.py --info"
-        raw_output = subprocess.check_output([vol_chk_cmd], shell=True, stderr=None).decode()
+        raw_output = subprocess.check_output([vol_chk_cmd], shell=True)
+        #print(raw_output)
+        raw_output = raw_output.decode()
+        #print (type(raw_output))
 
         # Parse output 
-        raw_output = raw_output.split("Plugins")
-
-        raw_output = raw_output[0].split("\n")
-
+        #print(raw_output)
+        raw_output2 = raw_output.split("Profiles\n--------\n")
+        #print(raw_output2)
+        raw_output2a = raw_output2[1].split("\n\n")
+        raw_output3 = raw_output2a[0].split("\n")
+        #print(raw_output3)
         profile_array = []
-        for item in raw_output:
+        for item in raw_output3:
             if item:
                 if item.__contains__("Profiles") or item.__contains__("-------"):
                     pass
