@@ -45,9 +45,17 @@ def get_pids(fin, profile):
         else:
             item2 = item.split(',')
             for count2, item3 in enumerate(item2):
-                pslist_dict[column_names_array[count2]] = item3
+                pslist_dict[column_names_array[count2].lower()] = item3
 
             pids.append(pslist_dict)
             pslist_dict = {}
 
     return pids
+
+if __name__ == "__main__":
+    import sys
+    import pprint
+
+    pprint.pprint(get_pids(sys.argv[1], sys.argv[2]))
+
+

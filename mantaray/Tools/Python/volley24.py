@@ -232,6 +232,7 @@ def main(fin, profile, num_thread, out, pid_enabled, dump_enabled):
 
     start = datetime.datetime.now()
 
+    #"""
     for count, plug in enumerate(plugins):
         while 1:
             if threading.activeCount() <= num_thread:
@@ -244,20 +245,21 @@ def main(fin, profile, num_thread, out, pid_enabled, dump_enabled):
                 break
             else:
                 time.sleep(4)
+    #"""
 
     pids_to_process = vol_get_pids.get_pids(fin, profile)
 
     if pid_enabled:
         for proc in pids_to_process:
             try:
-                pid = int(proc["PID"])
+                pid = int(proc["pid"])
                 forward = 1
             except:
-                print('Could not parse PID: ' + proc["PID"])
-                OUTFILE.write('Could not parse PID: ' + proc["PID"])
+                print('Could not parse PID: ' + proc["pid"])
+                OUTFILE.write('Could not parse PID: ' + proc["pid"])
                 forward = 0
             if forward:
-                path_out = out + "/PID/" + proc["Name"] + "_" + str(pid) + "/"
+                path_out = out + "/PID/" + proc["name"] + "_" + str(pid) + "/"
                 os.makedirs(path_out)
 
                 for count, pid_plug in enumerate(pid_plugins):
