@@ -590,7 +590,7 @@ for x in processing_scripts_list:
 
             # Prompt to select .zip file if mac/linux
 
-            extra_profile = subprocess.check_output(['zenity --file-selection --filename="/home" --file-filter=""*.zip" "*.ZIP"" --title "Select Volatility Profile .zip file to load"'], shell=True, universal_newlines=True).decode()
+            extra_profile = subprocess.check_output(['zenity --file-selection --filename="/home" --file-filter=""*.zip" "*.ZIP"" --title "Select Volatility Profile .zip file to load"'], shell=True, universal_newlines=True)#.decode()
 
             extra_profile = extra_profile.strip()
 
@@ -618,14 +618,12 @@ for x in processing_scripts_list:
             raw_output = subprocess.check_output([vol_chk_cmd], shell=True).decode()
 
             # Parse output 
-            #print(raw_output)
-            raw_output2 = raw_output.split("Profiles\n--------\n")
-            #print(raw_output2)
-            raw_output2a = raw_output2[1].split("\n\n")
-            raw_output3 = raw_output2a[0].split("\n")
-            #print(raw_output3)
+            raw_output = raw_output.split("Plugins")
+
+            raw_output = raw_output[0].split("\n")
+
             profile_array = []
-            for item in raw_output3:
+            for item in raw_output:
                 if item:
                     if item.__contains__("Profiles") or item.__contains__("-------"):
                         pass
@@ -642,7 +640,7 @@ for x in processing_scripts_list:
 
             zen_cmd += """--text="Volatility Profile Selection\n\nIf you do not see the profile desirred, please place the .zip file in\nvolatility/overlay/linux for linux profiles, \nvolatility/overlay/mac for mac profiles, or\nvolatility/overlay/windows for windows profiles.\n\nVolatility will likely be installed in\n/usr/lib.python2.7/dist-packages/volatility/ though this path may vary depending on your build " --width 800 --height 400"""
 
-            selected_profile = subprocess.check_output([zen_cmd], shell=True, universal_newlines=True).decode()
+            selected_profile = subprocess.check_output([zen_cmd], shell=True, universal_newlines=True)#.decode()
 
             print ("Selected Volatility Profile: " + selected_profile)
 
