@@ -620,13 +620,12 @@ for x in processing_scripts_list:
             raw_output = subprocess.check_output([vol_chk_cmd], shell=True).decode()
 
             # Parse output 
-            #print(raw_output)
-            raw_output2 = raw_output.split("Profiles\n--------\n")
-            #print(raw_output2)
-            raw_output2a = raw_output2[1].split("\n\n")
-            raw_output3 = raw_output2a[0].split("\n")
-            #print(raw_output3)
-            for item in raw_output3:
+            raw_output = raw_output.split("Plugins")
+
+            raw_output = raw_output[0].split("\n")
+
+            profile_array = []
+            for item in raw_output:
                 if item:
                     if item.__contains__("Profiles") or item.__contains__("-------"):
                         pass
