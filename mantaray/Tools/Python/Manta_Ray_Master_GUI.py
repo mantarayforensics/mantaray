@@ -462,7 +462,7 @@ for x in processing_scripts_list:
             cmd_string = "jpg,gif,bmp,avi,exe,mpg,wav,mov,pdf,ole,doc,zip,rar,htm,wmv,png,mp4"
 
     elif x == 'Super Timeline':
-        ## If you would like to enable plaso, uncomment lines 467-501 and comment out line 466. This should only be modified if you are an advanced user.
+        ## If you would like to enable plaso, uncomment lines 467-477 and comment out line 466. This should only be modified if you are an advanced user.
         super_timeline_options = "Log2Timeline"
         """
         try:
@@ -474,7 +474,7 @@ for x in processing_scripts_list:
             print ("Cancel/Exit chosen")
             gui_outfile.write("Timeline Processor: Processor Options - Aborted by user - Cancel/Exit chosen")
             sys.exit(0)
-
+        """
         if(super_timeline_options == "Plaso"):
 
             try:
@@ -498,7 +498,7 @@ for x in processing_scripts_list:
                 print ("Cancel/Exit chosen")
                 gui_outfile.write("Plaso Processor: Processor Options - Aborted by user - Cancel/Exit chosen")
                 sys.exit(0)
-        """
+        
 
         elif(super_timeline_options == "Log2Timeline"):
             plaso_output_options = "NONE"
