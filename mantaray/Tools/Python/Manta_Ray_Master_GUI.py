@@ -462,7 +462,9 @@ for x in processing_scripts_list:
             cmd_string = "jpg,gif,bmp,avi,exe,mpg,wav,mov,pdf,ole,doc,zip,rar,htm,wmv,png,mp4"
 
     elif x == 'Super Timeline':
-
+        ## If you would like to enable plaso, uncomment lines 467-501 and comment out line 466. This should only be modified if you are an advanced user.
+        super_timeline_options = "Log2Timeline"
+        """
         try:
             super_timeline_options = subprocess.check_output(['zenity --list --radiolist --title "MantaRay - ManTech Triage & Analysis System		MantaRayForensics.com" --column="Selection" --column="Processing Option" --column="Tool Version" --column="Description" --separator="," FALSE "Log2Timeline" "v. 0.65" "Original timeline tool, outputs mactime, bodyfile, and csv format" FALSE "Plaso" "v. 1.1" "Updated timeline tool, outputs a .dmp file for further processing into a csv, raw, or dynamic output." --text="Select Timeline Tool" --width 800 --height 400'], shell=True, universal_newlines=True)
             super_timeline_options = super_timeline_options.strip()
@@ -496,7 +498,7 @@ for x in processing_scripts_list:
                 print ("Cancel/Exit chosen")
                 gui_outfile.write("Plaso Processor: Processor Options - Aborted by user - Cancel/Exit chosen")
                 sys.exit(0)
-
+        """
 
         elif(super_timeline_options == "Log2Timeline"):
             plaso_output_options = "NONE"
