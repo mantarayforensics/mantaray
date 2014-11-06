@@ -578,12 +578,12 @@ for x in processing_scripts_list:
 
         # Build zentiy command
 
-        zen_cmd = """zenity --list --radiolist --title "MantaRay - ManTech Triage & Analysis System        MantaRayForensics.com" --column="Selection" --column="Profile Name" --separator="," True "Select Custom Profile" """
+        zen_cmd = """zenity --list --radiolist --title "MantaRay - ManTech Triage & Analysis System        MantaRayForensics.com" --column="Selection" --column="Profile Name" --separator="," """ # removed  True "Select Custom Profile"
 
         for profile in profile_array:
             zen_cmd += 'False "' + profile + '" '
 
-        zen_cmd += """--text="Volatility Profile Selection\n\nIf you do not see the profile desired, please choose 'Select Custom Profile' to import a new profile." --width 800 --height 400"""
+        zen_cmd += """--text="Volatility Profile Selection\n\nIf you do not see the profile desired, please place the profile .zip file in your volatility install directory's /plugins/overlays/[OS_Type]/." --width 800 --height 400"""
 
         selected_profile = subprocess.check_output([zen_cmd], shell=True, universal_newlines=True)
 
@@ -600,7 +600,7 @@ for x in processing_scripts_list:
                 print (extra_profile)
                 sys.exit(1)
 
-            zen_cmd = """zenity --list --radiolist --title "MantaRay - ManTech Triage & Analysis System        MantaRayForensics.com" --column="Selection" --column="Profile Name" --separator="," False "Windows" False "Macintosh" False "Linux" --text="Volatility Profile Selection\n\n Pleas select OS Type of the Memory image" --width 800 --height 400"""
+            zen_cmd = """zenity --list --radiolist --title "MantaRay - ManTech Triage & Analysis System        MantaRayForensics.com" --column="Selection" --column="Profile Name" --separator="," False "Windows" False "Macintosh" False "Linux" --text="Volatility Profile Selection\n\n Please select OS Type of the Memory image" --width 800 --height 400"""
             os_selection = subprocess.check_output([zen_cmd], shell=True).strip()
             os_selection = os_selection.decode()
             if os_selection == "Windows":
