@@ -24,6 +24,15 @@ import os
 
 
 def mount(value, key, Image, outfile, mount_point):
+    """Mount Images
+
+    :param value: Filesystem type
+    :param key: Partition offset
+    :param Image: Input image
+    :param outfile: Logfile
+    :param mount_point: Directory to mount to
+    :return: success, offset point
+    """
 
     #initialize variables
     loopback_device_mount = "NONE"
