@@ -792,7 +792,7 @@ def GUI_Timeline_mr(item_to_process, case_number, root_folder_path, evidence, us
         #folder_to_process = select_folder_to_process(outfile)
         folder_to_process = evidence_no_quotes
         if run_l2t == "True":
-            process_folder(folder_to_process, folder_path, outfile, case_number, user_defined_timezone, plaso_output_options)
+            process_folder(folder_to_process, folder_path, outfile, case_number, user_defined_timezone)
             tool = "l2t"
         if run_plaso == "True":
             plaso_process_folder(folder_to_process, folder_path, outfile, case_number, user_defined_timezone, plaso_output_options, cores_to_use)
