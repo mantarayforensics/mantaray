@@ -893,9 +893,10 @@ if __name__ == '__main__':
         for subdir, dirs, files in os.walk(options.directory):
             for fname in files:
                 if fname.endswith(".txt") or fname.endswith(".js") or fname.endswith(".html") or fname.endswith(".htm")\
-                        or fname.endswith(".php") or fname.endswith(".sqlite") or fname.lower().endswith("cookies"):
+                        or fname.endswith(".php") or fname.endswith(".sqlite") or fname.lower().endswith("cookies") or \
+                        fname.endswith(".gif"):
                     file_array.append(os.path.join(subdir,fname))
-                elif fname.lower().endswith("pagefile.sys"):
+                elif fname.lower().endswith("pagefile.sys") or fname.lower().endswith("hiberfil.sys"):
                     file_array.append(os.path.join(subdir,fname))
 
         print "Complete"
