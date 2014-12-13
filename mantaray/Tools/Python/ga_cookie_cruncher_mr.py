@@ -28,16 +28,16 @@ from check_for_folder import *
 import mount
 
 
-def process_dir(input_dir, output_dir, parsers, type):
+def process_dir(input_dir, output_dir, parsers, type, threads):
     print ("Building Command...")
-    cmd = "sudo python ga_parser.py -d " + input_dir + " -o " + output_dir + ""
+    cmd = "sudo python /usr/share/mantaray/Tools/Python/ga_parser.py -d " + input_dir + " -o " + output_dir + ""
 
     # Select parsers.
     if "chrome" in parsers:
         cmd += " --chrome"
     if "firefox" in parsers:
         cmd += " --firefox"
-    if "ie" in parsers:
+    if "ie" or "internet explorer" in parsers:
         cmd += " --ie"
     if "apple" in parsers:
         cmd += " --apple"
@@ -45,6 +45,8 @@ def process_dir(input_dir, output_dir, parsers, type):
         cmd += " --ewf"
     if "gif" in parsers:
         cmd += " --gif"
+
+    cmd += " --threads=" + str(threads)
 
     # Add Logging
     cmd += " > " + output_dir + "_" + type + "_logfile.txt"
@@ -55,16 +57,16 @@ def process_dir(input_dir, output_dir, parsers, type):
     subprocess.call([cmd], shell=True)
 
 
-def process_file(input_file, output_dir, parsers, type="Overt"):
+def process_file(input_file, output_dir, parsers, type="Overt", threads="1"):
     print ("Building Command...")
-    cmd = "sudo python ga_parser.py -f " + input_file + " -o " + output_dir + ""
+    cmd = "sudo python /usr/share/mantaray/Tools/Python/ga_parser.py -f " + input_file + " -o " + output_dir + ""
 
     # Select parsers.
     if "chrome" in parsers:
         cmd += " --chrome"
     if "firefox" in parsers:
         cmd += " --firefox"
-    if "ie" in parsers:
+    if "ie" or "internet explorer" in parsers:
         cmd += " --ie"
     if "apple" in parsers:
         cmd += " --apple"
@@ -72,6 +74,8 @@ def process_file(input_file, output_dir, parsers, type="Overt"):
         cmd += " --ewf"
     if "chrome" in parsers:
         cmd += " --gif"
+
+    cmd += " --threads=" + str(threads)
 
     # Add Logging
     cmd += " > " + output_dir + "_" + type + "_logfile.txt"
@@ -99,7 +103,7 @@ def get_block_size_parted(outfile, temp_time):
     return block_size
 
 
-def mount_shadow_volumes(vssvolume_mnt, outfile, folder_path, temp_time, parsers):
+def mount_shadow_volumes(vssvolume_mnt, outfile, folder_path, temp_time, parsers, threads):
 
     print("Vssvolume_mnt: " + vssvolume_mnt)
 
@@ -117,7 +121,7 @@ def mount_shadow_volumes(vssvolume_mnt, outfile, folder_path, temp_time, parsers
             print("About to process registry hives from: " + item)
             mount.mount(value,key,vssvolume_mnt+"/"+item,outfile,vss_mount)
             os.makedirs(folder_path+"/"+item)
-            process_dir(vss_mount, folder_path+"/"+item, parsers,item)
+            process_dir(vss_mount, folder_path+"/"+item, parsers,item,threads)
 
     #unmounting vss volume
     if(vssvolume_mnt != "NULL"):
@@ -183,18 +187,18 @@ def check_for_shadow_volumes(Image_Path, key, block_size, outfile, folder_path, 
     return vssvolume_mnt
 
 
-def main(input_file, output_directory, parsers):
+def main(input_file, output_directory, parsers, threads):
     now = datetime.datetime.now()
     Image_Path = input_file
     mount_point = "/mnt/" + now.strftime("%Y-%m-%d_%H_%M_%S_%f")
     folder_path = output_directory
 
-    #process_file(input_file,folder_path,parsers,type="Overt")
+    #process_file(input_file,folder_path,parsers,type="Overt", threads)
 
     if not os.path.exists(output_directory):
         os.makedirs(output_directory)
 
-    outfile = open((output_directory+"GA_Cookie_Logfile.txt"),'w')
+    outfile = open((output_directory+"/GA_Cookie_Logfile.txt"),'w')
 
     if os.path.isdir(input_file):
         process_dir()
@@ -256,10 +260,11 @@ def main(input_file, output_directory, parsers):
                 mount.mount(value, key, Image_Path, outfile, tmp_mnt)
                 #process_file(Image_Path, folder_path+"/Partition_"+str(key), parsers)
                 # Process the mounted filesystem.
-                process_dir(tmp_mnt, folder_path+"/Partition_"+str(key), parsers, "Overt")
+                process_dir(tmp_mnt, folder_path+"/Partition_"+str(key), parsers, "Overt", threads)
                 # Processes Shadow Volumes
                 vss_mount = check_for_shadow_volumes(Image_Path, key, block_size, outfile, folder_path, temp_time, parsers)
-                mount_shadow_volumes(vss_mount,outfile,folder_path,now,parsers)
+                if not vss_mount == "NULL":
+                    mount_shadow_volumes(vss_mount,outfile,folder_path,now,parsers,threads)
 
 
 
@@ -277,6 +282,7 @@ if __name__ == '__main__':
     parser.add_argument("-p", help="Comma separated list of parsers to run. Available parsers include chome, firefox, "
                                    "safari, ie, gif")
     parser.add_argument("--ewf", help="Enable for EWF file inputs", action="store_true")
+    parser.add_argument("--threads", help="Select number of threads to use", type=int, action="store_true")
     args = parser.parse_args()
 
     parser_array = []
@@ -291,4 +297,4 @@ if __name__ == '__main__':
 
     if not os.path.exists(args.o):
         os.makedirs(args.o)
-    main(input_file=args.f,output_directory=args.o,parsers=parser_array)
+    main(input_file=args.f,output_directory=args.o,parsers=parser_array,threads=args.threads)

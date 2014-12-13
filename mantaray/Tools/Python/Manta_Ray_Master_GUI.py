@@ -36,6 +36,7 @@ from extract_ntfs_artifacts_mr import *
 from create_kml_from_exif_mr import *
 from plist_processor import *
 from filename_search_mr import *
+import ga_cookie_cruncher_mr
 
 ### SPLASHSCREEN ###########################################################################
 
@@ -160,10 +161,24 @@ if intro_splashscreen:
 
 ##Choose Evidence Type - Image Type
 
+batch_mode = "Single Disk Image"
+evidence_path_list = []
+
+
 if fieldValues: 
 
     try:
-        evidence_type = subprocess.check_output(['zenity --list --radiolist --title "MantaRay - ManTech Triage & Analysis System		MantaRayForensics.com" --column="Selection" --column="Evidence Type" --column="Description" --separator="," TRUE "Bit-Stream Image" ".dd, .img, .001, .E01" FALSE "Directory" "Logical Directory" FALSE "EnCase Logical Evidence File" ".L01" FALSE "Memory Image" "Forensic Image of RAM" FALSE "Single File" "Individual File" --text="Evidence Type Selection" --width 800 --height 400'], shell=True, universal_newlines=True)
+        evidence_type = subprocess.check_output(['zenity --list --radiolist '
+                                                 '--title "MantaRay - ManTech Triage & Analysis System		'
+                                                 'MantaRayForensics.com" --column="Selection" --column="Evidence Type" '
+                                                 '--column="Description" --separator="," '
+                                                 'TRUE "Bit-Stream Image" ".dd, .img, .001, .E01" '
+                                                 'FALSE "Directory" "Logical Directory" '
+                                                 'FALSE "EnCase Logical Evidence File" ".L01" '
+                                                 'FALSE "Memory Image" "Forensic Image of RAM" '
+                                                 'FALSE "Single File" "Individual File"'
+                                                 ' --text="Evidence Type Selection" --width 800 --height 400'],
+                                                shell=True, universal_newlines=True)
 
     except:
         print ("Cancel/Exit chosen")
@@ -199,6 +214,29 @@ if evidence_type:
         print ("No output directory was selected.")
         sys.exit(0)
 
+batch_mode_enabler = ""
+batch_mode_enabled = False
+
+if evidence_type == "Bit-Stream Image":
+    batch_mode_enabler = subprocess.check_output(['zenity --list --radiolist --title "MantaRay - ManTech Triage & '
+                                                   'Analysis System		MantaRayForensics.com" --column="Selection" '
+                                                   '--column="Processing Mode" --column="Description" --separator="," '
+                                                   'FALSE "Enable Batch Mode" "This mode allows for multiple images to'
+                                                   'be processed with the same settings automatically " '
+                                                   'TRUE "Single Image Mode" "This mode is the standard MantaRay mode'
+                                                   'and should be used if there is only 1 image or custom settings for'
+                                                   'each image to be processed" --text="Run Mode Selection"'
+                                                   ' --width 800 --height 400'], shell=True)
+
+    print(batch_mode_enabler)
+    print(type(batch_mode_enabler))
+    if batch_mode_enabler.decode().strip() == "Enable Batch Mode":
+        batch_mode_enabled = True
+    elif batch_mode_enabler.decode().strip() == "Single Image Mode":
+        batch_mode_enabled = False
+    else:
+        print("Error Processing Batch Mode...Exiting Now!")
+        sys.exit(0)
 
 ##Create and open log file
 
@@ -220,7 +258,25 @@ gui_outfile.write("Output Folder:" + "\t" + folder_path + "\n")
 if evidence_type == "Bit-Stream Image":
 
     try:
-        processing_scripts = subprocess.check_output(['zenity --list --checklist --title "MantaRay - ManTech Triage & Analysis System	MantaRayForensics.com" --column="Selection" --column="Processing Tool" --column="Description" --separator="," FALSE "BulkExtractor" "Scans for a large number of pre-defined regular expressions" FALSE "Calculate Entropy" "Pseudorandom number sequence test (ENT)" FALSE "Create KML from JPG EXIF Data" "Create Google Earth .kml file from EXIF data found in JPG images" FALSE "EXIF Tool" "Read meta information in files" FALSE "Foremost" "Recover files from a disk image based on headers and footers (Unallocated Space)" FALSE "Jumplist Parser" "Windows Vista/7 Jumplist Exploitation" FALSE "NTFS Artifact Extractor" "\$MFT/\$LogFile/((\$USNJRNL•\$J (Vista/7 Only)) Overt & Shadow Volume Extraction" FALSE "File Name Search" "Extract files by file name from OVERT//DELETED//VSS (Windows Only)" FALSE "PLIST Processor" "Extracts triage data from selected .plist files" FALSE "Registry Hive Extractor//Regripper" "Extract Registry from overt, deleted, unallocated, shadow volumes, restore-points & process with RegRipper" FALSE "Super Timeline" "Parse various log files and artifacts for timeline analysis"  --text="Processing Tool Selection   |   Evidence Type: Bit-Stream Image" --width 1100 --height 400'], shell=True, universal_newlines=True)
+        processing_scripts = subprocess.check_output(['zenity --list --checklist --title "MantaRay - ManTech Triage & '
+                                                      'Analysis System	MantaRayForensics.com" --column="Selection" '
+                                                      '--column="Processing Tool" --column="Description" '
+                                                      '--separator="," '
+                                                      'FALSE "BulkExtractor" '
+                                                        '"Scans for a large number of pre-defined regular expressions" '
+                                                      'FALSE "Calculate Entropy" '
+                                                      '"Pseudorandom number sequence test (ENT)" '
+                                                      'FALSE "Create KML from JPG EXIF Data" "Create Google Earth .kml file from EXIF data found in JPG images" '
+                                                      'FALSE "EXIF Tool" "Read meta information in files" '
+                                                      'FALSE "Foremost" "Recover files from a disk image based on headers and footers (Unallocated Space)" '
+                                                      'FALSE "Jumplist Parser" "Windows Vista/7 Jumplist Exploitation" '
+                                                      'FALSE "NTFS Artifact Extractor" "\$MFT/\$LogFile/((\$USNJRNL•\$J (Vista/7 Only)) Overt & Shadow Volume Extraction" '
+                                                      'FALSE "File Name Search" "Extract files by file name from OVERT//DELETED//VSS (Windows Only)" '
+                                                      'FALSE "PLIST Processor" "Extracts triage data from selected .plist files" '
+                                                      'FALSE "Google Analytics Cookie Cruncher" "Carves and processes artifacts from Google Analytic Cookies" '
+                                                      'FALSE "Registry Hive Extractor//Regripper" "Extract Registry from overt, deleted, unallocated, shadow volumes, restore-points & process with RegRipper" '
+                                                      'FALSE "Super Timeline" "Parse various log files and artifacts for timeline analysis"  '
+                                                      '--text="Processing Tool Selection   |   Evidence Type: Bit-Stream Image" --width 1100 --height 400'], shell=True, universal_newlines=True)
 
     except:
         print ("Cancel/Exit chosen")
@@ -236,7 +292,11 @@ if evidence_type == "Bit-Stream Image":
         sys.exit(0)
 
     try:
-        evidence_path = subprocess.check_output(['zenity --file-selection --filename="/mnt/hgfs/" --file-filter=""*.DD" "*.dd" "*.IMG" "*.img" "*.001" "*.E01"" --title "Select Bit-Stream Image to Process"'], shell=True, universal_newlines=True)
+        if batch_mode_enabled:
+            evidence_path = subprocess.check_output(['zenity --file-selection --directory="/mnt/hgfs/"  --title "Select Directory with Bit-Stream Images to Process"'], shell=True, universal_newlines=True)
+
+        else:
+            evidence_path = subprocess.check_output(['zenity --file-selection --filename="/mnt/hgfs/" --file-filter=""*.DD" "*.dd" "*.IMG" "*.img" "*.001" "*.E01"" --title "Select Bit-Stream Image to Process"'], shell=True, universal_newlines=True)
 
     except:
         print ("Cancel/Exit chosen")
@@ -367,6 +427,42 @@ processing_scripts = processing_scripts.strip()
 processing_scripts_list = processing_scripts.split(",")
 
 #set debug option
+evidence_path = evidence_path.strip()
+print(evidence_path)
+print(type(evidence_path))
+evidence = False
+
+if batch_mode_enabled:
+    if os.path.isdir(evidence_path):
+        for root, dirs, files in os.walk(evidence_path):
+            for fname in files:
+                if fname.lower().endswith(".e01"):
+                    evidence_path_list.append(os.path.join(root, fname))
+                elif fname.lower().endswith(".dd"):
+                    evidence_path_list.append(os.path.join(root, fname))
+                elif fname.lower().endswith(".001"):
+                    evidence_path_list.append(os.path.join(root, fname))
+                elif fname.lower().endswith(".img"):
+                    evidence_path_list.append(os.path.join(root, fname))
+
+    else:
+        print("Evidence is not a valid directory to scan...Exiting Now!")
+        sys.exit(0)
+
+else:
+    if os.path.isfile(evidence_path):
+        evidence_path = evidence_path.strip()
+        evidence_path_list.append(evidence_path)
+
+# Debugging - Comment Out
+import pprint
+pprint.pprint(evidence_path_list)
+
+if len(evidence_path_list) == 0 and batch_mode_enabled:
+    print("No Suitable Images discovered. Please ensure the supported file extensions are present")
+    print("Supported Formats: EnCase v6 E01, DD, dd, IMG, img, 001")
+    print("Exiting Now!")
+    sys.exit(0)
 
 try:
 
@@ -696,217 +792,283 @@ for x in processing_scripts_list:
         print("Volatility Performance: " + vol_processor.strip())
         gui_outfile.write("Volatility Performance:" + "\t" + vol_processor.strip() + "\n")
 
+    if x == "Google Analytics Cookie Cruncher":
+
+        # Select Parsers to Use
+        cmd = '''zenity --list --checklist --title "MantaRay - ManTech Triage & Analysis System		MantaRayForensics.com" --column="Selection" --column="Parser" --column="Description" TRUE "GIF" "This is reccomended by the developer" FALSE "Chrome" "Parse cookies from the Chrome Browser" FALSE "Internet Explorer" "Parse cookies from the Internet Explorer Browser" FALSE "Firefox" "Parse cookies from the Firefox browser" FALSE "Safari" "Parse cookies from the Safari Browser" --width 800 --height 400'''
+        ga_parsers = subprocess.check_output([cmd], shell=True).decode().strip()
+        gui_outfile.write("Google Analytic Cookie Parsers selected: " + ga_parsers)
+        ga_parsers = ga_parsers.lower().split("|")
+
+
+        ## Allow user to select resources to run
+        try:
+            ga_processor = subprocess.check_output(['zenity --list --radiolist --title "MantaRay - ManTech Triage & Analysis System		MantaRayForensics.com" --column="Selection" --column="Processor Performance" --column="Description" --separator="," FALSE "Speed-Slow" "Minimum Processing Cores" TRUE "Speed-Med" "Medium Processing Cores (Recommended)" FALSE "Speed-Fast" "Maximum Processing Cores (Warning - Processor Intensive)" --text="Processing Performance - Google Analytic Cookies" --width 800 --height 400'], shell=True, universal_newlines=True)
+        except:
+            print ("Cancel/Exit chosen")
+            gui_outfile.write("Google Analytic Cookie Processor: Processor Options - Aborted by user - Cancel/Exit chosen")
+            sys.exit(0)
+
+        ## convert user answer to number of cores to use
+        speed = ga_processor.strip()
+        #calculate number of processors to use (Speed-Slow, Speed-Fast, Speed-Med
+        calc_cores_command = "cat /proc/cpuinfo | grep processor | wc -l"
+        num_of_cores = subprocess.check_output([calc_cores_command], shell=True)
+        num_of_cores = num_of_cores.decode(encoding='UTF-8')
+        num_of_cores = num_of_cores.strip()
+        print("This VM has " + str(num_of_cores) +" cores")
+
+        if(num_of_cores == "1"):
+            ga_num_threads = 1
+        elif(speed == "Speed-Slow"):
+            ga_num_threads = 1
+        elif(speed == "Speed-Med"):
+            ga_num_threads = int(num_of_cores)//2
+        elif(speed == "Speed-Fast"):
+            ga_num_threads = int(num_of_cores)
+
+        print("Google Analytic Cookie Parser Performance: " + ga_processor.strip())
+        gui_outfile.write("Google Analytic Cookie Parser Performance:" + "\t" + ga_processor.strip() + "\n")
+
 
 #add code to Master outfile to break section between input and tool success
 gui_outfile.write("\n\n*************************** PROCESSING STATUS ***************************\n")
 
-#loop through processing_scripts and execute each one passing variables to each script
-for x in processing_scripts_list:
-    print(x)
+folder_path_base = folder_path
+batch_counter = 0
 
-    if x == 'BulkExtractor':
-        if(whitelist_path != "") and (keyword_list_path != ""):
-            if(debug_mode == "ON"):
-                be_mr(evidence_type, case_number, folder_path, evidence_path.strip(), whitelist_path.strip(), bulkextractor_processor, keyword_list_path.strip())
-                gui_outfile.write("Bulk_Extractor...".ljust(35) + "completed successfully".ljust(55) + "\n")
-            else:
-                try:
+#loop through processing_scripts and execute each one passing variables to each script
+
+
+for evidence_path in evidence_path_list:
+    batch_counter = batch_counter + 1
+
+    if batch_mode_enabled:
+        folder_path = folder_path_base + "/Batch_Item_0" + str(batch_counter) + "_" + str(os.path.basename(evidence_path))
+
+    gui_outfile.flush()
+    gui_outfile.write("Processing: " + str(evidence_path) + "\n")
+
+
+    for x in processing_scripts_list:
+        print("Processing " + x + " for " + str(os.path.basename(evidence_path)))
+
+        if x == 'BulkExtractor':
+            if(whitelist_path != "") and (keyword_list_path != ""):
+                if(debug_mode == "ON"):
                     be_mr(evidence_type, case_number, folder_path, evidence_path.strip(), whitelist_path.strip(), bulkextractor_processor, keyword_list_path.strip())
                     gui_outfile.write("Bulk_Extractor...".ljust(35) + "completed successfully".ljust(55) + "\n")
-                except:
-                    print("Call to bulk_extractor failed")
-                    gui_outfile.write("Bulk_Extractor failed...Please reprocess with Debug Mode ON - running MantaRay from command line as root\n")
-        elif(whitelist_path != "") and (keyword_list_path == ""):
-            if(debug_mode == "ON"):
-                be_mr(evidence_type, case_number, folder_path, evidence_path.strip(), whitelist_path.strip(), bulkextractor_processor, "NONE")
-                gui_outfile.write("Bulk_Extractor...".ljust(35) + "completed successfully".ljust(55) + "\n")
-            else:
-                try:
+                else:
+                    try:
+                        be_mr(evidence_type, case_number, folder_path, evidence_path.strip(), whitelist_path.strip(), bulkextractor_processor, keyword_list_path.strip())
+                        gui_outfile.write("Bulk_Extractor...".ljust(35) + "completed successfully".ljust(55) + "\n")
+                    except:
+                        print("Call to bulk_extractor failed")
+                        gui_outfile.write("Bulk_Extractor failed...Please reprocess with Debug Mode ON - running MantaRay from command line as root\n")
+            elif(whitelist_path != "") and (keyword_list_path == ""):
+                if(debug_mode == "ON"):
                     be_mr(evidence_type, case_number, folder_path, evidence_path.strip(), whitelist_path.strip(), bulkextractor_processor, "NONE")
                     gui_outfile.write("Bulk_Extractor...".ljust(35) + "completed successfully".ljust(55) + "\n")
-                except:
-                    print("Call to bulk_extractor failed")
-                    gui_outfile.write("Bulk_Extractor failed...Please reprocess with Debug Mode ON - running MantaRay from command line as root\n")
-        elif(whitelist_path == "") and (keyword_list_path != ""):
-            if(debug_mode == "ON"):
-                be_mr(evidence_type, case_number, folder_path, evidence_path.strip(), "NONE", bulkextractor_processor, keyword_list_path.strip())
-                gui_outfile.write("Bulk_Extractor...".ljust(35) + "completed successfully".ljust(55) + "\n")
-            else:
-                try:
+                else:
+                    try:
+                        be_mr(evidence_type, case_number, folder_path, evidence_path.strip(), whitelist_path.strip(), bulkextractor_processor, "NONE")
+                        gui_outfile.write("Bulk_Extractor...".ljust(35) + "completed successfully".ljust(55) + "\n")
+                    except:
+                        print("Call to bulk_extractor failed")
+                        gui_outfile.write("Bulk_Extractor failed...Please reprocess with Debug Mode ON - running MantaRay from command line as root\n")
+            elif(whitelist_path == "") and (keyword_list_path != ""):
+                if(debug_mode == "ON"):
                     be_mr(evidence_type, case_number, folder_path, evidence_path.strip(), "NONE", bulkextractor_processor, keyword_list_path.strip())
                     gui_outfile.write("Bulk_Extractor...".ljust(35) + "completed successfully".ljust(55) + "\n")
-                except:
-                    print("Call to bulk_extractor failed")
-                    gui_outfile.write("Bulk_Extractor failed...Please reprocess with Debug Mode ON - running MantaRay from command line as root\n")
-        elif(whitelist_path == "") and (keyword_list_path == ""):
-            if(debug_mode == "ON"):
-                be_mr(evidence_type, case_number, folder_path, evidence_path.strip(), "NONE", bulkextractor_processor, "NONE")
-                gui_outfile.write("Bulk_Extractor...".ljust(35) + "completed successfully".ljust(55) + "\n")
-            else:
-                try:
+                else:
+                    try:
+                        be_mr(evidence_type, case_number, folder_path, evidence_path.strip(), "NONE", bulkextractor_processor, keyword_list_path.strip())
+                        gui_outfile.write("Bulk_Extractor...".ljust(35) + "completed successfully".ljust(55) + "\n")
+                    except:
+                        print("Call to bulk_extractor failed")
+                        gui_outfile.write("Bulk_Extractor failed...Please reprocess with Debug Mode ON - running MantaRay from command line as root\n")
+            elif(whitelist_path == "") and (keyword_list_path == ""):
+                if(debug_mode == "ON"):
                     be_mr(evidence_type, case_number, folder_path, evidence_path.strip(), "NONE", bulkextractor_processor, "NONE")
                     gui_outfile.write("Bulk_Extractor...".ljust(35) + "completed successfully".ljust(55) + "\n")
-                except:
-                    print("Call to bulk_extractor failed")
-                    gui_outfile.write("Bulk_Extractor failed...Please reprocess with Debug Mode ON - running MantaRay from command line as root\n")
-    elif x =='Jumplist Parser':
-        if(debug_mode == "ON"):
-            jumplist_mr(evidence_type, case_number, folder_path, evidence_path.strip())
-            gui_outfile.write("Jumplist Parser...".ljust(35) + "completed successfully".ljust(55) + "\n")
-        else:
-            try:
+                else:
+                    try:
+                        be_mr(evidence_type, case_number, folder_path, evidence_path.strip(), "NONE", bulkextractor_processor, "NONE")
+                        gui_outfile.write("Bulk_Extractor...".ljust(35) + "completed successfully".ljust(55) + "\n")
+                    except:
+                        print("Call to bulk_extractor failed")
+                        gui_outfile.write("Bulk_Extractor failed...Please reprocess with Debug Mode ON - running MantaRay from command line as root\n")
+        elif x =='Jumplist Parser':
+            if(debug_mode == "ON"):
                 jumplist_mr(evidence_type, case_number, folder_path, evidence_path.strip())
                 gui_outfile.write("Jumplist Parser...".ljust(35) + "completed successfully".ljust(55) + "\n")
-            except:
-                print("Call to Jumplist parser failed")
-                gui_outfile.write("Jumplist Parser failed...Please reprocess with Debug Mode ON - running MantaRay from command line as root\n")
-    elif x == 'Calculate Entropy':
-        if(debug_mode == "ON"):
-            entropy_mr(evidence_type, case_number, folder_path, evidence_path.strip())
-            gui_outfile.write("Calculate Entropy...".ljust(35) + "completed successfully".ljust(55) + "\n")
-        else:
-            try:
-                entropy_mr(evidence_type, case_number, folder_path, evidence_path.strip())
-                gui_outfile.write("Calculate Entropy...".ljust(35) + "completed successfully".ljust(55) + "\n")
-            except:
-                print("Call to Entropy calculator failed")
-                gui_outfile.write("Calculate Entropy failed...Please reprocess with Debug Mode ON - running MantaRay from command line as root\n")
-    elif x == 'Registry Hive Extractor//Regripper':
-        if(debug_mode == "ON"):
-            folder_to_process = extract_registry_hives_mr(evidence_type, case_number, folder_path, evidence_path.strip(),registry_extractor_options.strip())
-            gui_outfile.write("Registry Hive Extractor...".ljust(35) + "completed successfully".ljust(55) + "\n")
-            mr_registry(case_number, folder_to_process, folder_path) #process extracted reg hives w/ rr
-            gui_outfile.write("Regripper...".ljust(35) + "completed successfully".ljust(55) + "\n")
-        else:
-            try:
+            else:
+                try:
+                    jumplist_mr(evidence_type, case_number, folder_path, evidence_path.strip())
+                    gui_outfile.write("Jumplist Parser...".ljust(35) + "completed successfully".ljust(55) + "\n")
+                except:
+                    print("Call to Jumplist parser failed")
+                    gui_outfile.write("Jumplist Parser failed...Please reprocess with Debug Mode ON - running MantaRay from command line as root\n")
+        elif x == 'Calculate Entropy':
+            if(debug_mode == "ON"):
+                    entropy_mr(evidence_type, case_number, folder_path, evidence_path.strip())
+                    gui_outfile.write("Calculate Entropy...".ljust(35) + "completed successfully".ljust(55) + "\n")
+            else:
+                try:
+                    entropy_mr(evidence_type, case_number, folder_path, evidence_path.strip())
+                    gui_outfile.write("Calculate Entropy...".ljust(35) + "completed successfully".ljust(55) + "\n")
+                except:
+                    print("Call to Entropy calculator failed")
+                    gui_outfile.write("Calculate Entropy failed...Please reprocess with Debug Mode ON - running MantaRay from command line as root\n")
+        elif x == 'Registry Hive Extractor//Regripper':
+            if(debug_mode == "ON"):
                 folder_to_process = extract_registry_hives_mr(evidence_type, case_number, folder_path, evidence_path.strip(),registry_extractor_options.strip())
                 gui_outfile.write("Registry Hive Extractor...".ljust(35) + "completed successfully".ljust(55) + "\n")
-            except:
-                print("Call to Extract Registry hives failed")
-                gui_outfile.write("Registry Hive Extractor failed...Please reprocess with Debug Mode ON - running MantaRay from command line as root\n")
-            try:
-                mr_registry(case_number, folder_to_process, folder_path)
+                mr_registry(case_number, folder_to_process, folder_path) #process extracted reg hives w/ rr
                 gui_outfile.write("Regripper...".ljust(35) + "completed successfully".ljust(55) + "\n")
-            except:
-                print("Call to RegRipper failed")
-                gui_outfile.write("RegRipper failed...Please reprocess with Debug Mode ON - running MantaRay from command line as root\n")
-    elif x == 'Super Timeline':
-        if(debug_mode == "ON"):
-            GUI_Timeline_mr(evidence_type, case_number, folder_path,  evidence_path.strip(), user_defined_timezone, super_timeline_options, plaso_output_options, plaso_processor)
-            gui_outfile.write("Super Timeline...".ljust(35) + "completed successfully".ljust(55) + "\n")
-        else:
-            try:
+            else:
+                try:
+                    folder_to_process = extract_registry_hives_mr(evidence_type, case_number, folder_path, evidence_path.strip(),registry_extractor_options.strip())
+                    gui_outfile.write("Registry Hive Extractor...".ljust(35) + "completed successfully".ljust(55) + "\n")
+                except:
+                    print("Call to Extract Registry hives failed")
+                    gui_outfile.write("Registry Hive Extractor failed...Please reprocess with Debug Mode ON - running MantaRay from command line as root\n")
+                try:
+                    mr_registry(case_number, folder_to_process, folder_path)
+                    gui_outfile.write("Regripper...".ljust(35) + "completed successfully".ljust(55) + "\n")
+                except:
+                    print("Call to RegRipper failed")
+                    gui_outfile.write("RegRipper failed...Please reprocess with Debug Mode ON - running MantaRay from command line as root\n")
+        elif x == 'Super Timeline':
+            if(debug_mode == "ON"):
                 GUI_Timeline_mr(evidence_type, case_number, folder_path,  evidence_path.strip(), user_defined_timezone, super_timeline_options, plaso_output_options, plaso_processor)
                 gui_outfile.write("Super Timeline...".ljust(35) + "completed successfully".ljust(55) + "\n")
-            except:
-                print("Call to Super Timeline failed")
-                gui_outfile.write("Super Timeline failed...Please reprocess with Debug Mode ON - running MantaRay from command line as root\n")
-    elif x == 'Delete Duplicate Files':
-        if(debug_mode == "ON"):
-            remove_duplicates_mr(folder_path, evidence_path.strip())
-            gui_outfile.write("Delete Duplicate Files...".ljust(35) + "completed successfully".ljust(55) + "\n")
-        else:
-            try:
+            else:
+                try:
+                    GUI_Timeline_mr(evidence_type, case_number, folder_path,  evidence_path.strip(), user_defined_timezone, super_timeline_options, plaso_output_options, plaso_processor)
+                    gui_outfile.write("Super Timeline...".ljust(35) + "completed successfully".ljust(55) + "\n")
+                except:
+                    print("Call to Super Timeline failed")
+                    gui_outfile.write("Super Timeline failed...Please reprocess with Debug Mode ON - running MantaRay from command line as root\n")
+        elif x == 'Delete Duplicate Files':
+            if(debug_mode == "ON"):
                 remove_duplicates_mr(folder_path, evidence_path.strip())
                 gui_outfile.write("Delete Duplicate Files...".ljust(35) + "completed successfully".ljust(55) + "\n")
-            except:
-                print("Call to Remove_Duplicates failed")
-                gui_outfile.write("Remove Duplicates failed...Please reprocess with Debug Mode ON - running MantaRay from command line as root\n")
-    elif x =='Foremost':
-        if(re.search('Default', foremost_options)):
-            if(debug_mode == "ON"):
-                carve_unallocated_mr(evidence_type, case_number, folder_path, evidence_path.strip(), cmd_string)
-                gui_outfile.write("Foremost...".ljust(35) + "completed successfully".ljust(55) + "\n")
             else:
                 try:
+                    remove_duplicates_mr(folder_path, evidence_path.strip())
+                    gui_outfile.write("Delete Duplicate Files...".ljust(35) + "completed successfully".ljust(55) + "\n")
+                except:
+                    print("Call to Remove_Duplicates failed")
+                    gui_outfile.write("Remove Duplicates failed...Please reprocess with Debug Mode ON - running MantaRay from command line as root\n")
+        elif x =='Foremost':
+            if(re.search('Default', foremost_options)):
+                if(debug_mode == "ON"):
                     carve_unallocated_mr(evidence_type, case_number, folder_path, evidence_path.strip(), cmd_string)
                     gui_outfile.write("Foremost...".ljust(35) + "completed successfully".ljust(55) + "\n")
-                except:
-                    print("Call to Foremost failed")
-                    gui_outfile.write("Foremost failed...Please reprocess with Debug Mode ON - running MantaRay from command line as root\n")
-        else:
-            if(debug_mode == "ON"):
-                carve_unallocated_mr(evidence_type, case_number, folder_path, evidence_path.strip(), 'Configuration File')
-                gui_outfile.write("Foremost...".ljust(35) + "completed successfully".ljust(55) + "\n")
+                else:
+                    try:
+                        carve_unallocated_mr(evidence_type, case_number, folder_path, evidence_path.strip(), cmd_string)
+                        gui_outfile.write("Foremost...".ljust(35) + "completed successfully".ljust(55) + "\n")
+                    except:
+                        print("Call to Foremost failed")
+                        gui_outfile.write("Foremost failed...Please reprocess with Debug Mode ON - running MantaRay from command line as root\n")
             else:
-                try:
+                if(debug_mode == "ON"):
                     carve_unallocated_mr(evidence_type, case_number, folder_path, evidence_path.strip(), 'Configuration File')
                     gui_outfile.write("Foremost...".ljust(35) + "completed successfully".ljust(55) + "\n")
-                except:
-                    print("Call to Foremost failed")
-                    gui_outfile.write("Foremost failed...Please reprocess with Debug Mode ON - running MantaRay from command line as root\n")
-    elif x == 'Volatility':
-        if(debug_mode == "ON"):
-            volley24.main(evidence_path.strip(), selected_profile.strip(), num_threads, folder_path + "/",  pid_enabled, dump_enabled)
-            gui_outfile.write("Volatility...".ljust(35) + "completed successfully".ljust(55) + "\n")
-        else:
-            try:
+                else:
+                    try:
+                        carve_unallocated_mr(evidence_type, case_number, folder_path, evidence_path.strip(), 'Configuration File')
+                        gui_outfile.write("Foremost...".ljust(35) + "completed successfully".ljust(55) + "\n")
+                    except:
+                        print("Call to Foremost failed")
+                        gui_outfile.write("Foremost failed...Please reprocess with Debug Mode ON - running MantaRay from command line as root\n")
+        elif x == 'Volatility':
+            if(debug_mode == "ON"):
                 volley24.main(evidence_path.strip(), selected_profile.strip(), num_threads, folder_path + "/",  pid_enabled, dump_enabled)
                 gui_outfile.write("Volatility...".ljust(35) + "completed successfully".ljust(55) + "\n")
-            except:
-                print("Call to Volatility failed")
-                gui_outfile.write("Volatility failed...Please reprocess with Debug Mode ON - running MantaRay from command line as root\n")
-    elif x =='EXIF Tool':
-        if(debug_mode == "ON"):
-            exifdata_mr(evidence_type, case_number, folder_path, evidence_path.strip())
-            gui_outfile.write("EXIF Tool...".ljust(35) + "completed successfully".ljust(55) + "\n")
-        else:
-            try:
+            else:
+                try:
+                    volley24.main(evidence_path.strip(), selected_profile.strip(), num_threads, folder_path + "/",  pid_enabled, dump_enabled)
+                    gui_outfile.write("Volatility...".ljust(35) + "completed successfully".ljust(55) + "\n")
+                except:
+                    print("Call to Volatility failed")
+                    gui_outfile.write("Volatility failed...Please reprocess with Debug Mode ON - running MantaRay from command line as root\n")
+        elif x =='EXIF Tool':
+            if(debug_mode == "ON"):
                 exifdata_mr(evidence_type, case_number, folder_path, evidence_path.strip())
                 gui_outfile.write("EXIF Tool...".ljust(35) + "completed successfully".ljust(55) + "\n")
-            except:
-                print("Call to EXIF Tool failed")
-                gui_outfile.write("EXIF Tool failed...Please reprocess with Debug Mode ON - running MantaRay from command line as root\n")
-    elif x == 'NTFS Artifact Extractor':
-        if(debug_mode == "ON"):
-            extract_ntfs_artifacts_mr(evidence_type, case_number, folder_path, evidence_path.strip())
-            gui_outfile.write("NTFS Artifact Extractor...".ljust(35) + "completed successfully".ljust(55) + "\n")
-        else:
-            try:
+            else:
+                try:
+                    exifdata_mr(evidence_type, case_number, folder_path, evidence_path.strip())
+                    gui_outfile.write("EXIF Tool...".ljust(35) + "completed successfully".ljust(55) + "\n")
+                except:
+                    print("Call to EXIF Tool failed")
+                    gui_outfile.write("EXIF Tool failed...Please reprocess with Debug Mode ON - running MantaRay from command line as root\n")
+        elif x == 'NTFS Artifact Extractor':
+            if(debug_mode == "ON"):
                 extract_ntfs_artifacts_mr(evidence_type, case_number, folder_path, evidence_path.strip())
                 gui_outfile.write("NTFS Artifact Extractor...".ljust(35) + "completed successfully".ljust(55) + "\n")
-            except:
-                print("Call to NTFS Artifact Extractor failed")
-                gui_outfile.write("NTFS Artifact Extractor failed...Please reprocess with Debug Mode ON - running MantaRay from command line as root\n")
-    elif x == 'File Name Search':
-        if(debug_mode == "ON"):
-            filename_search_mr(evidence_type, case_number, folder_path, evidence_path.strip(), searchfile)
-            gui_outfile.write("File Name Search...".ljust(35) + "completed successfully".ljust(55) + "\n")
-        else:
-            try:
+            else:
+                try:
+                    extract_ntfs_artifacts_mr(evidence_type, case_number, folder_path, evidence_path.strip())
+                    gui_outfile.write("NTFS Artifact Extractor...".ljust(35) + "completed successfully".ljust(55) + "\n")
+                except:
+                    print("Call to NTFS Artifact Extractor failed")
+                    gui_outfile.write("NTFS Artifact Extractor failed...Please reprocess with Debug Mode ON - running MantaRay from command line as root\n")
+        elif x == 'File Name Search':
+            if(debug_mode == "ON"):
                 filename_search_mr(evidence_type, case_number, folder_path, evidence_path.strip(), searchfile)
                 gui_outfile.write("File Name Search...".ljust(35) + "completed successfully".ljust(55) + "\n")
-            except:
-                print("Call to File Name Search failed")
-                gui_outfile.write("File Name Search failed...Please reprocess with Debug Mode ON - running MantaRay from command line as root\n")
-    elif x == 'Create KML from JPG EXIF Data':
-        if(debug_mode == "ON"):
-            create_kml_from_exif_mr(evidence_type, case_number, folder_path, evidence_path.strip())
-            gui_outfile.write("Create KML from JPG EXIF Data...".ljust(35) + "completed successfully".ljust(55) + "\n")
-        else:
-            try:
+            else:
+                try:
+                    filename_search_mr(evidence_type, case_number, folder_path, evidence_path.strip(), searchfile)
+                    gui_outfile.write("File Name Search...".ljust(35) + "completed successfully".ljust(55) + "\n")
+                except:
+                    print("Call to File Name Search failed")
+                    gui_outfile.write("File Name Search failed...Please reprocess with Debug Mode ON - running MantaRay from command line as root\n")
+        elif x == 'Create KML from JPG EXIF Data':
+            if(debug_mode == "ON"):
                 create_kml_from_exif_mr(evidence_type, case_number, folder_path, evidence_path.strip())
                 gui_outfile.write("Create KML from JPG EXIF Data...".ljust(35) + "completed successfully".ljust(55) + "\n")
-            except:
-                print("Call to Create KML from JPG EXIF Data failed")
-                gui_outfile.write("Create KML from JPEG EXIF failed...Please reprocess with Debug Mode ON - running MantaRay from command line as root\n")
-    elif x == 'PLIST Processor':
-        if(debug_mode == "ON"):
-            plist_processor(evidence_type, case_number, folder_path, evidence_path.strip())
-            gui_outfile.write("PLIST Processor...".ljust(35) + "completed successfully".ljust(55) + "\n")
-        else:
-            try:
+            else:
+                try:
+                    create_kml_from_exif_mr(evidence_type, case_number, folder_path, evidence_path.strip())
+                    gui_outfile.write("Create KML from JPG EXIF Data...".ljust(35) + "completed successfully".ljust(55) + "\n")
+                except:
+                    print("Call to Create KML from JPG EXIF Data failed")
+                    gui_outfile.write("Create KML from JPEG EXIF failed...Please reprocess with Debug Mode ON - running MantaRay from command line as root\n")
+        elif x == 'PLIST Processor':
+            if(debug_mode == "ON"):
                 plist_processor(evidence_type, case_number, folder_path, evidence_path.strip())
                 gui_outfile.write("PLIST Processor...".ljust(35) + "completed successfully".ljust(55) + "\n")
-            except:
-                print("Call to PLIST Processor failed")
-                gui_outfile.write("PLIST Processor failed...Please reprocess with Debug Mode ON - running MantaRay from command line as root\n")
+            else:
+                try:
+                    plist_processor(evidence_type, case_number, folder_path, evidence_path.strip())
+                    gui_outfile.write("PLIST Processor...".ljust(35) + "completed successfully".ljust(55) + "\n")
+                except:
+                    print("Call to PLIST Processor failed")
+                    gui_outfile.write("PLIST Processor failed...Please reprocess with Debug Mode ON - running MantaRay from command line as root\n")
+
+        elif x == 'Google Analytics Cookie Cruncher':
+            if debug_mode == "ON":
+                ga_cookie_cruncher_mr.main(evidence_path.strip(), folder_path+"/GA-Cookies", ga_parsers, ga_num_threads)
+                gui_outfile.write("Google Analytic Cookie Cruncher...".ljust(35) + "completed successfully".ljust(55) + "\n")
+            else:
+                try:
+                    ga_cookie_cruncher_mr.main(evidence_path.strip(), folder_path+"/GA-Cookies", ga_parsers, ga_num_threads)
+                    gui_outfile.write("Google Analytic Cookie Cruncher...".ljust(35) + "completed successfully".ljust(55) + "\n")
+                except:
+                    print("Call to Google Analytics Cookie Parser failed")
+                    gui_outfile.write("Google Analytics Cookie Parser failed...Please reprocess with Debug Mode ON and re-run MantaRay\n")
 
 
+    gui_outfile.write("\n\n###################################################################################\n\n")
 
-gui_outfile.close()    
+gui_outfile.close()
 
 #tell the user the process is done:
-done(folder_path)    
+done(folder_path_base)
 
 

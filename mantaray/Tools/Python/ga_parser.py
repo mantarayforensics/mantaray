@@ -892,14 +892,19 @@ if __name__ == '__main__':
         print "Scanning for Files...",
         for subdir, dirs, files in os.walk(options.directory):
             for fname in files:
-                file_array.append(os.path.join(subdir,fname))
-        print "Complete"
+                if fname.endswith(".txt") or fname.endswith(".js") or fname.endswith(".html") or fname.endswith(".htm")\
+                        or fname.endswith(".php") or fname.endswith(".sqlite") or fname.lower().endswith("cookies"):
+                    file_array.append(os.path.join(subdir,fname))
+                elif fname.lower().endswith("pagefile.sys"):
+                    file_array.append(os.path.join(subdir,fname))
 
+        print "Complete"
 
         import threading
         import time
 
         for file_entry in file_array:
+
             while 1:
                 if threading.active_count() <= threads:
                     print("Processing " + file_entry + ", " + str(os.path.getsize(file_entry)))
