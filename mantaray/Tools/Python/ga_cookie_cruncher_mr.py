@@ -128,8 +128,11 @@ def mount_shadow_volumes(vssvolume_mnt, outfile, folder_path, temp_time, parsers
         print("Unmounting: " + vssvolume_mnt)
         outfile.write("Unmounting: " + vssvolume_mnt + "\n")
         subprocess.call(['sudo umount -f ' + vssvolume_mnt], shell=True)
-        os.rmdir(vssvolume_mnt)
-
+        try:
+            os.rmdir(vssvolume_mnt)
+        except:
+            print("Unable to unmount: " + vssvolume_mnt)
+            outfile.write("Unable to unmount: " + vssvolume_mnt)
 
 def check_for_shadow_volumes(Image_Path, key, block_size, outfile, folder_path, temp_time, parsers):
 

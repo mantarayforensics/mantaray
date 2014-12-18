@@ -845,6 +845,7 @@ for evidence_path in evidence_path_list:
 
     if batch_mode_enabled:
         folder_path = folder_path_base + "/Batch_Item_0" + str(batch_counter) + "_" + str(os.path.basename(evidence_path))
+        check_for_folder(folder_path, gui_outfile)
 
     gui_outfile.flush()
     gui_outfile.write("Processing: " + str(evidence_path) + "\n")

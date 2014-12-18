@@ -85,7 +85,7 @@ def be_mr(item_to_process, case_number, folder_path, evidence, whitelist_locatio
     #outfile = open(log_file, 'a')
 
     #add subfolder to output path so BE has empty folder to write to
-    folder_path_be = "'" + folder_path +"/Bulk_Extractor_Results'"
+    folder_path_be = folder_path +"/Bulk_Extractor_Results"
     check_for_folder(folder_path_be, "NONE")
 
     if(item_to_process == "Directory"):
