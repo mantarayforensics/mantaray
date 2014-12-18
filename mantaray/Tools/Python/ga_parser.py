@@ -757,9 +757,11 @@ if __name__ == '__main__':
     input_parser.add_option("--gif",action = "store_true", dest="gif_cache", help = "choose one or more")
     input_parser.add_option("--apple", action="store_true", dest="apple", help = "choose one or more")
     input_parser.add_option("--ewf", action="store_true", dest="ewf", help = "Select this is the input file is EWF "
-                                                                             "format. Libewf must be installed")
+                                                                             "format. Libewf and PyTSK3 must be "
+                                                                             "installed")
     input_parser.add_option("--threads", dest="threads", help="Number of threads to use in Dir Scan", metavar="4",
                             type="int", default=1)
+    input_parser.add_option("--sigs", dest="sigs", help="Enable scanning for ONLY common file extensions for cookies")
 
     (options, args) = input_parser.parse_args()
 
@@ -772,6 +774,7 @@ if __name__ == '__main__':
     directory = options.directory
     ewf_file = options.ewf
     threads = options.threads
+    sigs = options.sigs
 
     #no arguments given by user,exit
     if len(sys.argv) == 1:
@@ -861,7 +864,17 @@ if __name__ == '__main__':
     not_processed= []
 
     #can be increased if more ram is available
-    maxfilesize = 1000000
+    try:
+
+        # Using free, gather the size of available RAM and use half of it as the maxfilesize to process
+
+        import subprocess
+        maxfilesize = subprocess.check_output("free -o | awk 'NR==1{print $4}'", shell=True)
+        maxfilesize = int(maxfilesize.strip())/2
+        print "Using Available_RAM/2 for maxfilesize: ", maxfilesize
+    except:
+        # If RAM cannot be calculated, use default of 4000
+        maxfilesize = 400000
 
 
     #printable chars allowed in urls and domain names
@@ -883,7 +896,7 @@ if __name__ == '__main__':
         #crap, now we need to check to see if the path is a Windows or Linux path
 
         if '\\' in options.directory:
-            seperator = "\\"
+            separator = "\\"
         if '/' in options.directory:
             seperator = "/"
 
@@ -892,88 +905,72 @@ if __name__ == '__main__':
         print "Scanning for Files...",
         for subdir, dirs, files in os.walk(options.directory):
             for fname in files:
-                if fname.endswith(".txt") or fname.endswith(".js") or fname.endswith(".html") or fname.endswith(".htm")\
-                        or fname.endswith(".php") or fname.endswith(".sqlite") or fname.lower().endswith("cookies") or \
-                        fname.endswith(".gif"):
+                if sigs:
+                    if fname.endswith(".txt") or fname.endswith(".js") or fname.endswith(".html") or fname.endswith(".htm")\
+                            or fname.endswith(".php") or fname.endswith(".sqlite") or fname.lower().endswith("cookies") or \
+                            fname.endswith(".gif"):
+                        file_array.append(os.path.join(subdir,fname))
+                    elif fname.lower().endswith("pagefile.sys") or fname.lower().endswith("hiberfil.sys"):
+                        file_array.append(os.path.join(subdir,fname))
+                else:
                     file_array.append(os.path.join(subdir,fname))
-                elif fname.lower().endswith("pagefile.sys") or fname.lower().endswith("hiberfil.sys"):
-                    file_array.append(os.path.join(subdir,fname))
-
         print "Complete"
 
-        import threading
-        import time
+        for current_file in file_array:
 
-        for file_entry in file_array:
+            print("Processing " + current_file + ", " + str(os.path.getsize(current_file)))
 
+            #reset loop count
+            loop = 0
+
+            try:
+                file_object = open(current_file, 'rb')
+
+            except:
+                print("Error: Cannot Open " + current_file + "...skipping")
+                pass
+
+            #read the file into chunks so we can process large files
             while 1:
-                if threading.active_count() <= threads:
-                    print("Processing " + file_entry + ", " + str(os.path.getsize(file_entry)))
-
-                    current_file = file_entry
-
-                    #reset loop count
-                    loop = 0
-                    # print "Processing " + current_file
-
-                    try:
-                        file_object = open(current_file, 'rb')
-
-                    except:
-                        print("Error: Cannot Open " + current_file + "...skipping")
-                        pass
-
-                    #read the file into chunks so we can process large files
-                    while 1:
-                        try:
-                            chunk = file_object.read(maxfilesize)
-                        except:
-                            print("Could not read chunk from: " + current_file)
-                            pass
-                        if not chunk:
-                            break
-
-                        if chrome:
-                            process_chrome_utma(chrome_pattern_utma, chunk)
-                            process_chrome_utmb(chrome_pattern_utmb, chunk)
-                            process_chrome_utmz(chrome_pattern_utmz, chunk)
-
-                        if firefox:
-                            process_firefox_utma(moz_pattern_utma, chunk)
-                            process_firefox_utmb(moz_pattern_utmb, chunk)
-                            process_firefox_utmz(moz_pattern_utmz, chunk)
-
-                        if ie:
-                            process_ie_utma(ie_utma_pattern, chunk)
-                            process_ie_utmb(ie_utmb_pattern, chunk)
-                            process_ie_utmz(ie_utmz_pattern, chunk)
-
-                        if apple:
-                            process_apple_utma(apple_utma_pattern, chunk)
-                            process_apple_utmb(apple_utmb_pattern, chunk)
-                            process_apple_utmz(apple_utmz_pattern, chunk)
-
-                        if gif_cache:
-                            process_utm_gif_UTF16(gif_cache_pattern_UTF16, chunk)
-                            process_utm_gif_ASCII(gif_cache_pattern_ASCII, chunk)
-
-                        loop += 1
-
-                    file_object.close()
+                try:
+                    if os.path.getsize(current_file) > maxfilesize:
+                        chunk = file_object.read(maxfilesize)
+                    else:
+                        chunk = file_object.read()
+                except:
+                    print("Could not read chunk from: " + current_file)
+                    pass
+                if not chunk:
                     break
-                else:
-                    time.sleep(4)
 
-    # Catch loose threads
-    while 1:
-        if threading.activeCount() == 1:
-            status = str("[Main] Completed")
-            print(status)
+                if chrome:
+                    process_chrome_utma(chrome_pattern_utma, chunk)
+                    process_chrome_utmb(chrome_pattern_utmb, chunk)
+                    process_chrome_utmz(chrome_pattern_utmz, chunk)
+
+                if firefox:
+                    process_firefox_utma(moz_pattern_utma, chunk)
+                    process_firefox_utmb(moz_pattern_utmb, chunk)
+                    process_firefox_utmz(moz_pattern_utmz, chunk)
+
+                if ie:
+                    process_ie_utma(ie_utma_pattern, chunk)
+                    process_ie_utmb(ie_utmb_pattern, chunk)
+                    process_ie_utmz(ie_utmz_pattern, chunk)
+
+                if apple:
+                    process_apple_utma(apple_utma_pattern, chunk)
+                    process_apple_utmb(apple_utmb_pattern, chunk)
+                    process_apple_utmz(apple_utmz_pattern, chunk)
+
+                if gif_cache:
+                    process_utm_gif_UTF16(gif_cache_pattern_UTF16, chunk)
+                    process_utm_gif_ASCII(gif_cache_pattern_ASCII, chunk)
+
+                loop += 1
+
+            file_object.close()
             break
-        else:
-            if time.time() % 60 == 0:  # Wait 1 minutes to prompt the user that threads are still running
-                status = str("[Main] waiting for " + str(threading.activeCount()-1) + " threads to finish")
-                print(status)
 
     #just one file was selected, process that
     if options.input_file:
@@ -1060,4 +1057,3 @@ if __name__ == '__main__':
         print "Unable to process:"
         for item in not_processed:
             print item
-

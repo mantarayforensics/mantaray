@@ -801,36 +801,6 @@ for x in processing_scripts_list:
         ga_parsers = ga_parsers.lower().split("|")
 
 
-        ## Allow user to select resources to run
-        try:
-            ga_processor = subprocess.check_output(['zenity --list --radiolist --title "MantaRay - ManTech Triage & Analysis System		MantaRayForensics.com" --column="Selection" --column="Processor Performance" --column="Description" --separator="," FALSE "Speed-Slow" "Minimum Processing Cores" TRUE "Speed-Med" "Medium Processing Cores (Recommended)" FALSE "Speed-Fast" "Maximum Processing Cores (Warning - Processor Intensive)" --text="Processing Performance - Google Analytic Cookies" --width 800 --height 400'], shell=True, universal_newlines=True)
-        except:
-            print ("Cancel/Exit chosen")
-            gui_outfile.write("Google Analytic Cookie Processor: Processor Options - Aborted by user - Cancel/Exit chosen")
-            sys.exit(0)
-
-        ## convert user answer to number of cores to use
-        speed = ga_processor.strip()
-        #calculate number of processors to use (Speed-Slow, Speed-Fast, Speed-Med
-        calc_cores_command = "cat /proc/cpuinfo | grep processor | wc -l"
-        num_of_cores = subprocess.check_output([calc_cores_command], shell=True)
-        num_of_cores = num_of_cores.decode(encoding='UTF-8')
-        num_of_cores = num_of_cores.strip()
-        print("This VM has " + str(num_of_cores) +" cores")
-
-        if(num_of_cores == "1"):
-            ga_num_threads = 1
-        elif(speed == "Speed-Slow"):
-            ga_num_threads = 1
-        elif(speed == "Speed-Med"):
-            ga_num_threads = int(num_of_cores)//2
-        elif(speed == "Speed-Fast"):
-            ga_num_threads = int(num_of_cores)
-
-        print("Google Analytic Cookie Parser Performance: " + ga_processor.strip())
-        gui_outfile.write("Google Analytic Cookie Parser Performance:" + "\t" + ga_processor.strip() + "\n")
-
-
 #add code to Master outfile to break section between input and tool success
 gui_outfile.write("\n\n*************************** PROCESSING STATUS ***************************\n")
 
@@ -1054,11 +1024,11 @@ for evidence_path in evidence_path_list:
 
         elif x == 'Google Analytics Cookie Cruncher':
             if debug_mode == "ON":
-                ga_cookie_cruncher_mr.main(evidence_path.strip(), folder_path+"/GA-Cookies", ga_parsers, ga_num_threads)
+                ga_cookie_cruncher_mr.main(evidence_path.strip(), folder_path+"/GA-Cookies", ga_parsers, 1)
                 gui_outfile.write("Google Analytic Cookie Cruncher...".ljust(35) + "completed successfully".ljust(55) + "\n")
             else:
                 try:
-                    ga_cookie_cruncher_mr.main(evidence_path.strip(), folder_path+"/GA-Cookies", ga_parsers, ga_num_threads)
+                    ga_cookie_cruncher_mr.main(evidence_path.strip(), folder_path+"/GA-Cookies", ga_parsers, 1)
                     gui_outfile.write("Google Analytic Cookie Cruncher...".ljust(35) + "completed successfully".ljust(55) + "\n")
                 except:
                     print("Call to Google Analytics Cookie Parser failed")

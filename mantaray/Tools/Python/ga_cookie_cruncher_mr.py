@@ -28,7 +28,7 @@ from check_for_folder import *
 import mount
 
 
-def process_dir(input_dir, output_dir, parsers, type, threads):
+def process_dir(input_dir, output_dir, parsers, type):
     print ("Building Command...")
     cmd = "sudo python /usr/share/mantaray/Tools/Python/ga_parser.py -d " + input_dir + " -o " + output_dir + ""
 
@@ -46,8 +46,6 @@ def process_dir(input_dir, output_dir, parsers, type, threads):
     if "gif" in parsers:
         cmd += " --gif"
 
-    cmd += " --threads=" + str(threads)
-
     # Add Logging
     cmd += " > " + output_dir + "_" + type + "_logfile.txt"
 
@@ -57,7 +55,7 @@ def process_dir(input_dir, output_dir, parsers, type, threads):
     subprocess.call([cmd], shell=True)
 
 
-def process_file(input_file, output_dir, parsers, type="Overt", threads="1"):
+def process_file(input_file, output_dir, parsers, type="Overt"):
     print ("Building Command...")
     cmd = "sudo python /usr/share/mantaray/Tools/Python/ga_parser.py -f " + input_file + " -o " + output_dir + ""
 
@@ -75,8 +73,6 @@ def process_file(input_file, output_dir, parsers, type="Overt", threads="1"):
     if "chrome" in parsers:
         cmd += " --gif"
 
-    cmd += " --threads=" + str(threads)
-
     # Add Logging
     cmd += " > " + output_dir + "_" + type + "_logfile.txt"
 
@@ -85,8 +81,11 @@ def process_file(input_file, output_dir, parsers, type="Overt", threads="1"):
     # Execute command.
     subprocess.call([cmd], shell=True)
 
+
 def get_block_size_mmls(Image_Path, outfile, temp_time):
-    block_size = subprocess.check_output(['mmls -i raw ' + Image_Path + " | grep Units | awk '{print $4}' | sed s/-byte//"], shell=True, universal_newlines=True)
+    block_size = subprocess.check_output(['mmls -i raw ' + Image_Path + " | grep Units | "
+                                                                        "awk '{print $4}' | sed s/-byte//"],
+                                                                        shell=True, universal_newlines=True)
     block_size = block_size.strip()
     print("The block size is: " + str(block_size))
     outfile.write("The block size is: " + str(block_size) + "\n\n")
@@ -94,7 +93,9 @@ def get_block_size_mmls(Image_Path, outfile, temp_time):
 
 
 def get_block_size_parted(outfile, temp_time):
-    block_size_command = "sudo cat /tmp/timeline_partition_info_" + temp_time +".txt | grep -a " + "'"+"Sector size"+"'" + " | awk {'print $4'} | sed s_B/.*__"
+    block_size_command = "sudo cat /tmp/timeline_partition_info_" + temp_time +".txt | grep -a " + "'"+\
+                         "Sector size"+"'" + " | awk {'print $4'} | sed s_B/.*__"
+
     outfile.write("The block_size command is: " + block_size_command + "\n")
     block_size = subprocess.check_output([block_size_command], shell=True, universal_newlines=True)
     block_size = block_size.strip()
@@ -103,7 +104,7 @@ def get_block_size_parted(outfile, temp_time):
     return block_size
 
 
-def mount_shadow_volumes(vssvolume_mnt, outfile, folder_path, temp_time, parsers, threads):
+def mount_shadow_volumes(vssvolume_mnt, outfile, folder_path, temp_time, parsers):
 
     print("Vssvolume_mnt: " + vssvolume_mnt)
 
@@ -121,7 +122,7 @@ def mount_shadow_volumes(vssvolume_mnt, outfile, folder_path, temp_time, parsers
             print("About to process registry hives from: " + item)
             mount.mount(value,key,vssvolume_mnt+"/"+item,outfile,vss_mount)
             os.makedirs(folder_path+"/"+item)
-            process_dir(vss_mount, folder_path+"/"+item, parsers,item,threads)
+            process_dir(vss_mount, folder_path+"/"+item, parsers,item)
 
     #unmounting vss volume
     if(vssvolume_mnt != "NULL"):
@@ -134,7 +135,8 @@ def mount_shadow_volumes(vssvolume_mnt, outfile, folder_path, temp_time, parsers
             print("Unable to unmount: " + vssvolume_mnt)
             outfile.write("Unable to unmount: " + vssvolume_mnt)
 
-def check_for_shadow_volumes(Image_Path, key, block_size, outfile, folder_path, temp_time, parsers):
+
+def check_for_shadow_volumes(Image_Path, key, block_size, outfile, folder_path, temp_time):
 
     #set shadow volume variables
     has_shadow_volumes = "NULL"
@@ -174,7 +176,8 @@ def check_for_shadow_volumes(Image_Path, key, block_size, outfile, folder_path, 
             mount_shadow_command = "sudo vshadowmount -o " + str(key) + " " + Image_Path + " " + vssvolume_mnt
             print("The mount_shadow_command is: " + mount_shadow_command)
 
-            subprocess.call(["sudo vshadowmount -o " + str(key) + " " + Image_Path + " " + vssvolume_mnt], shell=True, stderr=subprocess.STDOUT)
+            subprocess.call(["sudo vshadowmount -o " + str(key) + " " + Image_Path + " " + vssvolume_mnt], shell=True,
+                            stderr=subprocess.STDOUT)
 
             #pass vssvolume mount point to mount_shadow_volume for mounting
             mount_shadow_volumes(vssvolume_mnt, outfile, folder_path, temp_time)
@@ -190,7 +193,7 @@ def check_for_shadow_volumes(Image_Path, key, block_size, outfile, folder_path, 
     return vssvolume_mnt
 
 
-def main(input_file, output_directory, parsers, threads):
+def main(input_file, output_directory, parsers):
     now = datetime.datetime.now()
     Image_Path = input_file
     mount_point = "/mnt/" + now.strftime("%Y-%m-%d_%H_%M_%S_%f")
@@ -263,13 +266,11 @@ def main(input_file, output_directory, parsers, threads):
                 mount.mount(value, key, Image_Path, outfile, tmp_mnt)
                 #process_file(Image_Path, folder_path+"/Partition_"+str(key), parsers)
                 # Process the mounted filesystem.
-                process_dir(tmp_mnt, folder_path+"/Partition_"+str(key), parsers, "Overt", threads)
+                process_dir(tmp_mnt, folder_path+"/Partition_"+str(key), parsers, "Overt")
                 # Processes Shadow Volumes
-                vss_mount = check_for_shadow_volumes(Image_Path, key, block_size, outfile, folder_path, temp_time, parsers)
+                vss_mount = check_for_shadow_volumes(Image_Path, key, block_size, outfile, folder_path, temp_time)
                 if not vss_mount == "NULL":
-                    mount_shadow_volumes(vss_mount,outfile,folder_path,now,parsers,threads)
-
-
+                    mount_shadow_volumes(vss_mount,outfile,folder_path,now,parsers)
 
             else:
                 print("This partition is not formatted NTFS or FAT32")
@@ -285,7 +286,7 @@ if __name__ == '__main__':
     parser.add_argument("-p", help="Comma separated list of parsers to run. Available parsers include chome, firefox, "
                                    "safari, ie, gif")
     parser.add_argument("--ewf", help="Enable for EWF file inputs", action="store_true")
-    parser.add_argument("--threads", help="Select number of threads to use", type=int, action="store_true")
+    # parser.add_argument("--threads", help="Select number of threads to use", type=int, action="store_true")
     args = parser.parse_args()
 
     parser_array = []
@@ -300,4 +301,5 @@ if __name__ == '__main__':
 
     if not os.path.exists(args.o):
         os.makedirs(args.o)
-    main(input_file=args.f,output_directory=args.o,parsers=parser_array,threads=args.threads)
+
+    main(input_file=args.f,output_directory=args.o,parsers=parser_array)
