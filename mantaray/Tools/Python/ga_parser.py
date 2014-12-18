@@ -761,7 +761,7 @@ if __name__ == '__main__':
                                                                              "installed")
     input_parser.add_option("--threads", dest="threads", help="Number of threads to use in Dir Scan", metavar="4",
                             type="int", default=1)
-    input_parser.add_option("--sigs", dest="sigs", help="Enable scanning for ONLY common file extensions for cookies")
+    input_parser.add_option("--sigs", action="store_true", dest="sigs", help="Enable scanning for ONLY common file extensions for cookies")
 
     (options, args) = input_parser.parse_args()
 
@@ -869,11 +869,12 @@ if __name__ == '__main__':
         # Using free, gather the size of available RAM and use half of it as the maxfilesize to process
 
         import subprocess
-        maxfilesize = subprocess.check_output("free -o | awk 'NR==1{print $4}'", shell=True)
+        maxfilesize = subprocess.check_output("free -o | awk 'NR==2{print $4}'", shell=True)
         maxfilesize = int(maxfilesize.strip())/2
         print "Using Available_RAM/2 for maxfilesize: ", maxfilesize
     except:
         # If RAM cannot be calculated, use default of 4000
+        print "Using default chunk size for files"
         maxfilesize = 400000
 
 
@@ -902,7 +903,7 @@ if __name__ == '__main__':
 
         #loop through each file
         file_array=[]
-        print "Scanning for Files...",
+        print "Scanning for Files..."
         for subdir, dirs, files in os.walk(options.directory):
             for fname in files:
                 if sigs:
@@ -914,7 +915,7 @@ if __name__ == '__main__':
                         file_array.append(os.path.join(subdir,fname))
                 else:
                     file_array.append(os.path.join(subdir,fname))
-        print "Complete"
+        print "Completed scan. Will process ", len(file_array), " files."
 
         for current_file in file_array:
 
@@ -970,7 +971,6 @@ if __name__ == '__main__':
                 loop += 1
 
             file_object.close()
-            break
 
     #just one file was selected, process that
     if options.input_file:

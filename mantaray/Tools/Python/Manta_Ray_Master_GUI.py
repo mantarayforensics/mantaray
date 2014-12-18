@@ -1024,11 +1024,11 @@ for evidence_path in evidence_path_list:
 
         elif x == 'Google Analytics Cookie Cruncher':
             if debug_mode == "ON":
-                ga_cookie_cruncher_mr.main(evidence_path.strip(), folder_path+"/GA-Cookies", ga_parsers, 1)
+                ga_cookie_cruncher_mr.main(evidence_path.strip(), folder_path+"/GA-Cookies", ga_parsers)
                 gui_outfile.write("Google Analytic Cookie Cruncher...".ljust(35) + "completed successfully".ljust(55) + "\n")
             else:
                 try:
-                    ga_cookie_cruncher_mr.main(evidence_path.strip(), folder_path+"/GA-Cookies", ga_parsers, 1)
+                    ga_cookie_cruncher_mr.main(evidence_path.strip(), folder_path+"/GA-Cookies", ga_parsers)
                     gui_outfile.write("Google Analytic Cookie Cruncher...".ljust(35) + "completed successfully".ljust(55) + "\n")
                 except:
                     print("Call to Google Analytics Cookie Parser failed")

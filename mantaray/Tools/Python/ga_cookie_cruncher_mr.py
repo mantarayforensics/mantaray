@@ -46,6 +46,8 @@ def process_dir(input_dir, output_dir, parsers, type):
     if "gif" in parsers:
         cmd += " --gif"
 
+    cmd += " --sigs "
+
     # Add Logging
     cmd += " > " + output_dir + "_" + type + "_logfile.txt"
 
@@ -126,10 +128,10 @@ def mount_shadow_volumes(vssvolume_mnt, outfile, folder_path, temp_time, parsers
 
     #unmounting vss volume
     if(vssvolume_mnt != "NULL"):
-        print("Unmounting: " + vssvolume_mnt)
-        outfile.write("Unmounting: " + vssvolume_mnt + "\n")
-        subprocess.call(['sudo umount -f ' + vssvolume_mnt], shell=True)
         try:
+            print("Unmounting: " + vssvolume_mnt)
+            outfile.write("Unmounting: " + vssvolume_mnt + "\n")
+            subprocess.call(['sudo umount -f ' + vssvolume_mnt], shell=True)
             os.rmdir(vssvolume_mnt)
         except:
             print("Unable to unmount: " + vssvolume_mnt)
