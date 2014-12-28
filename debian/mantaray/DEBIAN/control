@@ -1,9 +1,0 @@
-Package: mantaray
-Version: 1.3.7
-Architecture: amd64
-Maintainer: Chapin Bryce <webmaster@mantarayforensics.com>
-Installed-Size: 2175
-Depends: python-tk, python3-tk, python3.2, python2.7, bulk-extractor, log2timeline-perl, regripper, libevt, libevt-tools, libevtx, libevtx-tools, libewf, dos2unix, liblightgrep, libolecf, libolecf-tools, libregf, libregf-tools, libvshadow, libvshadow-tools, python-plaso, sift, sleuthkit, python-volatility, volatility-extras, cryptsetup, e2fslibs-dev, extundelete, kdiff3, libxml2-dev, libfuse-dev, libfvde, libfvde-tools, zenity, fuse-utils, tofrodos, mac-robber, ent, libssl-dev, openjdk-6-jdk, fdupes, dconf-tools, afuse, flex, windows-perl, foremost, libewf-tools, pytsk3
-Section: misc
-Priority: extra
-Description: MantaRay is a forensic workflow automation system.

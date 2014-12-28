@@ -1,3 +1,0 @@
-#!/bin/bash
-
-sudo python3 /usr/share/mantaray/Tools/Python/Manta_Ray_Master_GUI.py
