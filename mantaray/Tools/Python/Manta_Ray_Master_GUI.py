@@ -270,7 +270,7 @@ if evidence_type == "Bit-Stream Image":
                                                       'FALSE "EXIF Tool" "Read meta information in files" '
                                                       'FALSE "Foremost" "Recover files from a disk image based on headers and footers (Unallocated Space)" '
                                                       'FALSE "Jumplist Parser" "Windows Vista/7 Jumplist Exploitation" '
-                                                      'FALSE "NTFS Artifact Extractor" "\$MFT/\$LogFile/((\$USNJRNL•\$J (Vista/7 Only)) Overt & Shadow Volume Extraction" '
+                                                      'FALSE "NTFS Artifact Extractor" "\$MFT/\$LogFile/((\$USNJRNL\$J (Vista/7 Only)) Overt & Shadow Volume Extraction" '
                                                       'FALSE "File Name Search" "Extract files by file name from OVERT//DELETED//VSS (Windows Only)" '
                                                       'FALSE "PLIST Processor" "Extracts triage data from selected .plist files" '
                                                       'FALSE "Google Analytics Cookie Cruncher" "Carves and processes artifacts from Google Analytic Cookies" '
@@ -315,7 +315,14 @@ if evidence_type == "Bit-Stream Image":
 if evidence_type == "EnCase Logical Evidence File":
 
     try:
-        processing_scripts = subprocess.check_output(['zenity --list --checklist --title "MantaRay - ManTech Triage & Analysis System		MantaRayForensics.com" --column="Selection" --column="Processing Tool" --column="Description" --separator="," FALSE "BulkExtractor" "Scans for a large number of pre-defined regular expressions." FALSE "Calculate Entropy" "Pseudorandom number sequence test (ENT)" FALSE "Create KML from JPG EXIF Data" "Create Google Earth .kml file from EXIF data found in JPG images" FALSE "PLIST Processor" "Extracts triage data from selected .plist files" FALSE "Super Timeline" "Parse various log files and artifacts for timeline analysis" --text="Processing Tool Selection   |   Evidence Type: EnCase Logical Evidence File" --width 1100 --height 400'], shell=True, universal_newlines=True)
+        processing_scripts = subprocess.check_output(['zenity --list --checklist --title "MantaRay - ManTech Triage & Analysis System		MantaRayForensics.com" '
+                                                      '--column="Selection" --column="Processing Tool" --column="Description" --separator="," '
+                                                      'FALSE "BulkExtractor" "Scans for a large number of pre-defined regular expressions." '
+                                                      'FALSE "Calculate Entropy" "Pseudorandom number sequence test (ENT)" '
+                                                      'FALSE "Create KML from JPG EXIF Data" "Create Google Earth .kml file from EXIF data found in JPG images" '
+                                                      'FALSE "PLIST Processor" "Extracts triage data from selected .plist files" '
+                                                      'FALSE "Super Timeline" "Parse various log files and artifacts for timeline analysis" '
+                                                      '--text="Processing Tool Selection   |   Evidence Type: EnCase Logical Evidence File" --width 1100 --height 400'], shell=True, universal_newlines=True)
 
     except:
         print ("Cancel/Exit chosen")
@@ -343,7 +350,17 @@ if evidence_type == "Directory":
 
     try:
 
-        processing_scripts = subprocess.check_output(['zenity --list --checklist --title "MantaRay - ManTech Triage & Analysis System		MantaRayForensics.com" --column="Selection" --column="Processing Tool" --column="Description" --separator="," FALSE "BulkExtractor" "Scans for a large number of pre-defined regular expressions" FALSE "Calculate Entropy" "Pseudorandom number sequence test (ENT)" FALSE "Create KML from JPG EXIF Data" "Create Google Earth .kml file from EXIF data found in JPG images" FALSE "Delete Duplicate Files  " "Delete duplicate files from the selected directory (Recursive)" FALSE "EXIF Tool" "Read meta information in files" FALSE "PLIST Processor" "Extracts triage data from selected .plist files" FALSE "Super Timeline" "Parse various log files and artifacts for timeline analysis" --text="Processing Tool Selection" --text="Processing Tool Selection   |   Evidence Type: Directory" --width 1100 --height 400'], shell=True, universal_newlines=True)
+        processing_scripts = subprocess.check_output(['zenity --list --checklist --title "MantaRay - ManTech Triage & Analysis System		MantaRayForensics.com" '
+                                                      '--column="Selection" --column="Processing Tool" --column="Description" --separator="," '
+                                                      'FALSE "BulkExtractor" "Scans for a large number of pre-defined regular expressions" '
+                                                      'FALSE "Calculate Entropy" "Pseudorandom number sequence test (ENT)" '
+                                                      'FALSE "Create KML from JPG EXIF Data" "Create Google Earth .kml file from EXIF data found in JPG images" '
+                                                      'FALSE "Delete Duplicate Files  " "Delete duplicate files from the selected directory (Recursive)" '
+                                                      'FALSE "EXIF Tool" "Read meta information in files" '
+                                                      'FALSE "GA Cookies" "Scan and Process Google Analytic Cookies"'
+                                                      'FALSE "PLIST Processor" "Extracts triage data from selected .plist files" '
+                                                      'FALSE "Super Timeline" "Parse various log files and artifacts for timeline analysis" '
+                                                      '--text="Processing Tool Selection" --text="Processing Tool Selection   |   Evidence Type: Directory" --width 1100 --height 400'], shell=True, universal_newlines=True)
 
     except:
         print ("Cancel/Exit chosen")
@@ -371,7 +388,12 @@ if evidence_type == "Directory":
 if evidence_type == "Memory Image":
 
     try:
-        processing_scripts = subprocess.check_output(['zenity --list --checklist --title "MantaRay - ManTech Triage & Analysis System		MantaRayForensics.com" --column="Selection" --column="Processing Tool" --column="Description" --separator="," FALSE "BulkExtractor" "Scans for a large number of pre-defined regular expressions" FALSE "Volatility" "Extraction of digital artifacts from volatile memory - Requires user input - best run alone" --text="Processing Tool Selection   |   Evidence Type: Memory Image" --width 1100 --height 400'], shell=True, universal_newlines=True)
+        processing_scripts = subprocess.check_output(['zenity --list --checklist --title "MantaRay - ManTech Triage & Analysis System		MantaRayForensics.com" '
+                                                      '--column="Selection" --column="Processing Tool" --column="Description" --separator="," '
+                                                      'FALSE "BulkExtractor" "Scans for a large number of pre-defined regular expressions" '
+                                                      'FALSE "GA Cookies" "Scan and Process Google Analytic Cookies" '
+                                                      'FALSE "Volatility" "Extraction of digital artifacts from volatile memory" '
+                                                      '--text="Processing Tool Selection   |   Evidence Type: Memory Image" --width 1100 --height 400'], shell=True, universal_newlines=True)
 
     except:
         print ("Cancel/Exit chosen")
@@ -399,7 +421,12 @@ if evidence_type == "Single File":
 
     try:
 
-        processing_scripts = subprocess.check_output(['zenity --list --checklist --title "MantaRay - ManTech Triage & Analysis System		MantaRayForensics.com" --column="Selection" --column="Processing Tool" --column="Description" --separator="," FALSE "BulkExtractor" "Scans for a large number of pre-defined regular expressions." FALSE "Calculate Entropy" "Pseudorandom number sequence test (ENT)" FALSE "Create KML from JPG EXIF Data" "Create Google Earth .kml file from EXIF data found in JPG images" --text="Processing Tool Selection   |   Evidence Type: Single File" --width 1100 --height 400'], shell=True, universal_newlines=True)
+        processing_scripts = subprocess.check_output(['zenity --list --checklist --title "MantaRay - ManTech Triage & Analysis System		MantaRayForensics.com" --column="Selection" --column="Processing Tool" --column="Description" --separator="," '
+                                                      'FALSE "BulkExtractor" "Scans for a large number of pre-defined regular expressions." '
+                                                      'FALSE "Calculate Entropy" "Pseudorandom number sequence test (ENT)" '
+                                                      'FALSE "Create KML from JPG EXIF Data" "Create Google Earth .kml file from EXIF data found in JPG images" '
+                                                      'FALSE "GA Cookies" "Scan for and Process Google Analytic Cookies"'
+                                                      '--text="Processing Tool Selection   |   Evidence Type: Single File" --width 1100 --height 400'], shell=True, universal_newlines=True)
 
     except:
         print ("Cancel/Exit chosen")
@@ -770,7 +797,8 @@ for x in processing_scripts_list:
 
         ## Allow user to select resources to run
         try:
-            vol_processor = subprocess.check_output(['zenity --list --radiolist --title "MantaRay - ManTech Triage & Analysis System		MantaRayForensics.com" --column="Selection" --column="Processor Performance" --column="Description" --separator="," FALSE "Speed-Slow" "Minimum Processing Cores" TRUE "Speed-Med" "Medium Processing Cores (Recommended)" FALSE "Speed-Fast" "Maximum Processing Cores (Warning - Processor Intensive)" --text="Processing Performance - Volatility" --width 800 --height 400'], shell=True, universal_newlines=True)
+            vol_processor = subprocess.check_output(['zenity --list --radiolist '
+                                                     '--title "MantaRay - ManTech Triage & Analysis System		MantaRayForensics.com" --column="Selection" --column="Processor Performance" --column="Description" --separator="," FALSE "Speed-Slow" "Minimum Processing Cores" TRUE "Speed-Med" "Medium Processing Cores (Recommended)" FALSE "Speed-Fast" "Maximum Processing Cores (Warning - Processor Intensive)" --text="Processing Performance - Volatility" --width 800 --height 400'], shell=True, universal_newlines=True)
         except:
             print ("Cancel/Exit chosen")
             gui_outfile.write("Volatility Processor: Processor Options - Aborted by user - Cancel/Exit chosen")
@@ -800,7 +828,16 @@ for x in processing_scripts_list:
     if x == "Google Analytics Cookie Cruncher":
 
         # Select Parsers to Use
-        cmd = '''zenity --list --checklist --title "MantaRay - ManTech Triage & Analysis System		MantaRayForensics.com" --column="Selection" --column="Parser" --column="Description" TRUE "GIF" "This is reccomended by the developer" FALSE "Chrome" "Parse cookies from the Chrome Browser" FALSE "Internet Explorer" "Parse cookies from the Internet Explorer Browser" FALSE "Firefox" "Parse cookies from the Firefox browser" FALSE "Safari" "Parse cookies from the Safari Browser" --width 800 --height 400'''
+        cmd = '''zenity --list --checklist
+        --title "MantaRay - ManTech Triage & Analysis System		MantaRayForensics.com"
+        --column="Selection" --column="Parser" --column="Description"
+            TRUE "GIF" "This is reccomended by the developer"
+            FALSE "Chrome" "Parse cookies from the Chrome Browser"
+            FALSE "Internet Explorer" "Parse cookies from the Internet Explorer Browser"
+            FALSE "Firefox" "Parse cookies from the Firefox browser"
+            FALSE "Safari" "Parse cookies from the Safari Browser"
+        --text="Select processors for Google Analytic Cookies"
+        --width 800 --height 400'''
         ga_parsers = subprocess.check_output([cmd], shell=True).decode().strip()
         gui_outfile.write("Google Analytic Cookie Parsers selected: " + ga_parsers)
         ga_parsers = ga_parsers.lower().split("|")
@@ -1030,16 +1067,15 @@ for evidence_path in evidence_path_list:
 
         elif x == 'Google Analytics Cookie Cruncher':
             if debug_mode == "ON":
-                ga_cookie_cruncher_mr.main(evidence_path.strip(), folder_path+"/GA-Cookies", ga_parsers)
+                ga_cookie_cruncher_mr.main(evidence_path.strip(), folder_path+"/GA-Cookies", ga_parsers, evidence_type)
                 gui_outfile.write("Google Analytic Cookie Cruncher...".ljust(35) + "completed successfully".ljust(55) + "\n")
             else:
                 try:
-                    ga_cookie_cruncher_mr.main(evidence_path.strip(), folder_path+"/GA-Cookies", ga_parsers)
+                    ga_cookie_cruncher_mr.main(evidence_path.strip(), folder_path+"/GA-Cookies", ga_parsers, evidence_type)
                     gui_outfile.write("Google Analytic Cookie Cruncher...".ljust(35) + "completed successfully".ljust(55) + "\n")
                 except:
                     print("Call to Google Analytics Cookie Parser failed")
                     gui_outfile.write("Google Analytics Cookie Parser failed...Please reprocess with Debug Mode ON and re-run MantaRay\n")
-
 
     gui_outfile.write("\n\n###################################################################################\n\n")
 

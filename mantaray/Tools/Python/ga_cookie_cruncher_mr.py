@@ -12,7 +12,8 @@
 #                                                                         #
 # You should have received a copy of the GNU General Public License       #
 # along with this program.  If not, see http://www.gnu.org/licenses/.     #
-#########################COPYRIGHT INFORMATION#############################
+########################COPYRIGHT INFORMATION#############################
+
 """This script automates the use of ga_parser.py as released by Mari DeGrazia with slight modifications."""
 
 __author__ = 'cbryce'
@@ -26,6 +27,7 @@ from mmls import *
 from Windows_Time_Converter_module import *
 from check_for_folder import *
 import mount
+import mount_encase_v6_l01
 
 
 def process_dir(input_dir, output_dir, parsers, type):
@@ -45,8 +47,8 @@ def process_dir(input_dir, output_dir, parsers, type):
         cmd += " --ewf"
     if "gif" in parsers:
         cmd += " --gif"
-
-    cmd += " --sigs "
+    if 'sigs' in parsers:
+        cmd += " --sigs "
 
     # Add Logging
     cmd += " > " + output_dir + "_" + type + "_logfile.txt"
@@ -72,7 +74,7 @@ def process_file(input_file, output_dir, parsers, type="Overt"):
         cmd += " --apple"
     if "ewf" in parsers:
         cmd += " --ewf"
-    if "chrome" in parsers:
+    if "gif" in parsers:
         cmd += " --gif"
 
     # Add Logging
@@ -85,7 +87,7 @@ def process_file(input_file, output_dir, parsers, type="Overt"):
 
 
 def get_block_size_mmls(Image_Path, outfile, temp_time):
-    block_size = subprocess.check_output(['mmls -i raw ' + Image_Path + " | grep Units | "
+    block_size = subprocess.check_output(['sudo mmls -i raw ' + Image_Path + " | grep Units | "
                                                                         "awk '{print $4}' | sed s/-byte//"],
                                                                         shell=True, universal_newlines=True)
     block_size = block_size.strip()
@@ -121,7 +123,7 @@ def mount_shadow_volumes(vssvolume_mnt, outfile, folder_path, temp_time, parsers
         partition_info_dict, temp_time = parted(outfile, vssvolume_mnt + "/"+item)
         block_size = get_block_size_parted(outfile, temp_time)
         for key,value in partition_info_dict.items():
-            print("About to process registry hives from: " + item)
+            print("About to process Google Analytic Cookies from: " + item)
             mount.mount(value,key,vssvolume_mnt+"/"+item,outfile,vss_mount)
             os.makedirs("\'"+folder_path+"/"+item+"\'")
             process_dir(vss_mount, folder_path+"/"+item, parsers,item)
@@ -195,7 +197,7 @@ def check_for_shadow_volumes(Image_Path, key, block_size, outfile, folder_path, 
     return vssvolume_mnt
 
 
-def main(input_file, output_directory, parsers):
+def main(input_file, output_directory, parsers, input_type):
     now = datetime.datetime.now()
     Image_Path = input_file
     mount_point = "/mnt/" + now.strftime("%Y-%m-%d_%H_%M_%S_%f")
@@ -208,9 +210,15 @@ def main(input_file, output_directory, parsers):
 
     outfile = open((output_directory+"/GA_Cookie_Logfile.txt"),'w')
 
-    if os.path.isdir(input_file):
-        process_dir()
-    if os.path.isfile(input_file):
+    if input_type == "Single File" or input_type == "Memory Image":
+        print("Processing Memory Image")
+        process_file(input_file,output_directory, parsers)
+    elif input_type == "Directory":
+        process_dir(input_file, output_directory, parsers, "overt")
+    elif input_type == "EnCase Logical Evidence File":
+        mntpt = mount_encase_v6_l01.mount_encase_v6_l01(case_name='none', l01_file="'"+input_file+"'", outfile=outfile)
+        process_dir(mntpt, output_directory, parsers, "overt")
+    elif input_type == "Bit-Stream Image":
         # Analyze 100 Megabytes chunks of any raw file or EWF file
         # Process overt & deleted
         #process_file(input_file,output_directory,parsers)
@@ -270,6 +278,7 @@ def main(input_file, output_directory, parsers):
 
                 # process_file(Image_Path, folder_path+"/Partition_"+str(key), parsers)
                 # Process the mounted filesystem.
+                parsers.append('sigs')
                 process_dir(tmp_mnt, folder_path+"/Partition_"+str(key), parsers, "Overt")
                 # Processes Shadow Volumes
                 vss_mount = check_for_shadow_volumes(Image_Path, key, block_size, outfile, folder_path, temp_time)
@@ -285,13 +294,27 @@ if __name__ == '__main__':
     import argparse
 
     parser = argparse.ArgumentParser(description="Automate the ga_parser.py for MantaRay")
-    parser.add_argument("-f", help="File or directory in")
-    parser.add_argument("-o", help="Output Directory")
-    parser.add_argument("-p", help="Comma separated list of parsers to run. Available parsers include chome, firefox, "
-                                   "safari, ie, gif")
+    parser.add_argument("-f", help="File or directory to process", required='True', metavar='/path/file.dd')
+    parser.add_argument("-o", help="Output Directory for results", required='True', metavar='/path/output/')
+    parser.add_argument('-t', help="Type of input. Select one: s = Single File, b = Bit Stream Image, m = Memory, "
+                                   "l = L01, d = Directory", required='True', choices=['s', 'b', 'd', 'l', 'm'])
+    parser.add_argument("-p", help="Comma separated list of parsers to run. Choices: chrome, firefox, safari, ie, gif",
+                        required='True')
     parser.add_argument("--ewf", help="Enable for EWF file inputs", action="store_true")
     # parser.add_argument("--threads", help="Select number of threads to use", type=int, action="store_true")
     args = parser.parse_args()
+    input_type = args.t
+
+    if input_type is "s":
+        input_type = "Single File"
+    elif input_type is 'm':
+        input_type = "Memory Image"
+    elif input_type is 'd':
+        input_type = "Directory"
+    elif input_type is 'l':
+        input_type = "EnCase Logical Evidence File"
+    elif input_type is 'b':
+        input_type = "Bit-Stream Image"
 
     parser_array = []
     for item in args.p.split(","):
@@ -306,4 +329,4 @@ if __name__ == '__main__':
     if not os.path.exists(args.o):
         os.makedirs(args.o)
 
-    main(input_file=args.f,output_directory=args.o,parsers=parser_array)
+    main(input_file=args.f, output_directory=args.o, parsers=parser_array, input_type=input_type)

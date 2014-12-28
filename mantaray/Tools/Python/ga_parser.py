@@ -920,7 +920,12 @@ if __name__ == '__main__':
 
         for current_file in file_array:
 
-            print("Processing " + current_file + ", " + str(os.path.getsize(current_file)))
+            try:
+                size = os.path.getsize(current_file)
+            except:
+                continue
+
+            print("Processing " + current_file + ", " + str(size))
 
             #reset loop count
             loop = 0
@@ -1058,3 +1063,8 @@ if __name__ == '__main__':
         print "Unable to process:"
         for item in not_processed:
             print item
+
+    print "Total Entries Found: " + str(chrome_utma_count + chrome_utmb_count + chrome_utmz_count + ff_utma_count +
+                                        ff_utmb_count + ff_utmz_count + processed + ie_utma_count + ie_utmb_count +
+                                        ie_utmz_count + apple_utma_count + apple_utmb_count + apple_utmz_count +
+                                        gif__UTF16_count + gif_ASCII_count)
