@@ -1,22 +1,22 @@
 #!/usr/bin/env python3
-#Recurses an entire image file (or a folder)  and runs j[.pl (Harlan Carvey) against every JumpList file file
-#OUTPUT: TLN fomratted file and timeline file
+# Recurses an entire image file (or a folder)  and runs j[.pl (Harlan Carvey) against every JumpList file file
+# OUTPUT: TLN fomratted file and timeline file
 
-#########################COPYRIGHT INFORMATION############################
-#Copyright (C) 2014 chapin.bryce@mantech.com					         #
-#This program is free software: you can redistribute it and/or modify    #
-#it under the terms of the GNU General Public License as published by    #
-#the Free Software Foundation, either version 3 of the License, or       #
-#(at your option) any later version.                                     #
-                                                                         #
-#This program is distributed in the hope that it will be useful,         #
-#but WITHOUT ANY WARRANTY; without even the implied warranty of          #
-#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           #
-#GNU General Public License for more details.                            #
-                                                                         #
-#You should have received a copy of the GNU General Public License       #
-#along with this program.  If not, see http://www.gnu.org/licenses/.     #
-#########################COPYRIGHT INFORMATION############################
+##########################COPYRIGHT INFORMATION############################
+# Copyright (C) 2014 Chapin.Bryce@mantech.com        					  #
+# This program is free software: you can redistribute it and/or modify    #
+# it under the terms of the GNU General Public License as published by    #
+# the Free Software Foundation, either version 3 of the License, or       #
+# (at your option) any later version.                                     #
+#                                                                         #
+# This program is distributed in the hope that it will be useful,         #
+# but WITHOUT ANY WARRANTY; without even the implied warranty of          #
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           #
+# GNU General Public License for more details.                            #
+#                                                                         #
+# You should have received a copy of the GNU General Public License       #
+# along with this program.  If not, see http://www.gnu.org/licenses/.     #
+##########################COPYRIGHT INFORMATION############################
 
 #import modules
 import os

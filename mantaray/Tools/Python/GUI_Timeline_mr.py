@@ -1,24 +1,24 @@
 #!/usr/bin/env python3
-#This program automates the process of creating a super-timeline against a DD image or .E01 image
-#It reads the partition table and runs Log2timeline (Kristinn Gudjonsson.) , FLS (Brian Carrier) and MACTIME (Brian Carrier) against each partition
-#The timezone is determined for each partition.  If no timezone is present the program attempts to determine which timezone should be used.
-#The script works against NTFS, FAT32, FAT16, FAT12, EXT2/3/4, HFS+ (Windows, Linux, MAC)
+# This program automates the process of creating a super-timeline against a DD image or .E01 image
+# It reads the partition table and runs Log2timeline (Kristinn Gudjonsson.) , FLS (Brian Carrier) and MACTIME (Brian Carrier) against each partition
+# The timezone is determined for each partition.  If no timezone is present the program attempts to determine which timezone should be used.
+# The script works against NTFS, FAT32, FAT16, FAT12, EXT2/3/4, HFS+ (Windows, Linux, MAC)
 
-#########################COPYRIGHT INFORMATION############################
-#Copyright (C) 2011 					                 #
-#This program is free software: you can redistribute it and/or modify    #
-#it under the terms of the GNU General Public License as published by    #
-#the Free Software Foundation, either version 3 of the License, or       #
-#(at your option) any later version.                                     #
-                                                                         #
-#This program is distributed in the hope that it will be useful,         #
-#but WITHOUT ANY WARRANTY; without even the implied warranty of          #
-#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           #
-#GNU General Public License for more details.                            #
-                                                                         #
-#You should have received a copy of the GNU General Public License       #
-#along with this program.  If not, see http://www.gnu.org/licenses/.     #
-#########################COPYRIGHT INFORMATION############################
+##########################COPYRIGHT INFORMATION############################
+# Copyright (C) 2014 webmaster@mantarayforensics.com 					  #
+# This program is free software: you can redistribute it and/or modify    #
+# it under the terms of the GNU General Public License as published by    #
+# the Free Software Foundation, either version 3 of the License, or       #
+# (at your option) any later version.                                     #
+#                                                                         #
+# This program is distributed in the hope that it will be useful,         #
+# but WITHOUT ANY WARRANTY; without even the implied warranty of          #
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           #
+# GNU General Public License for more details.                            #
+#                                                                         #
+# You should have received a copy of the GNU General Public License       #
+# along with this program.  If not, see http://www.gnu.org/licenses/.     #
+##########################COPYRIGHT INFORMATION############################
 
 
 #import modules

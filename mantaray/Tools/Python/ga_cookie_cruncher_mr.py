@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 #########################COPYRIGHT INFORMATION#############################
 # Copyright (C) 2014 Chapin.Bryce@Mantech.com                             #
 # This program is free software: you can redistribute it and/or modify    #
@@ -12,7 +14,7 @@
 #                                                                         #
 # You should have received a copy of the GNU General Public License       #
 # along with this program.  If not, see http://www.gnu.org/licenses/.     #
-########################COPYRIGHT INFORMATION#############################
+########################COPYRIGHT INFORMATION##############################
 
 """This script automates the use of ga_parser.py as released by Mari DeGrazia with slight modifications."""
 

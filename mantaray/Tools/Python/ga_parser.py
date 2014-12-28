@@ -1,9 +1,10 @@
 #
-#GA-Parser v1.1
-#This program carves and parses Google Analytic vales (utma utmb, utmz from a file (unallocated, memory dump, pagefile etc.)
-#and outputs them into a tsv form.
+# GA-Parser v1.1
+# This program carves and parses Google Analytic vales (utma utmb, utmz)
+#  from a file (unallocated, memory dump, pagefile, etc.)
+# and outputs them into a tsv form.
 #
-#To read more about it, visit my blog at http://az4n6.blogspot.com/
+# To read more about it, visit my blog at http://az4n6.blogspot.com/
 #
 # Copyright (C) 2014 Mari DeGrazia (arizona4n6@gmail.com)
 #
@@ -26,7 +27,7 @@ __license__ = 'GNU'
 
 __init__ = [""]
 
-# Modified by CBRYCE for MantaRay
+# Modified by CBRYCE for MantaRay.
 
 # minor bug and type fixes (Thanks to Ron Dormido for testing it!)
 

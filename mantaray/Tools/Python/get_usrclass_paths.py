@@ -1,25 +1,26 @@
 ### GET USRCLASS.DAT FILES ################################################################
-#DESCRIPTION: This module finds the absolute path to each USRCLASS.DAT file within a given mount point
-#INPUT: absolute path to mount point (ex: "/mnt/windows_mount")
-#OUTPUT: returns a list containing the absolute path to each USRCLASS.DAT file found in that partition
+# DESCRIPTION: This module finds the absolute path to each USRCLASS.DAT file within a given mount point
+# INPUT: absolute path to mount point (ex: "/mnt/windows_mount")
+# OUTPUT: returns a list containing the absolute path to each USRCLASS.DAT file found in that partition
 
-#########################COPYRIGHT INFORMATION############################
-#Copyright (C) 2011 					                 #
-#This program is free software: you can redistribute it and/or modify    #
-#it under the terms of the GNU General Public License as published by    #
-#the Free Software Foundation, either version 3 of the License, or       #
-#(at your option) any later version.                                     #
-                                                                         #
-#This program is distributed in the hope that it will be useful,         #
-#but WITHOUT ANY WARRANTY; without even the implied warranty of          #
-#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           #
-#GNU General Public License for more details.                            #
-                                                                         #
-#You should have received a copy of the GNU General Public License       #
-#along with this program.  If not, see http://www.gnu.org/licenses/.     #
-#########################COPYRIGHT INFORMATION############################
+##########################COPYRIGHT INFORMATION############################
+# Copyright (C) 2014 webmaster@mantarayforensics.com 					  #
+# This program is free software: you can redistribute it and/or modify    #
+# it under the terms of the GNU General Public License as published by    #
+# the Free Software Foundation, either version 3 of the License, or       #
+# (at your option) any later version.                                     #
+#                                                                         #
+# This program is distributed in the hope that it will be useful,         #
+# but WITHOUT ANY WARRANTY; without even the implied warranty of          #
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           #
+# GNU General Public License for more details.                            #
+#                                                                         #
+# You should have received a copy of the GNU General Public License       #
+# along with this program.  If not, see http://www.gnu.org/licenses/.     #
+##########################COPYRIGHT INFORMATION############################
 
 import os
+
 
 def get_usrclass_paths(mount_point):
     #initialize tuple

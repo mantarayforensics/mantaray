@@ -1,46 +1,47 @@
 #!/usr/bin/env python3
-#Module for FAEB.  Runs j[.pl (Harlan Carvey) against every JumpList file
-#OUTPUT: TLN formatted file and timeline file
+# Module for FAEB.  Runs j[.pl (Harlan Carvey) against every JumpList file
+# OUTPUT: TLN formatted file and timeline file
 
-#########################COPYRIGHT INFORMATION############################
-#Copyright (C) 2012               					 #
-#This program is free software: you can redistribute it and/or modify    #
-#it under the terms of the GNU General Public License as published by    #
-#the Free Software Foundation, either version 3 of the License, or       #
-#(at your option) any later version.                                     #
-                                                                         #
-#This program is distributed in the hope that it will be useful,         #
-#but WITHOUT ANY WARRANTY; without even the implied warranty of          #
-#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           #
-#GNU General Public License for more details.                            #
-                                                                         #
-#You should have received a copy of the GNU General Public License       #
-#along with this program.  If not, see http://www.gnu.org/licenses/.     #
-#########################COPYRIGHT INFORMATION############################
+##########################COPYRIGHT INFORMATION############################
+# Copyright (C) 2014 webmaster@mantarayforensics.com 					  #
+# This program is free software: you can redistribute it and/or modify    #
+# it under the terms of the GNU General Public License as published by    #
+# the Free Software Foundation, either version 3 of the License, or       #
+# (at your option) any later version.                                     #
+#                                                                         #
+# This program is distributed in the hope that it will be useful,         #
+# but WITHOUT ANY WARRANTY; without even the implied warranty of          #
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           #
+# GNU General Public License for more details.                            #
+#                                                                         #
+# You should have received a copy of the GNU General Public License       #
+# along with this program.  If not, see http://www.gnu.org/licenses/.     #
+##########################COPYRIGHT INFORMATION############################
 
 #import modules
 
 import subprocess
 
 ##### GET ACCOUNT PROFILE NAME ##########################################################################################################################
-def get_account_profile_names(account, outfile2):
-    #Takes absolute path to Jumplist file and returns the profile name
+
+
+def get_account_profile_names(account, outfile):
+    # Takes absolute path to Jumplist file and returns the profile name
 
     print("The account name passed to the function is: " + account)
     outfile.write("The account name passed to the function is: " + account + "\n")
 
-    #get substring
+    # get substring
     account_sub = account[:-105]
     outfile.write("The account-sub name passed to the function is: " + account_sub + "\n")
 
-
-    #get length
+    # get length
     account_sub_string_length = len(account_sub)
 
-    #find offset of rightmost slash
+    # find offset of rightmost slash
     rightmost_slash_location = account_sub.rindex('/')
 
-    #calculate substring
+    # calculate substring
     username = account_sub[(rightmost_slash_location+1):account_sub_string_length]
 
     return username
@@ -52,15 +53,15 @@ def jumplist_module(full_path, outfile, folder_path, offset):
 
     outfile.write("Processing Jump List: " + full_path + "\n")
 
-    #get profile name
+    # get profile name
     if(offset != "FOLDER"):
-        profile = get_account_profile_names(full_path, outfile2)
+        profile = get_account_profile_names(full_path, outfile)
         print("The profile is: " + profile)
         outfile.write("The profile is: " + profile + "\n")
     else:
         profile = "Unknown-Folder_Data"
 
-    #process Jumplist files with jl.pl
+    # process Jumplist files with jl.pl
     if(offset != "FOLDER"):
         jl_command = "perl /usr/local/src/windows-perl/jl.pl -u " + "'" + profile + "'" + " -f " + "'" + full_path + "'" + " >> " + "'" + folder_path + "/Processed_Files_" + str(offset) + "/JUMPLIST_DATA/jumplist_metadata.txt" + "'"
         jl_command_tln = "perl /usr/local/src/windows-perl/jl.pl -u " + "'" + profile + "'" + " -t -f " + "'" + full_path + "'" + " >> " + "'" + folder_path +  "/Processed_Files_" + str(offset) + "/JUMPLIST_DATA/jumplist_metadata_tln.txt" + "'"
@@ -75,7 +76,7 @@ def jumplist_module(full_path, outfile, folder_path, offset):
     subprocess.call([jl_command_tln], shell=True)
     subprocess.call([jl_command], shell=True)
 
-    #create timeline
+    # create timeline
     outfile.write("The parse_command is: " + parse_command + "\n")
     subprocess.call([parse_command], shell=True)
 
