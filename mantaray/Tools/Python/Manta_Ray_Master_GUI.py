@@ -436,14 +436,19 @@ if batch_mode_enabled:
     if os.path.isdir(evidence_path):
         for root, dirs, files in os.walk(evidence_path):
             for fname in files:
+                quoted_path = os.path.join(root, fname)
+                # quoted_path = '"' + quoted_path + '"'
+                # quoted_path = quoted_path.replace(" ", "\s")
+                # quoted_path = quoted_path.replace("'", "\'")
+
                 if fname.lower().endswith(".e01"):
-                    evidence_path_list.append(os.path.join(root, fname))
+                    evidence_path_list.append(quoted_path)
                 elif fname.lower().endswith(".dd"):
-                    evidence_path_list.append(os.path.join(root, fname))
+                    evidence_path_list.append(quoted_path)
                 elif fname.lower().endswith(".001"):
-                    evidence_path_list.append(os.path.join(root, fname))
+                    evidence_path_list.append(quoted_path)
                 elif fname.lower().endswith(".img"):
-                    evidence_path_list.append(os.path.join(root, fname))
+                    evidence_path_list.append(quoted_path)
 
     else:
         print("Evidence is not a valid directory to scan...Exiting Now!")
@@ -451,7 +456,7 @@ if batch_mode_enabled:
 
 else:
     if os.path.isfile(evidence_path):
-        evidence_path = evidence_path.strip()
+        evidence_path = '\"' + evidence_path.strip() + '\"'
         evidence_path_list.append(evidence_path)
 
 # Debugging - Comment Out
@@ -814,7 +819,8 @@ for evidence_path in evidence_path_list:
     batch_counter = batch_counter + 1
 
     if batch_mode_enabled:
-        folder_path = folder_path_base + "/Batch_Item_0" + str(batch_counter) + "_" + str(os.path.basename(evidence_path))
+        folder_path = folder_path_base + "/Batch_Item_0" + str(batch_counter) + "_" + str(os.path.basename(evidence_path).strip('\"'))
+        # folder_path = '\"' + folder_path + '\"'
         check_for_folder(folder_path, gui_outfile)
 
     gui_outfile.flush()

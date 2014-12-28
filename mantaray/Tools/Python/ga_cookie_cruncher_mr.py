@@ -1,19 +1,19 @@
-#########################COPYRIGHT INFORMATION############################
-#Copyright (C) 2014 Chapin.Bryce@Mantech.com				             #
-#This program is free software: you can redistribute it and/or modify    #
-#it under the terms of the GNU General Public License as published by    #
-#the Free Software Foundation, either version 3 of the License, or       #
-#(at your option) any later version.                                     #
-#                                                                        #
-#This program is distributed in the hope that it will be useful,         #
-#but WITHOUT ANY WARRANTY; without even the implied warranty of          #
-#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           #
-#GNU General Public License for more details.                            #
-#                                                                        #
-#You should have received a copy of the GNU General Public License       #
-#along with this program.  If not, see http://www.gnu.org/licenses/.     #
-#########################COPYRIGHT INFORMATION############################
-"""This script automates the use of ga_parser.py as released by Mari DeGrazia."""
+#########################COPYRIGHT INFORMATION#############################
+# Copyright (C) 2014 Chapin.Bryce@Mantech.com                             #
+# This program is free software: you can redistribute it and/or modify    #
+# it under the terms of the GNU General Public License as published by    #
+# the Free Software Foundation, either version 3 of the License, or       #
+# (at your option) any later version.                                     #
+#                                                                         #
+# This program is distributed in the hope that it will be useful,         #
+# but WITHOUT ANY WARRANTY; without even the implied warranty of          #
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           #
+# GNU General Public License for more details.                            #
+#                                                                         #
+# You should have received a copy of the GNU General Public License       #
+# along with this program.  If not, see http://www.gnu.org/licenses/.     #
+#########################COPYRIGHT INFORMATION#############################
+"""This script automates the use of ga_parser.py as released by Mari DeGrazia with slight modifications."""
 
 __author__ = 'cbryce'
 
@@ -30,7 +30,7 @@ import mount
 
 def process_dir(input_dir, output_dir, parsers, type):
     print ("Building Command...")
-    cmd = "sudo python /usr/share/mantaray/Tools/Python/ga_parser.py -d " + input_dir + " -o " + output_dir + ""
+    cmd = "sudo python /usr/share/mantaray/Tools/Python/ga_parser.py -d \'" + input_dir + "\' -o \'" + output_dir + "\'"
 
     # Select parsers.
     if "chrome" in parsers:
@@ -59,7 +59,7 @@ def process_dir(input_dir, output_dir, parsers, type):
 
 def process_file(input_file, output_dir, parsers, type="Overt"):
     print ("Building Command...")
-    cmd = "sudo python /usr/share/mantaray/Tools/Python/ga_parser.py -f " + input_file + " -o " + output_dir + ""
+    cmd = "sudo python /usr/share/mantaray/Tools/Python/ga_parser.py -f \'" + input_file + "\' -o \'" + output_dir + "\'"
 
     # Select parsers.
     if "chrome" in parsers:
@@ -123,7 +123,7 @@ def mount_shadow_volumes(vssvolume_mnt, outfile, folder_path, temp_time, parsers
         for key,value in partition_info_dict.items():
             print("About to process registry hives from: " + item)
             mount.mount(value,key,vssvolume_mnt+"/"+item,outfile,vss_mount)
-            os.makedirs(folder_path+"/"+item)
+            os.makedirs("\'"+folder_path+"/"+item+"\'")
             process_dir(vss_mount, folder_path+"/"+item, parsers,item)
 
     #unmounting vss volume
@@ -219,7 +219,7 @@ def main(input_file, output_directory, parsers):
         # check if Image file is in Encase format
         if re.search(".E01", input_file):
             #set mount point
-            Image_Path = mount_ewf(Image_Path, outfile, mount_point)
+            Image_Path = mount_ewf('\"' + Image_Path + '\"', outfile, mount_point)
 
         # call mmls function
         partition_info_dict, temp_time = mmls(outfile, Image_Path)
@@ -262,17 +262,19 @@ def main(input_file, output_directory, parsers):
                 else:
                     print("Output folder: " + folder_path + "/Partition_" + str(key) + " already exists")
                     outfile.write("Output folder: " + folder_path + "/Partition_" + str(key) + " already exists\n\n")
+
                 # Process Deleted, and Unallocated
-                #input("Image Name: "+  Image_Path + "\nFolder Path: " +folder_path+"/Partition_"+str(key))
+                # input("Image Name: "+  Image_Path + "\nFolder Path: " +folder_path+"/Partition_"+str(key))
                 tmp_mnt = mount_point+"_"+str(key)+"_"+value
-                mount.mount(value, key, Image_Path, outfile, tmp_mnt)
-                #process_file(Image_Path, folder_path+"/Partition_"+str(key), parsers)
+                mount.mount(value, key, '\"'+Image_Path+'\"', outfile, tmp_mnt)
+
+                # process_file(Image_Path, folder_path+"/Partition_"+str(key), parsers)
                 # Process the mounted filesystem.
                 process_dir(tmp_mnt, folder_path+"/Partition_"+str(key), parsers, "Overt")
                 # Processes Shadow Volumes
                 vss_mount = check_for_shadow_volumes(Image_Path, key, block_size, outfile, folder_path, temp_time)
                 if not vss_mount == "NULL":
-                    mount_shadow_volumes(vss_mount,outfile,folder_path,now,parsers)
+                    mount_shadow_volumes(vss_mount, outfile, folder_path, now, parsers)
 
             else:
                 print("This partition is not formatted NTFS or FAT32")

@@ -26,8 +26,9 @@ __license__ = 'GNU'
 
 __init__ = [""]
 
+# Modified by CBRYCE for MantaRay
 
-#minor bug and type fixes (Thanks to Ron Dormido for testing it!)
+# minor bug and type fixes (Thanks to Ron Dormido for testing it!)
 
 import sys
 import re
@@ -759,8 +760,8 @@ if __name__ == '__main__':
     input_parser.add_option("--ewf", action="store_true", dest="ewf", help = "Select this is the input file is EWF "
                                                                              "format. Libewf and PyTSK3 must be "
                                                                              "installed")
-    input_parser.add_option("--threads", dest="threads", help="Number of threads to use in Dir Scan", metavar="4",
-                            type="int", default=1)
+    # input_parser.add_option("--threads", dest="threads", help="Number of threads to use in Dir Scan", metavar="4",
+    #                         type="int", default=1)
     input_parser.add_option("--sigs", action="store_true", dest="sigs", help="Enable scanning for ONLY common file extensions for cookies")
 
     (options, args) = input_parser.parse_args()
@@ -773,7 +774,7 @@ if __name__ == '__main__':
     output_folder = options.output
     directory = options.directory
     ewf_file = options.ewf
-    threads = options.threads
+    # threads = options.threads
     sigs = options.sigs
 
     #no arguments given by user,exit

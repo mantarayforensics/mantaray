@@ -40,11 +40,11 @@ def mount_encase_v6_l01(case_name, l01_file, outfile):
 	grep_result = subprocess.call([grep_command], shell=True)
 	
 	if(grep_result):
-		print(mount_point + " is not mounted", end = "\n\n")
+		print(mount_point + " is not mounted\n\n")
 		if(outfile != "NONE"):
 			outfile.write(mount_point + " is not mounted\n")
 	else: 
-		print (mount_point + " is mounted, will now unmount", end = "\n\n")
+		print (mount_point + " is mounted, will now unmount\n\n")
 		if(outfile != "NONE"):
 			outfile.write(mount_point + " is mounted, will now unmount\n")
 		#setup unmount command
