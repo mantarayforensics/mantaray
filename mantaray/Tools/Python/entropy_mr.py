@@ -241,12 +241,25 @@ def entropy_mr(item_to_process, case_number, root_folder_path, evidence):
 	subprocess.call([sed_command], shell=True)
 
 	#remove original output file
-	os.remove(exp_file)
+	try:
+		os.remove(exp_file)
+	except:
+		print("Unable to unmount, resource busy")
+		outfile.write("Unable to unmount, resource busy")
+
 
 	#remove mount points created for this program
 	if(os.path.exists(mount_point)):
-		os.rmdir(mount_point)
-	if(os.path.exists(mount_point+"_ewf")):
-		subprocess.call(['sudo umount -f ' + mount_point + "_ewf"], shell=True)
-		os.rmdir(mount_point+"_ewf")
+		try:
+			os.rmdir(mount_point)
+		except:
+			print("Unable to unmount, resource busy")
+			outfile.write("Unable to unmount, resource busy")
 
+	if(os.path.exists(mount_point+"_ewf")):
+		try:
+			subprocess.call(['sudo umount -f ' + mount_point + "_ewf"], shell=True)
+			os.rmdir(mount_point+"_ewf")
+		except:
+			print("Unable to unmount, resource busy")
+			outfile.write("Unable to unmount, resource busy")
