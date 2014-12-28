@@ -24,47 +24,47 @@ import subprocess
 import datetime
 
 def mount_encase_v6_l01(case_name, l01_file, outfile):
-	print("Inside mount L01 function")
+    print("Inside mount L01 function")
 
-	#get datetime
-	now = datetime.datetime.now()
+    #get datetime
+    now = datetime.datetime.now()
 
-	#get time for temp file to make it unique
-	temp_time = now.strftime("%Y-%m-%d_%H_%M_%S_%f")
+    #get time for temp file to make it unique
+    temp_time = now.strftime("%Y-%m-%d_%H_%M_%S_%f")
 
-	#set Mount Point
-	mount_point = "/mnt/" + temp_time
+    #set Mount Point
+    mount_point = "/mnt/" + temp_time
 
-	#check to see if /mnt/windows_mount is mounted
-	grep_command = "mount | grep " + mount_point
-	grep_result = subprocess.call([grep_command], shell=True)
-	
-	if(grep_result):
-		print(mount_point + " is not mounted\n\n")
-		if(outfile != "NONE"):
-			outfile.write(mount_point + " is not mounted\n")
-	else: 
-		print (mount_point + " is mounted, will now unmount\n\n")
-		if(outfile != "NONE"):
-			outfile.write(mount_point + " is mounted, will now unmount\n")
-		#setup unmount command
-		unmount_command = "umount -f " + mount_point
-		subprocess.call([unmount_command], shell=True)
+    #check to see if /mnt/windows_mount is mounted
+    grep_command = "mount | grep " + mount_point
+    grep_result = subprocess.call([grep_command], shell=True)
 
-	#check to see if the folder exists, if not create it
-	if not os.path.exists(mount_point):
-		os.makedirs(mount_point)
-		print("Just created mount point: " + mount_point)
-		if(outfile != "NONE"):
-			outfile.write("Just created mount point: " + mount_point)
-	else:
-		print("Mount Point: " + mount_point + " already exists.")
-		if(outfile != "NONE"):
-			outfile.write("Mount Point: " + mount_point + " already exists.")
+    if(grep_result):
+        print(mount_point + " is not mounted\n\n")
+        if(outfile != "NONE"):
+            outfile.write(mount_point + " is not mounted\n")
+    else:
+        print (mount_point + " is mounted, will now unmount\n\n")
+        if(outfile != "NONE"):
+            outfile.write(mount_point + " is mounted, will now unmount\n")
+        #setup unmount command
+        unmount_command = "umount -f " + mount_point
+        subprocess.call([unmount_command], shell=True)
 
-	l01_mount_command = "ewfmount -f files " + l01_file + " " + mount_point
+    #check to see if the folder exists, if not create it
+    if not os.path.exists(mount_point):
+        os.makedirs(mount_point)
+        print("Just created mount point: " + mount_point)
+        if(outfile != "NONE"):
+            outfile.write("Just created mount point: " + mount_point)
+    else:
+        print("Mount Point: " + mount_point + " already exists.")
+        if(outfile != "NONE"):
+            outfile.write("Mount Point: " + mount_point + " already exists.")
 
-	#execute l01_mount_command
-	subprocess.call([l01_mount_command], shell=True)
+    l01_mount_command = "ewfmount -f files " + l01_file + " " + mount_point
 
-	return mount_point
+    #execute l01_mount_command
+    subprocess.call([l01_mount_command], shell=True)
+
+    return mount_point
