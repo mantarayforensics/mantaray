@@ -29,45 +29,45 @@ from check_for_folder import *
 
 def remove_duplicates_mr(root_folder_path, evidence):
 
-	print("The output folder is: " + root_folder_path)
-	print("The evidence to process is: " + evidence)
+    print("The output folder is: " + root_folder_path)
+    print("The evidence to process is: " + evidence)
 
-	evidence = '"' + evidence + '"'
+    evidence = '"' + evidence + '"'
 
-	#get datetime
-	now = datetime.datetime.now()
-	
-	#create output folder path
-	folder_path = root_folder_path + "/" + "Remove_Duplicates"
-	check_for_folder(folder_path, "NONE")
-	
+    #get datetime
+    now = datetime.datetime.now()
 
-	remove_dupes_command = "sudo fdupes -r -d -N " + evidence + " > " + '"' + folder_path + "/fdupes_duplicates_log.txt" + '"'
-	print ("The remove dupes command is: " + remove_dupes_command, end ="\n\n")
-	print ("Removing duplicate files recursively from folder: " + evidence, end ="\n\n")
+    #create output folder path
+    folder_path = root_folder_path + "/" + "Remove_Duplicates"
+    check_for_folder(folder_path, "NONE")
 
-	#run the remove dupes command
-	subprocess.call([remove_dupes_command], shell=True)
 
-	#get filesize of mmls_output.txt
-	file_size = os.path.getsize(folder_path + "/fdupes_duplicates_log.txt") 
+    remove_dupes_command = "sudo fdupes -r -d -N " + evidence + " > " + '"' + folder_path + "/fdupes_duplicates_log.txt" + '"'
+    print ("The remove dupes command is: " + remove_dupes_command +"\n\n")
+    print ("Removing duplicate files recursively from folder: " + evidence + "\n\n")
 
-	#if filesize of mmls output is 0 then run parted
-	if(file_size == 0):
-		print("No duplicates found\n")
-		outfile = open(folder_path + "/fdupes_duplicates_log.txt", 'wt+')
-		outfile.write("No duplicate files found!")
-		#close outfile
-		outfile.close()
-	else:
-		#if log file exists then run unix2dos against the logfile
-		unix2dos(folder_path + "/fdupes_duplicates_log.txt")	
+    #run the remove dupes command
+    subprocess.call([remove_dupes_command], shell=True)
 
-	#remove empty directories	
-	for root,dirs,files in os.walk(root_folder_path):
-		for directories in dirs:
-			dir_name = os.path.join(root,directories)
-			#if directory is empty then delete it
-			if not os.listdir(dir_name):
-				os.rmdir(dir_name)
+    #get filesize of mmls_output.txt
+    file_size = os.path.getsize(folder_path + "/fdupes_duplicates_log.txt")
+
+    #if filesize of mmls output is 0 then run parted
+    if(file_size == 0):
+        print("No duplicates found\n")
+        outfile = open(folder_path + "/fdupes_duplicates_log.txt", 'wt+')
+        outfile.write("No duplicate files found!")
+        #close outfile
+        outfile.close()
+    else:
+        #if log file exists then run unix2dos against the logfile
+        unix2dos(folder_path + "/fdupes_duplicates_log.txt")
+
+    #remove empty directories
+    for root,dirs,files in os.walk(root_folder_path):
+        for directories in dirs:
+            dir_name = os.path.join(root,directories)
+            #if directory is empty then delete it
+            if not os.listdir(dir_name):
+                os.rmdir(dir_name)
 

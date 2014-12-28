@@ -22,24 +22,24 @@
 import os
 
 def get_ntuser_paths(mount_point):
-	#initialize tuple
-	nt_user_dat = []
-	#root_string_length = 0
-	#rightmost_slash_location = 0
+    #initialize tuple
+    nt_user_dat = []
+    #root_string_length = 0
+    #rightmost_slash_location = 0
 
-	#get paths to all NTUSER.DAT files
-	for root,dirs,files in os.walk(mount_point):
-		for filenames in files:
-			#if 'NTUSER.DAT' in filenames:	
-			if(filenames.endswith('NTUSER.DAT')) or (filenames.endswith('ntuser.dat')):		
-				#append the full path to each NTUSER.dat file to list nt_user_dat
-				nt_user_dat.append(os.path.join(root,filenames))
-				
-				
-	print("The user accounts are: *********************************************")	
-	for items in nt_user_dat:
-		print (items)
-	print("*********************************************************************",end = "\n\n")	
-	return (nt_user_dat)
+    #get paths to all NTUSER.DAT files
+    for root,dirs,files in os.walk(mount_point):
+        for filenames in files:
+            #if 'NTUSER.DAT' in filenames:
+            if(filenames.endswith('NTUSER.DAT')) or (filenames.endswith('ntuser.dat')):
+                #append the full path to each NTUSER.dat file to list nt_user_dat
+                nt_user_dat.append(os.path.join(root,filenames))
+
+
+    print("The user accounts are: *********************************************")
+    for items in nt_user_dat:
+        print (items)
+    print("*********************************************************************\n\n")
+    return (nt_user_dat)
 
 ### GET NTUSER.DAT FILES ####

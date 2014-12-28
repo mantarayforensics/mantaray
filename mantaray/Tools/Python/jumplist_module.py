@@ -24,59 +24,59 @@ import subprocess
 
 ##### GET ACCOUNT PROFILE NAME ##########################################################################################################################
 def get_account_profile_names(account, outfile2):
-	#Takes absolute path to Jumplist file and returns the profile name
+    #Takes absolute path to Jumplist file and returns the profile name
 
-	print("The account name passed to the function is: " + account)
-	outfile.write("The account name passed to the function is: " + account + "\n")
+    print("The account name passed to the function is: " + account)
+    outfile.write("The account name passed to the function is: " + account + "\n")
 
-	#get substring
-	account_sub = account[:-105]
-	outfile.write("The account-sub name passed to the function is: " + account_sub + "\n")
+    #get substring
+    account_sub = account[:-105]
+    outfile.write("The account-sub name passed to the function is: " + account_sub + "\n")
 
 
-	#get length
-	account_sub_string_length = len(account_sub)
+    #get length
+    account_sub_string_length = len(account_sub)
 
-	#find offset of rightmost slash
-	rightmost_slash_location = account_sub.rindex('/')
+    #find offset of rightmost slash
+    rightmost_slash_location = account_sub.rindex('/')
 
-	#calculate substring	
-	username = account_sub[(rightmost_slash_location+1):account_sub_string_length]
+    #calculate substring
+    username = account_sub[(rightmost_slash_location+1):account_sub_string_length]
 
-	return username
+    return username
 
 
 ##### GET ACCOUNT PROFILE NAME ##########################################################################################################################
 
 def jumplist_module(full_path, outfile, folder_path, offset):
 
-	outfile.write("Processing Jump List: " + full_path + "\n")
+    outfile.write("Processing Jump List: " + full_path + "\n")
 
-	#get profile name
-	if(offset != "FOLDER"):
-		profile = get_account_profile_names(full_path, outfile2)
-		print("The profile is: " + profile)
-		outfile.write("The profile is: " + profile + "\n")
-	else:
-		profile = "Unknown-Folder_Data"
-	
-	#process Jumplist files with jl.pl
-	if(offset != "FOLDER"):
-		jl_command = "perl /usr/local/src/windows-perl/jl.pl -u " + "'" + profile + "'" + " -f " + "'" + full_path + "'" + " >> " + "'" + folder_path + "/Processed_Files_" + str(offset) + "/JUMPLIST_DATA/jumplist_metadata.txt" + "'"
-		jl_command_tln = "perl /usr/local/src/windows-perl/jl.pl -u " + "'" + profile + "'" + " -t -f " + "'" + full_path + "'" + " >> " + "'" + folder_path +  "/Processed_Files_" + str(offset) + "/JUMPLIST_DATA/jumplist_metadata_tln.txt" + "'"
-		parse_command = "perl /usr/local/src/windows-perl/parse.pl -f " + "'" + folder_path + "/Processed_Files_" + str(offset) + "/JUMPLIST_DATA/jumplist_metadata_tln.txt" + "'" + "> " + "'" + folder_path + "/Processed_Files_" + str(offset) + "/JUMPLIST_DATA/jumplist_timeline.txt" + "'"
-		outfile.write("The jl_command_tln is: " + jl_command_tln)
-	else:
-		jl_command = "perl /usr/local/src/windows-perl/jl.pl -u " + "'" + profile + "'" + " -f " + "'" + full_path + "'" + " >> " + "'" + folder_path + "/Processed_Files_FOLDER/JUMPLIST_DATA/jumplist_metadata.txt" + "'"
-		jl_command_tln = "perl /usr/local/src/windows-perl/jl.pl -u " + "'" + profile + "'" + " -t -f " + "'" + full_path + "'" + " >> " + "'" + folder_path +  "/Processed_Files_FOLDER/JUMPLIST_DATA/jumplist_metadata_tln.txt" + "'"
-		parse_command = "perl /usr/local/src/windows-perl/parse.pl -f " + "'" + folder_path + "/Processed_Files_FOLDER/JUMPLIST_DATA/jumplist_metadata_tln.txt" + "'" + "> " + "'" + folder_path + "/Processed_Files_FOLDER/JUMPLIST_DATA/jumplist_timeline.txt" + "'"
-		outfile.write("The jl_command_tln is: " + jl_command_tln)
-		
-	subprocess.call([jl_command_tln], shell=True)
-	subprocess.call([jl_command], shell=True)
+    #get profile name
+    if(offset != "FOLDER"):
+        profile = get_account_profile_names(full_path, outfile2)
+        print("The profile is: " + profile)
+        outfile.write("The profile is: " + profile + "\n")
+    else:
+        profile = "Unknown-Folder_Data"
 
-	#create timeline
-	outfile.write("The parse_command is: " + parse_command + "\n")
-	subprocess.call([parse_command], shell=True)
+    #process Jumplist files with jl.pl
+    if(offset != "FOLDER"):
+        jl_command = "perl /usr/local/src/windows-perl/jl.pl -u " + "'" + profile + "'" + " -f " + "'" + full_path + "'" + " >> " + "'" + folder_path + "/Processed_Files_" + str(offset) + "/JUMPLIST_DATA/jumplist_metadata.txt" + "'"
+        jl_command_tln = "perl /usr/local/src/windows-perl/jl.pl -u " + "'" + profile + "'" + " -t -f " + "'" + full_path + "'" + " >> " + "'" + folder_path +  "/Processed_Files_" + str(offset) + "/JUMPLIST_DATA/jumplist_metadata_tln.txt" + "'"
+        parse_command = "perl /usr/local/src/windows-perl/parse.pl -f " + "'" + folder_path + "/Processed_Files_" + str(offset) + "/JUMPLIST_DATA/jumplist_metadata_tln.txt" + "'" + "> " + "'" + folder_path + "/Processed_Files_" + str(offset) + "/JUMPLIST_DATA/jumplist_timeline.txt" + "'"
+        outfile.write("The jl_command_tln is: " + jl_command_tln)
+    else:
+        jl_command = "perl /usr/local/src/windows-perl/jl.pl -u " + "'" + profile + "'" + " -f " + "'" + full_path + "'" + " >> " + "'" + folder_path + "/Processed_Files_FOLDER/JUMPLIST_DATA/jumplist_metadata.txt" + "'"
+        jl_command_tln = "perl /usr/local/src/windows-perl/jl.pl -u " + "'" + profile + "'" + " -t -f " + "'" + full_path + "'" + " >> " + "'" + folder_path +  "/Processed_Files_FOLDER/JUMPLIST_DATA/jumplist_metadata_tln.txt" + "'"
+        parse_command = "perl /usr/local/src/windows-perl/parse.pl -f " + "'" + folder_path + "/Processed_Files_FOLDER/JUMPLIST_DATA/jumplist_metadata_tln.txt" + "'" + "> " + "'" + folder_path + "/Processed_Files_FOLDER/JUMPLIST_DATA/jumplist_timeline.txt" + "'"
+        outfile.write("The jl_command_tln is: " + jl_command_tln)
+
+    subprocess.call([jl_command_tln], shell=True)
+    subprocess.call([jl_command], shell=True)
+
+    #create timeline
+    outfile.write("The parse_command is: " + parse_command + "\n")
+    subprocess.call([parse_command], shell=True)
 
 

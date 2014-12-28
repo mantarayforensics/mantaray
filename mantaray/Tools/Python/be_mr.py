@@ -51,6 +51,7 @@ def process_folder(evidence, folder_path_be, whitelist_location, speed, outfile,
 #at command line enter item_to_process(folder, l01, image), case_name, output_folder, evidence_to_process, whitelist_location, speed
 #GUI_input = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5], sys.argv[6]
 
+
 def be_mr(item_to_process, case_number, folder_path, evidence, whitelist_location, speed, keyword_list):
     evidence = "'" + evidence + "'"
     speed = speed.strip()

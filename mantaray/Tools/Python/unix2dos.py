@@ -21,5 +21,5 @@
 import subprocess
 
 def unix2dos(infile):
-	unix2dos_command = "sudo unix2dos " + infile
-	subprocess.call([unix2dos_command], shell=True)
+    unix2dos_command = "sudo unix2dos " + infile
+    subprocess.call([unix2dos_command], shell=True)

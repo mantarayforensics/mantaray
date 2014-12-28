@@ -27,7 +27,7 @@ parser = reader(infile)
 
 
 for record in parser:
-	print(record[2])
+    print(record[2])
 
 
 

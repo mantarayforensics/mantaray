@@ -22,23 +22,23 @@
 import os
 
 def get_usrclass_paths(mount_point):
-	#initialize tuple
-	usrclass_dat = []
-	#root_string_length = 0
-	#rightmost_slash_location = 0
+    #initialize tuple
+    usrclass_dat = []
+    #root_string_length = 0
+    #rightmost_slash_location = 0
 
-	#get paths to all USRCLASS.DAT files
-	for root,dirs,files in os.walk(mount_point):
-		for filenames in files:
-			if(filenames.endswith('USRCLASS.DAT')) or (filenames.endswith('usrclass.dat')) or (filenames.endswith('UsrClass.dat')):		
-				#append the full path to each USRCLASS.dat file to list usrclass_dat
-				usrclass_dat.append(os.path.join(root,filenames))
-				
-				
-	print("The  USRCLASS.DAT files are: *********************************************")	
-	for items in usrclass_dat:
-		print (items)
-	print("*********************************************************************",end = "\n\n")	
-	return (usrclass_dat)
+    #get paths to all USRCLASS.DAT files
+    for root,dirs,files in os.walk(mount_point):
+        for filenames in files:
+            if(filenames.endswith('USRCLASS.DAT')) or (filenames.endswith('usrclass.dat')) or (filenames.endswith('UsrClass.dat')):
+                #append the full path to each USRCLASS.dat file to list usrclass_dat
+                usrclass_dat.append(os.path.join(root,filenames))
+
+
+    print("The  USRCLASS.DAT files are: *********************************************")
+    for items in usrclass_dat:
+        print (items)
+    print("*********************************************************************\n\n")
+    return (usrclass_dat)
 
 ### GET USRCLASS FILES ####

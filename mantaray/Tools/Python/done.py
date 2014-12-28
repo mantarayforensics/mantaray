@@ -24,9 +24,9 @@ from easygui import *
 
 
 def done(folder_path):
-	#create message box telling user where output is located
-	msgbox(msg='Process Complete.  Your output is located in: ' + folder_path, title='Processing Complete ', ok_button='OK', image=None, root=None)
-	
+    #create message box telling user where output is located
+    msgbox(msg='Process Complete.  Your output is located in: ' + folder_path, title='Processing Complete ', ok_button='OK', image=None, root=None)
+
 
 
 ### DONE ########################################################################################

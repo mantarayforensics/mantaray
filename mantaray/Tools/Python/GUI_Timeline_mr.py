@@ -496,7 +496,7 @@ def regtime(system_hive_path, system_hive_regback_path, sam_hive_path, sam_hive_
         if(outfile != "NONE"):
             outfile.write("The software_hive_command is: " + software_hive_command + "\n")
             outfile.write("Running Regtime.pl against: " + software_hive_path + "\n\n")
-        #run the regtime"The system_hive_command is: " + system_hive_command, end = "\n\n") command
+        #run the regtime"The system_hive_command is: " + system_hive_command + "\n\n") command
         subprocess.call([software_hive_command], shell=True)
 
     if(software_hive_regback_path != "NONE"):

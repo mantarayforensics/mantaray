@@ -21,9 +21,9 @@ import subprocess
 
 def calculate_md5(abs_file_path):
 
-	print("About to calculate MD5 for file: " + abs_file_path)
-	#get md5 hash for file
-	md5 = subprocess.check_output(['md5sum ' + "'" + abs_file_path + "'" + " | awk '{print $1}'"], shell=True, universal_newlines=True)
-	
-	return  md5
+    print("About to calculate MD5 for file: " + abs_file_path)
+    #get md5 hash for file
+    md5 = subprocess.check_output(['md5sum ' + "'" + abs_file_path + "'" + " | awk '{print $1}'"], shell=True, universal_newlines=True)
+
+    return  md5
 
