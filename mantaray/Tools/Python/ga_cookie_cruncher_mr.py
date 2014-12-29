@@ -267,7 +267,7 @@ def main(input_file, output_directory, parsers, input_type):
                     print("We found a GUID partition table, need to use parted")
                     outfile.write("We found a GUID partition table, need to use parted\n")
                     #call parted function
-                    partition_info_dict = parted(outfile, Image_Path)
+                    partition_info_dict, temp_time_junk = parted(outfile, Image_Path)
             mmls_output_file.close()
 
         #loop through the dictionary containing the partition info (filesystem is VALUE, offset is KEY)
