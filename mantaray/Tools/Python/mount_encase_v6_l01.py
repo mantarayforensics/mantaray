@@ -28,7 +28,7 @@ def mount_encase_v6_l01(case_name, l01_file, outfile):
     # disable auto-mount in nautilis - this stops a nautilis window from popping up everytime the mount command is executed
     cmd_false = "sudo gsettings set org.gnome.desktop.media-handling automount false && " \
                 "sudo gsettings set org.gnome.desktop.media-handling automount-open false && " \
-                "sudo gsettings set org.gnome.desktop.media-handling automount-never true"
+                "sudo gsettings set org.gnome.desktop.media-handling autorun-never true"
     try:
         subprocess.call([cmd_false], shell=True)
     except:
