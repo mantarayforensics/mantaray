@@ -34,6 +34,15 @@ def mount(value, key, Image, outfile, mount_point):
     :return: success, offset point
     """
 
+    # disable auto-mount in nautilis - this stops a nautilis window from popping up everytime the mount command is executed
+    cmd_false = "sudo gsettings set org.gnome.desktop.media-handling automount false && " \
+                "sudo gsettings set org.gnome.desktop.media-handling automount-open false && " \
+                "sudo gsettings set org.gnome.desktop.media-handling automount-never true"
+    try:
+        subprocess.call([cmd_false], shell=True)
+    except:
+        print("Autmount false failed")
+
     #initialize variables
     loopback_device_mount = "NONE"
 
@@ -50,7 +59,7 @@ def mount(value, key, Image, outfile, mount_point):
         if(outfile != "NONE"):
             outfile.write(mount_point + " is mounted, will now unmount\n")
         #setup unmount command
-        unmount_command = "umount -f " + mount_point
+        unmount_command = "sudo umount -f " + mount_point
         subprocess.call([unmount_command], shell=True)
 
     #check to see if the folder exists, if not create it
@@ -86,14 +95,14 @@ def mount(value, key, Image, outfile, mount_point):
 
     #set up mount command
     if(filesystem_mount == "ntfs-3g"):
-        mount_command = "mount -t "+ filesystem_mount + " -o loop,ro,show_sys_files,streams_interface=windows,offset=" + str(key) +" " + Image +" " + mount_point
+        mount_command = "sudo mount -t "+ filesystem_mount + " -o loop,ro,show_sys_files,streams_interface=windows,offset=" + str(key) +" " + Image +" " + mount_point
     elif(filesystem_mount == "ext"):
-        mount_command = "mount -t " + filesystem_mount + " -o loop,ro,noexec,noload,offset=" + str(key) + " " + Image + " " + mount_point
+        mount_command = "sudo mount -t " + filesystem_mount + " -o loop,ro,noexec,noload,offset=" + str(key) + " " + Image + " " + mount_point
     elif(filesystem_mount == "hfsplus"):
         #under 3.x kernel we need to use losetup when attempting to mount hfs+ partitions within disk images
 
         #use parted to get size of partition
-        parted_command = "echo unit B print q | parted " + Image + " | grep " + key + " | grep hfs+ | awk '{print $4}' | sed s/B//"
+        parted_command = "echo unit B print q | sudo parted " + Image + " | grep " + key + " | grep hfs+ | awk '{print $4}' | sed s/B//"
         partition_size = subprocess.check_output([parted_command], shell=True)
 
         #decode partition size
@@ -102,7 +111,7 @@ def mount(value, key, Image, outfile, mount_point):
 
         #set up loopback
         #losetup_command = "losetup --offset " + str(key) + " --sizelimit " + str(partition_size) + " -r /dev/loop7 " + Image
-        losetup_command = "losetup --offset " + str(key) + " --sizelimit " + str(partition_size) + " -r -f " + Image
+        losetup_command = "sudo losetup --offset " + str(key) + " --sizelimit " + str(partition_size) + " -r -f " + Image
         print("The losetup command is: " + losetup_command)
         subprocess.call([losetup_command], shell=True)
 
@@ -115,11 +124,11 @@ def mount(value, key, Image, outfile, mount_point):
         print("The loopback device to mount is: " + loopback_device_mount)
 
         #mount loopback device
-        mount_command = "mount -t hfsplus -o ro " + loopback_device_mount + " " + mount_point
+        mount_command = "sudo mount -t hfsplus -o ro " + loopback_device_mount + " " + mount_point
     elif(filesystem_mount != ""):
-        mount_command = "mount -t " + filesystem_mount + " -o loop,ro,offset=" + str(key) + ",noexec,noatime,nodiratime " + Image + " " + mount_point
+        mount_command = "sudo mount -t " + filesystem_mount + " -o loop,ro,offset=" + str(key) + ",noexec,noatime,nodiratime " + Image + " " + mount_point
     else:
-        mount_command = "mount -o loop,ro,offset=" + str(key) + " " + Image + " " + mount_point
+        mount_command = "sudo mount -o loop,ro,offset=" + str(key) + " " + Image + " " + mount_point
 
     #print out the mount command for debugging purposes
     print("*********************************************************************")

@@ -114,6 +114,16 @@ def mount_shadow_volumes(vssvolume_mnt, outfile, folder_path, temp_time, parsers
 
     print("Vssvolume_mnt: " + vssvolume_mnt)
 
+    # disable auto-mount in nautilis - this stops a nautilis window from popping up everytime the mount command
+    # is executed
+    cmd_false = "sudo gsettings set org.gnome.desktop.media-handling automount false && " \
+                "sudo gsettings set org.gnome.desktop.media-handling automount-open false && " \
+                "sudo gsettings set org.gnome.desktop.media-handling automount-never true"
+    try:
+        subprocess.call([cmd_false], shell=True)
+    except:
+        print("Autmount false failed")
+
     #check for existence of folder
     vss_mount = check_for_folder("/mnt/vss_mount", outfile)
 
@@ -127,7 +137,7 @@ def mount_shadow_volumes(vssvolume_mnt, outfile, folder_path, temp_time, parsers
         for key,value in partition_info_dict.items():
             print("About to process Google Analytic Cookies from: " + item)
             mount.mount(value,key,vssvolume_mnt+"/"+item,outfile,vss_mount)
-            os.makedirs("\'"+folder_path+"/"+item+"\'")
+            os.makedirs(folder_path+"/"+item)
             process_dir(vss_mount, folder_path+"/"+item, parsers,item)
 
     #unmounting vss volume
@@ -276,7 +286,7 @@ def main(input_file, output_directory, parsers, input_type):
                 # Process Deleted, and Unallocated
                 # input("Image Name: "+  Image_Path + "\nFolder Path: " +folder_path+"/Partition_"+str(key))
                 tmp_mnt = mount_point+"_"+str(key)+"_"+value
-                mount.mount(value, key, '\"'+Image_Path+'\"', outfile, tmp_mnt)
+                mount.mount(value, key, Image_Path, outfile, tmp_mnt)
 
                 # process_file(Image_Path, folder_path+"/Partition_"+str(key), parsers)
                 # Process the mounted filesystem.

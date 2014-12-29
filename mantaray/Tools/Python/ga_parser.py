@@ -797,9 +797,9 @@ if __name__ == '__main__':
 
     #open files for output
     if chrome or firefox or ie or apple:
-        output_utmz = open(output_folder + seperator + "utmz.tsv", "a")
-        output_utma = open(output_folder + seperator + "utma.tsv", "a")
-        output_utmb = open(output_folder + seperator + "utmb.tsv","a")
+        output_utmz = open(output_folder + seperator + "utmz.tsv", "a+")
+        output_utma = open(output_folder + seperator + "utma.tsv", "a+")
+        output_utmb = open(output_folder + seperator + "utmb.tsv","a+")
 
         #write out file headers
         output_utma.write("File\tOffset\tType\tHost\tCreated\t2ndRecentVisit\tMostRecent\tHits\n")

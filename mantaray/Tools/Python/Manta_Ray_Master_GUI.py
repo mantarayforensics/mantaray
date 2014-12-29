@@ -120,7 +120,8 @@ intro_splashscreen = splashscreen()
 
 # disable auto-mount in nautilis - this stops a nautilis window from popping up everytime the mount command is executed
 cmd_false = "sudo gsettings set org.gnome.desktop.media-handling automount false && " \
-            "sudo gsettings set org.gnome.desktop.media-handling automount-open false"
+            "sudo gsettings set org.gnome.desktop.media-handling automount-open false && " \
+            "sudo gsettings set org.gnome.desktop.media-handling automount-never true"
 try:
     subprocess.call([cmd_false], shell=True)
 except:
@@ -1061,16 +1062,16 @@ for x in processing_scripts_list:
     if x == "Google Analytics Cookie Cruncher":
 
         # Select Parsers to Use
-        cmd = '''zenity --list --checklist
-        --title "MantaRay - ManTech Triage & Analysis System		MantaRayForensics.com"
-        --column="Selection" --column="Parser" --column="Description"
-            TRUE "GIF" "This is reccomended by the developer"
-            FALSE "Chrome" "Parse cookies from the Chrome Browser"
-            FALSE "Internet Explorer" "Parse cookies from the Internet Explorer Browser"
-            FALSE "Firefox" "Parse cookies from the Firefox browser"
-            FALSE "Safari" "Parse cookies from the Safari Browser"
-        --text="Select processors for Google Analytic Cookies"
-        --width 800 --height 400'''
+        cmd = 'zenity --list --checklist ' \
+              '--title "MantaRay - ManTech Triage & Analysis System		MantaRayForensics.com" ' \
+              '--column="Selection" --column="Parser" --column="Description" ' \
+              'TRUE "GIF" "This is reccomended by the developer" ' \
+              'FALSE "Chrome" "Parse cookies from the Chrome Browser" ' \
+              'FALSE "Internet Explorer" "Parse cookies from the Internet Explorer Browser" ' \
+              'FALSE "Firefox" "Parse cookies from the Firefox browser" ' \
+              'FALSE "Safari" "Parse cookies from the Safari Browser" ' \
+              '--text="Select processors for Google Analytic Cookies" ' \
+              '--width 800 --height 400'
         ga_parsers = subprocess.check_output([cmd], shell=True).decode().strip()
         gui_outfile.write("Google Analytic Cookie Parsers selected: " + ga_parsers)
         ga_parsers = ga_parsers.lower().split("|")

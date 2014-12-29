@@ -36,7 +36,7 @@ def mmls(outfile, Image_Path):
     temp_time = now.strftime("%Y-%m-%d_%H_%M_%S_%f")
 
     #set up mmls command
-    mmls_command = "mmls -i raw " + Image_Path + " > /tmp/mmls_output_" + temp_time +".txt"
+    mmls_command = "sudo mmls -i raw " + Image_Path + " > /tmp/mmls_output_" + temp_time +".txt"
     outfile.write("The mmls command is: " + mmls_command + "\n")
 
     #run mmls and collect output in tmp folder
