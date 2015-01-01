@@ -2,7 +2,7 @@ MantaRay Forensics
 ==================================
 ManTech Triage and Analysis System, Forensics Workflow Automation Suite
 
-![alt tag](https://raw.githubusercontent.com/mantarayforensics/mantaray/master/usr/share/images/Mantaray_Logo_Template_Full_Screen.gif)
+![alt tag](https://raw.githubusercontent.com/mantarayforensics/mantaray/master/mantaray/images/Mantaray_Logo_Template_Full_Screen.gif)
 
 Overview
 ==================================
