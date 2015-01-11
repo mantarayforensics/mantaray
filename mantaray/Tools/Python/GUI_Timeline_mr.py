@@ -38,6 +38,7 @@ from unix2dos import *
 from mmls import *
 from parse_timeline_module import *
 from mount_encase_v6_l01 import *
+from check_for_folder import *
 import os
 from os.path import join
 import re
@@ -723,15 +724,15 @@ def plaso_process_folder(Image_Path, folder_path, outfile, case_number, user_def
 
 ### MAIN PROGRAM #####################################################################
 
-def GUI_Timeline_mr(item_to_process, case_number, root_folder_path, evidence, user_defined_timezone, super_timeline_options, plaso_output_options):
+def GUI_Timeline_mr(item_to_process, case_number, root_folder_path, evidence, user_defined_timezone, super_timeline_options, plaso_output_options, plaso_processor):
 	print("The item to process is: " + item_to_process)
 	print("The case_name is: " + case_number)
 	print("The output folder is: " + root_folder_path)
 	print("The evidence to process is: " + evidence)
 	print("The plaso_output_options are: " + plaso_output_options)
 
-	evidence_no_quotes = evidence
-	evidence = '"' + evidence + '"'
+	#evidence_no_quotes = evidence
+	#evidence = '"' + evidence + '"'
 
 	#get datetime
 	now = datetime.datetime.now()
@@ -1090,7 +1091,7 @@ def GUI_Timeline_mr(item_to_process, case_number, root_folder_path, evidence, us
 				#if(value.lower() != "ext4"):
 				#call fls (offset, folder_path, filesystem) against non NTFS partitions.  Also fls can't support ext4
 				#log2timeline will parse the MFT for NTFS partitions
-					fls(str(key), folder_path, value, outfile, Image_Path. timezone_final)
+					fls(str(key), folder_path, value, outfile, Image_Path, timezone_final)
 
 				#run mactime command against all fileystem types, pass timezone, offset and list containing begin and end dates
 					mactime(timezone_final, key, outfile, folder_path)
