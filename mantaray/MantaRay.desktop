@@ -1,9 +1,0 @@
-[Desktop Entry]
-Version=1.0
-Name=MantaRay
-Comment=Forensic Workflow Automation
-Exec=/usr/bin/mantaray
-Icon=/usr/share/mantaray/images/Mantaray_Artwork_Small.png
-Terminal=false
-Type=Application
-Categories=Utility;Application;
