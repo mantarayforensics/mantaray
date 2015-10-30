@@ -50,7 +50,6 @@ from GUI_Timeline_mr import *
 from remove_duplicates_mr import *
 from carve_unallocated_mr import *
 from volatility_mr import *
-import volley24
 from exifdata_mr import *
 from extract_ntfs_artifacts_mr import *
 from create_kml_from_exif_mr import *
