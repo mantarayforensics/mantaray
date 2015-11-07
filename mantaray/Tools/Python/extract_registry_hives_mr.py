@@ -3,7 +3,7 @@
 #Unallocated, Shadow Volumes)
 
 #########################COPYRIGHT INFORMATION############################
-#Copyright (C) 2013 dougkoster@hotmail.com  							 #
+#Copyright (C) 2013 douglas.koster@mantech.com				 #
 #This program is free software: you can redistribute it and/or modify    #
 #it under the terms of the GNU General Public License as published by    #
 #the Free Software Foundation, either version 3 of the License, or       #
@@ -385,8 +385,16 @@ def process_unallocated_clusters(value, key, Image_Path, outfile, case_number, f
 	blkls_command = "blkls -A -f " + value + " -i raw -o " + str(key_bytes) + " " + Image_Path
 	#print("\nThe blkls command is: " + blkls_command + "\n")
 	outfile.write("\nThe blkls command is: " + blkls_command + "\n")
-	
-	foremost_command = "foremost -q -d -o " + "'" + folder_path  + "/Partition_" + str(key) + "/unallocated_files" + "'" +" -c /usr/share/Manta_Ray/Tools/conf_files/foremost.conf"
+		
+	if(value == "hfs"):
+		foremost_command = "foremost -v -a -d -o " + "'" + folder_path  + "/Partition_" + str(key) + \
+		"/unallocated_files" + "'" +" -c /usr/share/Manta_Ray/Tools/conf_files/foremost.conf"
+	else:
+		foremost_command = "foremost -v -a -o " + "'" + folder_path  + "/Partition_" + str(key) + \
+		"/unallocated_files" + "'" +" -c /usr/share/Manta_Ray/Tools/conf_files/foremost.conf"
+
+	#print("The foremost_command is: " + foremost_command + "\n")
+	outfile.write("\nThe foremost_command is: " + foremost_command + "\n")
 	#print("The foremost_command is: " + foremost_command + "\n")
 	outfile.write("\nThe foremost_command is: " + foremost_command + "\n")
 
