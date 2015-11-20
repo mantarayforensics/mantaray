@@ -1163,7 +1163,7 @@ for x in processing_scripts_list:
 			#if re.search(term, raw_output):
 			#	print("\n\n\n**************Positive Hit****************\n\n\n\n\n")
 			
-			raw_output2 = raw_output.split("files.\n\n\nPlugins\n-------\n")
+			raw_output2 = raw_output.split("\n\n\nPlugins\n-------\n")
 			#print("This is raw_output2:\n\n\n",raw_output2)
 			#print("This is raw_output2[0]:\n\n\n",raw_output2[0])
 			#print("This is raw_output2[1]:\n\n\n",raw_output2[1])
