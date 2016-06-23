@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 # This program is the master GUI for the Manta Ray project.
-# version 1.17
+# version 1.18
 
 """
 Version Update:
 
-Last Updated: October 2015
+Last Updated: October 2016
++1.18 - Dkoster
+	Added AV_Scanner module
 
 +1.17 - KMurphy
 	Redesigned GUI questions for 
@@ -57,6 +59,7 @@ from plist_processor import *
 from filename_search_mr import *
 from sa_mr import *
 from plaso_mr import *
+from av_scanner_mr import *
 import ga_cookie_cruncher_mr
 
 
@@ -336,6 +339,8 @@ if evidence_type == "Bit-Stream Image":
 
 								'FALSE "Super Timeline-Plaso" "Create supertimeline using Plaso" '
 
+								'FALSE "AV Scanner" "Scan image for viruses" '
+
 								'--text="Processing Tool Selection   |  '
 								' Evidence Type: Bit-Stream Image" --width 1100 --height 400'],
 								shell=True, universal_newlines=True)
@@ -400,6 +405,7 @@ if evidence_type == "EnCase Logical Evidence File":
 									'"Runs Static analysis tools from Remnux" '
 								'FALSE "Super Timeline-Log2Timeline" '
 									'"Parse various log files and artifacts for timeline analysis" '
+								'FALSE "AV Scanner" "Scan LEF for viruses" '
 
 								'--text="Processing Tool Selection   |   '
 								'Evidence Type: EnCase Logical Evidence File" '
@@ -472,6 +478,8 @@ if evidence_type == "Directory":
 									'"Create SuperTimeline from folder" '
 
 								'FALSE "Super Timeline-Plaso" "Create supertimeline using Plaso" '
+
+								'FALSE "AV Scanner" "Scan directory for viruses" '
 
 								'--text="Processing Tool Selection   |  '
 								' Evidence Type: Directory" --width 1100 --height 400'],
@@ -776,6 +784,17 @@ else:
 for x in processing_scripts_list:
 	print("The current tool to get options for is: " + x)
 
+	if x == 'AV Scanner':
+		#ask user to select their configuration file.  The configuration file contains the name of the AV Scanner and the Command Line arguments required to run the scanner against a folder
+		#clamscan, clamscan -r -i --quiet <folder>, NONE 
+		#conf_file = fileopenbox(msg="Please select your configuration file", title="MantaRay AV Scanning", default='/usr/share/mantaray/docs/av_scanner_mr.conf')
+
+		conf_file = subprocess.check_output(['zenity --file-selection --filename="/usr/share/mantaray/docs/" '
+										'--title "Select Configuration File for AV Scanner"'],
+										shell=True, universal_newlines=True)
+		print("Configuration File is: " + conf_file.strip())
+		gui_outfile.write("AV Scanner Configuration File:" + "\t" + conf_file.strip() + "\n")
+		conf_file = conf_file.strip()
 	if x == 'BulkExtractor':
 
 		try:
@@ -1163,7 +1182,7 @@ for x in processing_scripts_list:
 			#if re.search(term, raw_output):
 			#	print("\n\n\n**************Positive Hit****************\n\n\n\n\n")
 			
-			raw_output2 = raw_output.split("\n\n\nPlugins\n-------\n")
+			raw_output2 = raw_output.split("files.\n\n\nPlugins\n-------\n")
 			#print("This is raw_output2:\n\n\n",raw_output2)
 			#print("This is raw_output2[0]:\n\n\n",raw_output2[0])
 			#print("This is raw_output2[1]:\n\n\n",raw_output2[1])
@@ -1585,7 +1604,18 @@ for evidence_path in evidence_path_list:
 					gui_outfile.write("Plaso-Timeline...".ljust(35) + "completed successfully".ljust(55) + "\n")
 				except:
 					print("Call to Plaso-Timeline failed")
-					gui_outfile.write("Plaso-Timeline failed...Please reprocess with Debug Mode ON - running MantaRay from command line as root\n")
+					gui_outfile.write("Plaso-Timeline failed...Please reprocess with  Debug Mode ON - running MantaRay from command line as root\n")
+		elif x == 'AV Scanner':
+			if(debug_mode == "ON"):
+				av_scanner_mr(evidence_type, base_case_number, folder_path, evidence_path.strip(), conf_file)
+				gui_outfile.write("AV_Scanner...".ljust(35) + "completed successfully".ljust(55) + "\n")
+			else:
+				try:
+					av_scanner_mr(evidence_type, base_case_number, folder_path, evidence_path.strip(), conf_file)
+					gui_outfile.write("AV_Scanner...".ljust(35) + "completed successfully".ljust(55) + "\n")
+				except:
+					print("Call to AV_Scanner failed")
+					gui_outfile.write("AV_Scanner failed...Please reprocess with Debug Mode ON - running MantaRay from command line as root\n")
 
 	gui_outfile.write("\n\n###################################################################################\n\n")
 
