@@ -215,6 +215,8 @@ def main(input_file, output_directory, parsers, input_type):
     mount_point = "/mnt/" + now.strftime("%Y-%m-%d_%H_%M_%S_%f")
     folder_path = output_directory
 
+    print("Inside GA Cookies module the input type is: input_type")
+
     #process_file(input_file,folder_path,parsers,type="Overt", threads)
 
     if not os.path.exists(output_directory):
