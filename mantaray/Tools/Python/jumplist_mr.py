@@ -217,15 +217,16 @@ def jumplist_mr(item_to_process, case_number, root_folder_path, evidence):
 
 	#run text files through unix2dos
 	for root, dirs, files in os.walk(folder_path):
-			for filenames in files:
-				#get file extension
-				fileName, fileExtension = os.path.splitext(filenames)
-				if(fileExtension.lower() == ".txt"):
-					full_path = os.path.join(root,filenames)
-					quoted_full_path = "'" +full_path+"'"
-					print("Running Unix2dos against file: " + filenames)
-					unix2dos_command = "sudo unix2dos " + "'"+filenames+"'"
-					subprocess.call([unix2dos_command], shell=True)
+		for filenames in files:
+			#get file extension
+			fileName, fileExtension = os.path.splitext(filenames)
+			if(fileExtension.lower() == ".txt"):
+				full_path = os.path.join(root,filenames)
+				quoted_full_path = "'" +full_path+"'"
+				print("Running Unix2dos against file: " + quoted_full_path)
+				#unix2dos_command = "sudo unix2dos " + "'"+filenames+"'"
+				unix2dos_command = "sudo unix2dos " + quoted_full_path
+				subprocess.call([unix2dos_command], shell=True)
 
 
 
