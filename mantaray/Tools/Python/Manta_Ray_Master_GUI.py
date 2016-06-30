@@ -67,7 +67,15 @@ import ga_cookie_cruncher_mr
 
 def splashscreen():
 
-	intro_splashscreen = buttonbox(msg='', image='/usr/share/mantaray/images/Mantaray_Logo_Template_Full_Screen.gif',
+	gif_list = []
+
+	#locate splash screen image
+	locate_command = 'locate Mantaray_Logo_Template_Full_Screen.gif'
+	gif_location = subprocess.check_output([locate_command],shell=True, universal_newlines=True)
+	gif_location_path_list = gif_location.split("\n")
+	gif_path = gif_location_path_list[0]
+
+	intro_splashscreen = buttonbox(msg='', image=gif_path,
 					title='MantaRay - ManTech Triage & Analysis System		MantaRayForensics.com',
 					choices=('Continue', 'About', 'License', 'Support', 'System Requirements', 'Exit'))
 
