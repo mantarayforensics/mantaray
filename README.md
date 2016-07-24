@@ -2,6 +2,8 @@ MantaRay Forensics
 ==================================
 ManTech Triage and Analysis System, Forensics Workflow Automation Suite
 
+Update: July 2016 - Mantarayforensics.com has been decommissioned.  GitHub is now the main portal for mantaray.
+
 ![alt tag](https://raw.githubusercontent.com/mantarayforensics/mantaray/master/mantaray/images/Mantaray_Logo_Template_Full_Screen.gif)
 
 Overview
