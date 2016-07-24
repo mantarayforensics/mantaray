@@ -39,7 +39,7 @@ SIFT 3.0 Workstation - (https://digital-forensics.sans.org/community/downloads):
     sudo apt-get update
     sudo apt-get upgrade
     sudo update-sift
-    update code found on GitHub (usr/share/mantaray)
+    update to newest code found on GitHub (SIFT 3.0 --> /usr/share/mantaray)
 
 Using bootstrap to install Mantaray:
 
