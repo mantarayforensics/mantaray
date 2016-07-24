@@ -32,6 +32,15 @@ See https://launchpad.net/~mantaray/+archive/stable for a full list
 Installation of MantaRay
 ==================================
 
+SIFT 3.0 Workstation - (https://digital-forensics.sans.org/community/downloads):
+
+    Download the virtual machine from SANS
+    Update SIFT 3.0: 
+    sudo apt-get update
+    sudo apt-get upgrade
+    sudo update-sift
+    update code found on GitHub (usr/share/mantaray)
+
 Using bootstrap to install Mantaray:
 
     wget -q https://raw.githubusercontent.com/mantarayforensics/mantaray/master/mrbootstrap.sh && sh mrbootstrap.sh -i
