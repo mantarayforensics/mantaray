@@ -12,8 +12,6 @@ directories and individual files with open source tools. With
 support for numerous image formats, this tool provides a scalable 
 base to utilize open source and custom exploitation tools.
 
-For more information about the suite, visit our website http://www.mantarayforensics.com
-
 Dependencies
 ==================================
 
@@ -88,6 +86,4 @@ GitHub:
 Errors and Bugs
 ==================================
 If MantaRay crashes, please re-run it in debug mode and send a screenshot
-of the crash along with any other details you can provide to the 
-MantaRay Forum http://mantarayforensics.com/forums/
-or report to our GitHub https://github.com/mantarayforensics/mantaray/issues
+of the crash along with any other details you can report to our GitHub https://github.com/mantarayforensics/mantaray/issues
