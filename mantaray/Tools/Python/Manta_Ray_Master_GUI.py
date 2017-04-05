@@ -74,8 +74,8 @@ def splashscreen():
 	gif_list = []
 
 	#locate splash screen image
-	locate_command = 'locate Mantaray_Logo_Template_Full_Screen.gif'
-	gif_location = subprocess.check_output([locate_command],shell=True, universal_newlines=True)
+	#locate_command = 'locate Mantaray_Logo_Template_Full_Screen.gif'
+	gif_location = subprocess.getoutput("find ../../ -name Mantaray_Logo_Template_Full_Screen.gif")
 	gif_location_path_list = gif_location.split("\n")
 	gif_path = gif_location_path_list[0]
 
