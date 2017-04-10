@@ -34,7 +34,14 @@ import mount_encase_v6_l01
 
 def process_dir(input_dir, output_dir, parsers, type):
     print ("Building Command...")
-    cmd = "sudo python /usr/share/mantaray/Tools/Python/ga_parser.py -d \'" + input_dir + "\' -o \'" + output_dir + "\'"
+    #find location of parser
+    locate_cmd = "locate ga_parser.py"
+    path = subprocess.check_output([locate_cmd], shell=True)
+    path = path.strip()
+    print("The path is: " + path.decode('ascii'))
+
+    #cmd = "sudo python "/usr/share/mantaray/mantaray/Tools/Python/ga_parser.py" -d \'" + input_dir + "\' -o \'" + output_dir + "\'"
+    cmd = "sudo python " + path.decode('ascii') + " -d \'" + input_dir + "\' -o \'" + output_dir + "\'"
 
     # Select parsers.
     if "chrome" in parsers:
@@ -63,7 +70,7 @@ def process_dir(input_dir, output_dir, parsers, type):
 
 def process_file(input_file, output_dir, parsers, type="Overt"):
     print ("Building Command...")
-    cmd = "sudo python /usr/share/mantaray/Tools/Python/ga_parser.py -f \'" + input_file + "\' -o \'" + output_dir + "\'"
+    cmd = "sudo python /usr/share/mantaray/mantaray/Tools/Python/ga_parser.py -f \'" + input_file + "\' -o \'" + output_dir + "\'"
 
     # Select parsers.
     if "chrome" in parsers:
