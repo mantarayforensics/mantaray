@@ -75,9 +75,10 @@ def splashscreen():
 
 	#locate splash screen image
 	#locate_command = 'locate Mantaray_Logo_Template_Full_Screen.gif'
-	gif_location = subprocess.getoutput("find ../../ -name Mantaray_Logo_Template_Full_Screen.gif")
-	gif_location_path_list = gif_location.split("\n")
-	gif_path = gif_location_path_list[0]
+	#gif_location = subprocess.getoutput("find ../../images -name Mantaray_Logo_Template_Full_Screen.gif")
+	#gif_location_path_list = gif_location.split("\n")
+	#gif_path = gif_location_path_list[0]
+	gif_path = "/usr/share/mantaray/mantaray/images/Mantaray_Logo_Template_Full_Screen.gif"
 
 	intro_splashscreen = buttonbox(msg='', image=gif_path,
 					title='MantaRay - ManTech Triage & Analysis System		github.com/mantarayforensics',
@@ -339,7 +340,7 @@ if evidence_type == "Bit-Stream Image":
 								'FALSE "PLIST Processor" "Extracts triage data from selected '
 								'.plist files" '
 
-								'FALSE "GA Cookie" "Carves and processes '
+								'FALSE "GA Cookies" "Carves and processes '
 								'artifacts from Google Analytic Cookies" '
 
 								'FALSE "Registry Hive Extractor//Regripper" "Extract Registry '
