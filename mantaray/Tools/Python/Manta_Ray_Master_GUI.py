@@ -555,8 +555,7 @@ if evidence_type == "Memory Image":
 		gui_outfile.write("Memory Image: Processing Tool Selection - No processing scripts were selected.")
 		sys.exit(0)
 
-	###############################################
-	########### Process Operating System ##########
+	########################################################## Process Operating System ##########
 
 	if re.search('Volatility',processing_scripts):
 
@@ -1028,6 +1027,41 @@ for x in processing_scripts_list:
 			print("Timezone Option: User selected no/cancel rather than set timezone manually")
 			gui_outfile.write("Timezone Option: User selected no/cancel rather than set timezone manually" + "\n")
 
+	elif x == 'Super Timeline-Plaso':
+
+		try:
+
+			plaso_options = subprocess.check_output(['zenity --list --checklist --title "MantaRay - '
+									'ManTech Triage & Analysis System		github.com/mantarayforensics" '
+									'--column="Selection" '
+									'--column="Processing Option" '
+									'--column="Description" '
+									'--separator="," '
+
+									'FALSE "CSV" '
+									'"Output timeline data to CSV file" '
+
+									'FALSE "Timesketch" '
+									'"Load timeline data into Timesketch" '
+
+									'FALSE "Kibana" '
+									'"Load Timeline data into Kibana" '
+
+									'--text="Processing Options - Plaso Output Options" --width 800 --height 400'],
+									shell=True, universal_newlines=True)
+
+		except:
+			print ("Cancel/Exit chosen")
+			gui_outfile.write("Plaso Options: Processing Options - Aborted by user - Cancel/Exit chosen")
+			sys.exit(0)
+
+		if plaso_options:
+			print("Plaso Options: " + plaso_options.strip())
+			gui_outfile.write("Plaso Options:" + "\t" + plaso_options.strip() + "\n")
+		else:
+			print ("Plaso Options: No options were selected.")
+			gui_outfile.write("Plaso Options: Processing Options - No processing scripts were selected.")
+			sys.exit(0)
 
 	elif x == 'Registry Hive Extractor//Regripper':
 
@@ -1609,11 +1643,11 @@ for evidence_path in evidence_path_list:
 					gui_outfile.write("Static Malware Analysis failed...Please reprocess with Debug Mode ON - running MantaRay from command line as root\n")
 		elif x == 'Super Timeline-Plaso':
 			if(debug_mode == "ON"):
-				plaso_mr(evidence_type, base_case_number, folder_path, evidence_path.strip())
+				plaso_mr(evidence_type, base_case_number, folder_path, evidence_path.strip(), plaso_options.strip())
 				gui_outfile.write("Plaso-Timeline...".ljust(35) + "completed successfully".ljust(55) + "\n")
 			else:
 				try:
-					plaso_mr(evidence_type, base_case_number, folder_path, evidence_path.strip())
+					plaso_mr(evidence_type, base_case_number, folder_path, evidence_path.strip(), plaso_options.strip())
 					gui_outfile.write("Plaso-Timeline...".ljust(35) + "completed successfully".ljust(55) + "\n")
 				except:
 					print("Call to Plaso-Timeline failed")
