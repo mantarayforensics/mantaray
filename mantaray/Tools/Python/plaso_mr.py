@@ -51,32 +51,61 @@ import base64
 
 ### process_folder #######################################################################################
 
-def process_folder(folder_path, case_number, evidence, outfile):
+def process_folder(folder_path, case_number, evidence, outfile, plaso_options):
+
+	#run plaso to create dump file
+
 	#set up plaso command
 	plaso_command = "log2timeline.py " + "'" + folder_path + "/" + case_number + ".dump" + "'" + " " + "'" + evidence + "'" +  " --partition all --status_view window --logfile " + "'" + folder_path + "/" + case_number + "_plaso.log" + "'" + " --vss-stores all"
 	print("The plaso command is: " + plaso_command)
 	#run plaso command
 	subprocess.call([plaso_command], shell=True)
 
-	#set up psort command
-	psort_command = "psort.py --logfile " + "'" + folder_path + "/" + case_number + "_pysort.log" + "'" + " -w " + "'" + folder_path + "/" + case_number + ".plaso.csv" + "'" + " -o l2tcsv " + "'" + folder_path + "/" + case_number + ".dump" + "'"
-	print("The psort command is: " + psort_command)
+	if ("CSV" in plaso_options):
 
-	#run psort command
-	subprocess.call([psort_command], shell=True)
+		#set up psort command
+		psort_command = "psort.py --logfile " + "'" + folder_path + "/" + case_number + "_pysort.log" + "'" + " -w " + "'" + folder_path + "/" + case_number + ".plaso.csv" + "'" + " -o l2tcsv " + "'" + folder_path + "/" + case_number + ".dump" + "'"
+		print("The psort command is: " + psort_command)
+		outfile.write("The psort command is: " + psort_command + "\n")
+
+		#run psort command
+		subprocess.call([psort_command], shell=True)
+
+	if ("Timesketch" in plaso_options):
+
+		#set up psort command
+		psort_command = "psort.py -o timesketch --name " + case_number + " --logfile " + "'" + folder_path + "/" + case_number + "_pysort.log" + "'" +" " +  "'" + folder_path + "/" + case_number + ".dump" + "'"
+		print("The psort command is: " + psort_command)
+		outfile.write("The psort command is: " + psort_command + "\n")
+
+		#run psort command
+		subprocess.call([psort_command], shell=True)
+
+	if ("Kibana" in plaso_options):
+
+		#set up psort command
+		#psort.py -o elastic --index_name case-test --raw_fields test-plaso.dump
+		psort_command = "psort.py -o elastic --index_name " + case_number + " --raw_fields --logfile " + "'" + folder_path + "/" + case_number + "_pysort.log" + "'" +" " +  "'" + folder_path + "/" + case_number + ".dump" + "'"
+		print("The psort command is: " + psort_command)
+		outfile.write("The psort command is: " + psort_command + "\n")
+
+		#run psort command
+		subprocess.call([psort_command], shell=True)
 			
 
-##########################################################################################################
 
 ##########################################################################################################
 
-def plaso_mr(item_to_process, case_number, root_folder_path, evidence):
+##########################################################################################################
+
+def plaso_mr(item_to_process, case_number, root_folder_path, evidence, plaso_options):
 	#(evidence_type, case_number, folder_path, evidence_path.strip())
 	
 	print("The item to process is: " + item_to_process)
 	print("The case_name is: " + case_number)
 	print("The output folder is: " + root_folder_path)
 	print("The evidence to process is: " + evidence)
+	print("The plaso_optoins are: " + plaso_options)
 
 	evidence_no_quotes = evidence
 	evidence = '"' + evidence + '"'
@@ -98,10 +127,10 @@ def plaso_mr(item_to_process, case_number, root_folder_path, evidence):
 
 	if(item_to_process == "Directory"):
 		folder_to_process = evidence_no_quotes
-		process_folder(folder_path, case_number, folder_to_process, outfile)
+		process_folder(folder_path, case_number, folder_to_process, outfile, plaso_options)
 	elif(item_to_process =="EnCase Logical Evidence File"):
 		file_to_process = evidence
-		mount_point = mount_encase_v6_l01(case_number, file_to_process, outfile)
+		mount_point = mount_encase_v6_l01(case_number, file_to_process, outfile, plaso_options)
 		process_folder(mount_point, export_file, outfile)
 
 		#umount
@@ -113,7 +142,7 @@ def plaso_mr(item_to_process, case_number, root_folder_path, evidence):
 		
 		#get datetime
 		now = datetime.datetime.now()
-		process_folder(folder_path, case_number, Image_Path, outfile)
+		process_folder(folder_path, case_number, Image_Path, outfile, plaso_options)
 
 		
 
