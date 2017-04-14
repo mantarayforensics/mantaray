@@ -71,16 +71,6 @@ def process_folder(folder_path, case_number, evidence, outfile, plaso_options):
 		#run psort command
 		subprocess.call([psort_command], shell=True)
 
-	if ("Timesketch" in plaso_options):
-
-		#set up psort command
-		psort_command = "psort.py -o timesketch --name " + case_number + " --logfile " + "'" + folder_path + "/" + case_number + "_pysort.log" + "'" +" " +  "'" + folder_path + "/" + case_number + ".dump" + "'"
-		print("The psort command is: " + psort_command)
-		outfile.write("The psort command is: " + psort_command + "\n")
-
-		#run psort command
-		subprocess.call([psort_command], shell=True)
-
 	if ("Kibana" in plaso_options):
 
 		#set up psort command
@@ -91,8 +81,17 @@ def process_folder(folder_path, case_number, evidence, outfile, plaso_options):
 
 		#run psort command
 		subprocess.call([psort_command], shell=True)
-			
 
+
+	if ("Timesketch" in plaso_options):
+
+		#set up psort command
+		psort_command = "psort.py -o timesketch --name " + case_number + " --index " + case_number + " --logfile " + "'" + folder_path + "/" + case_number + "_pysort.log" + "'" +" " +  "'" + folder_path + "/" + case_number + ".dump" + "'"
+		print("The psort command is: " + psort_command)
+		outfile.write("The psort command is: " + psort_command + "\n")
+
+		#run psort command
+		subprocess.call([psort_command], shell=True)
 
 ##########################################################################################################
 
