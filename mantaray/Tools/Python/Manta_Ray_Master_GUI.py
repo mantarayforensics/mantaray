@@ -185,7 +185,8 @@ if intro_splashscreen:
 		sys.exit(0)
 
 	if fieldValues:
-		case_number = fieldValues[0]
+		#case names need to be in lower case for elasticsearch
+		case_number = fieldValues[0].lower()
 		#substitute _ for / and \
 		if(re.search(" ", case_number)):
 			case_number = case_number.replace(" ", "")
