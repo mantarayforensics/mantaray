@@ -309,14 +309,14 @@ def log2timeline(timezone_shift, key, folder_path, outfile, mount_point):
 
 	if(timezone_shift == "NONE"):
 		#set log2timeline command
-		log2timeline_command = "log2timeline -v -z UTC -o mactime -m Partition_" + key + " -r " +mount_point + " -log " + "'" + folder_path +"/bodyfile_" + key + "_log2timeline_log.txt" + "'" +" -d -w " + "'" + folder_path +"/bodyfile_" + key + "'"
+		log2timeline_command = "perl /usr/share/log2timeline/log2timeline_legacy -v -z UTC -o mactime -m Partition_" + key + " -r " +mount_point + " -log " + "'" + folder_path +"/bodyfile_" + key + "_log2timeline_log.txt" + "'" +" -d -w " + "'" + folder_path +"/bodyfile_" + key + "'"
 		print ("The log2timeline command is: " + log2timeline_command, end ="\n\n")
 		print ("Running Log2timeline against: " + mount_point, end ="\n\n")
 		if(outfile != "NONE"):
 			outfile.write("The log2timeline command is: " + log2timeline_command + "\n\n")
 	else:
 		#set log2timeline command
-		log2timeline_command = "log2timeline -v -z " + timezone_shift + " -o mactime -m Partition_" + key + " -r " +mount_point + " -log " + "'" + folder_path +"/bodyfile_" + key + "_log2timeline_log.txt" + "'" +" -d -w " + "'" + folder_path +"/bodyfile_" + key + "'"
+		log2timeline_command = "perl /usr/share/log2timeline/log2timeline_legacy -v -z " + timezone_shift + " -o mactime -m Partition_" + key + " -r " +mount_point + " -log " + "'" + folder_path +"/bodyfile_" + key + "_log2timeline_log.txt" + "'" +" -d -w " + "'" + folder_path +"/bodyfile_" + key + "'"
 		print ("The log2timeline command is: " + log2timeline_command, end ="\n\n")
 		print ("Running Log2timeline against: " + mount_point, end ="\n\n")
 		if(outfile != "NONE"):
@@ -593,9 +593,9 @@ def process_folder(folder_to_process, folder_path, outfile, case_number, user_de
 
 	#run log2timeline against every file in folder
 	if(user_defined_timezone == "NONE"):
-		log2timeline_command = "log2timeline -v -o mactime -m Folder -r " + "'" + folder_to_process + "'" + " -log " + "'" + folder_path +"/bodyfile_log2timeline_log.txt" + "'" +" -d -w " + "'" + folder_path +"/bodyfile.txt" + "'"
+		log2timeline_command = "perl /usr/share/log2timeline/log2timeline_legacy -v -o mactime -m Folder -r " + "'" + folder_to_process + "'" + " -log " + "'" + folder_path +"/bodyfile_log2timeline_log.txt" + "'" +" -d -w " + "'" + folder_path +"/bodyfile.txt" + "'"
 	else:
-		log2timeline_command = "log2timeline -v -z " + user_defined_timezone + " -o mactime -m Folder -r " + "'" + folder_to_process + "'" + " -log " + "'" + folder_path +"/bodyfile_log2timeline_log.txt" + "'" +" -d -w " + "'" + folder_path +"/bodyfile.txt" + "'"
+		log2timeline_command = "perl /usr/share/log2timeline/log2timeline_legacy -v -z " + user_defined_timezone + " -o mactime -m Folder -r " + "'" + folder_to_process + "'" + " -log " + "'" + folder_path +"/bodyfile_log2timeline_log.txt" + "'" +" -d -w " + "'" + folder_path +"/bodyfile.txt" + "'"
 	print ("The log2timeline command is: " + log2timeline_command, end ="\n\n")
 	print ("Running Log2timeline against: " + folder_to_process, end ="\n\n")
 	subprocess.call([log2timeline_command], shell=True)
@@ -603,7 +603,7 @@ def process_folder(folder_to_process, folder_path, outfile, case_number, user_de
 		outfile.write("The log2timeline command is: " + log2timeline_command + "\n\n")
 
 	#run mac-robber against folder
-	macrobber_command = "mac-robber " + "'" + folder_to_process + "'" + " >>" + "'" + folder_path + "/bodyfile.txt" + "'"
+	macrobber_command = "/usr/share/mac-robber-1.02/mac-robber " + "'" + folder_to_process + "'" + " >>" + "'" + folder_path + "/bodyfile.txt" + "'"
 	print("The mac-robber command is: " + macrobber_command)
 	outfile.write("The macrobber command is: " + macrobber_command + "\n")
 	subprocess.call([macrobber_command], shell=True) 
