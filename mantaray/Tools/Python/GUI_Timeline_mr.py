@@ -603,7 +603,7 @@ def process_folder(folder_to_process, folder_path, outfile, case_number, user_de
 		outfile.write("The log2timeline command is: " + log2timeline_command + "\n\n")
 
 	#run mac-robber against folder
-	macrobber_command = "/usr/share/mac-robber-1.02/mac-robber " + "'" + folder_to_process + "'" + " >>" + "'" + folder_path + "/bodyfile.txt" + "'"
+	macrobber_command = "mac-robber " + "'" + folder_to_process + "'" + " >>" + "'" + folder_path + "/bodyfile.txt" + "'"
 	print("The mac-robber command is: " + macrobber_command)
 	outfile.write("The macrobber command is: " + macrobber_command + "\n")
 	subprocess.call([macrobber_command], shell=True) 
