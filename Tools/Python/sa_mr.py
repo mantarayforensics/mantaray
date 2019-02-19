@@ -75,13 +75,13 @@ def process_folder(folder_to_process, folder_path, evidence_no_quotes, outfile):
 
 			print("The file to process is: " + abs_file_path_print)
 			filename = os.path.basename(abs_file_path)
-			run_mastiff("'"+ abs_file_path_print + "'", filename, folder_path, abs_file_path_print, outfile)
+			#run_mastiff("'"+ abs_file_path_print + "'", filename, folder_path, abs_file_path_print, outfile)
 			run_pescanner("'"+ abs_file_path_print + "'", filename, folder_path, abs_file_path_print, outfile)
-			run_pestr("'"+ abs_file_path_print + "'", filename, folder_path, abs_file_path_print, outfile)
+			run_pev("'"+ abs_file_path_print + "'", filename, folder_path, abs_file_path_print, outfile)
 			run_readpe("'"+ abs_file_path_print + "'", filename, folder_path, abs_file_path_print, outfile)
 			run_pedump("'"+ abs_file_path_print + "'", filename, folder_path, abs_file_path_print, outfile)
 			run_peframe("'"+ abs_file_path_print + "'", filename, folder_path, abs_file_path_print, outfile)
-			run_signsrch("'"+ abs_file_path_print + "'", filename, folder_path, abs_file_path_print, outfile)
+			run_floss("'"+ abs_file_path_print + "'", filename, folder_path, abs_file_path_print, outfile)
 			
 
 ##########################################################################################################
@@ -144,24 +144,24 @@ def run_pescanner(evidence, file_to_process, folder_path, evidence_no_quotes, ou
 
 ### Run PESTR #########################################################################################
 
-def run_pestr(evidence, file_to_process, folder_path, evidence_no_quotes, outfile):
+def run_pev(evidence, file_to_process, folder_path, evidence_no_quotes, outfile):
 	print("Getting ready to run PESTR.....")
 	print("The file to process is: " + file_to_process)
 
 	#make output folder for this file
-	check_for_folder(folder_path + "/" + file_to_process + "/PESTR", "NONE")
+	check_for_folder(folder_path + "/" + file_to_process + "/PEV", "NONE")
 
 	#get md5 hash of file we are processing
 	#md5_hash = calculate_md5(evidence_no_quotes)
 	#print("The md5 hash of this file is: " + md5_hash)
 
 	#set up mastiff command
-	pestr_command = "pestr " + evidence + " > " + "'" + folder_path + "/" + file_to_process + "/PESTR/PESTR_output.txt" + "'"
-	print("The pestr command is: " + pestr_command)
-	outfile.write("The pestr command is: " + pestr_command + "\n\n")
+	pev_command = "pev " + evidence + " > " + "'" + folder_path + "/" + file_to_process + "/PEV/PEV_output.txt" + "'"
+	print("The pev command is: " + pev_command)
+	outfile.write("The pev command is: " + pev_command + "\n\n")
 
 	#run prestr command
-	subprocess.call([pestr_command], shell=True)
+	subprocess.call([pev_command], shell=True)
 
 
 ##########################################################################################################
@@ -180,7 +180,7 @@ def run_readpe(evidence, file_to_process, folder_path, evidence_no_quotes, outfi
 	#print("The md5 hash of this file is: " + md5_hash)
 
 	#set up readpe command
-	readpe_command = "readpe " + evidence + " > " + "'" + folder_path + "/" + file_to_process + "/READPE/READPE_output.txt" + "'"
+	readpe_command = "readpe.py " + evidence + " > " + "'" + folder_path + "/" + file_to_process + "/READPE/READPE_output.txt" + "'"
 	print("The readpe command is: " + readpe_command)
 	outfile.write("The readpe command is: " + readpe_command + "\n\n")
 
@@ -234,20 +234,20 @@ def run_peframe(evidence, file_to_process, folder_path, evidence_no_quotes, outf
 
 ### Run SIGNSRCH #########################################################################################
 
-def run_signsrch(evidence, file_to_process, folder_path, evidence_no_quotes, outfile):
-	print("Getting ready to run PEFRAME.....")
+def run_floss(evidence, file_to_process, folder_path, evidence_no_quotes, outfile):
+	print("Getting ready to run FLOSS.....")
 	print("The file to process is: " + file_to_process)
 
 	#make output folder for this file
-	check_for_folder(folder_path + "/" + file_to_process + "/SIGNSRCH", "NONE")
+	check_for_folder(folder_path + "/" + file_to_process + "/FLOSS", "NONE")
 
 	#set up signsrch command
-	signsrch_command = "signsrch " + evidence + " > " + "'" + folder_path + "/" + file_to_process + "/SIGNSRCH/SIGNSRCH_output.txt" + "'"
-	print("The signsrch command is: " + signsrch_command)
-	outfile.write("The signsrch command is: " + signsrch_command + "\n\n")
+	signsrch_command = "floss -v " + evidence + " > " + "'" + folder_path + "/" + file_to_process + "/FLOSS/FLOSS_output.txt" + "'"
+	print("The floss command is: " + floss_command)
+	outfile.write("The floss command is: " + floss_command + "\n\n")
 
 	#run signsrch command
-	subprocess.call([signsrch_command], shell=True)
+	subprocess.call([floss_command], shell=True)
 
 ##########################################################################################################
 
@@ -288,13 +288,13 @@ def sa_mr(item_to_process, case_number, root_folder_path, evidence):
 		check_for_folder(folder_path + "/" + filename, "NONE")
 
 		#run Mastiff
-		run_mastiff(evidence, filename, folder_path, evidence_no_quotes, outfile)
+		#run_mastiff(evidence, filename, folder_path, evidence_no_quotes, outfile)
 
 		#run pescanner
 		run_pescanner(evidence, filename, folder_path, evidence_no_quotes, outfile)
 
 		#run pestr
-		run_pestr(evidence, filename, folder_path, evidence_no_quotes, outfile)
+		run_pev(evidence, filename, folder_path, evidence_no_quotes, outfile)
 
 		#run readpe
 		run_readpe(evidence, filename, folder_path, evidence_no_quotes, outfile)
@@ -306,7 +306,7 @@ def sa_mr(item_to_process, case_number, root_folder_path, evidence):
 		run_peframe(evidence, filename, folder_path, evidence_no_quotes, outfile)
 
 		#run signsrch
-		run_signsrch(evidence, filename, folder_path, evidence_no_quotes, outfile)
+		run_floss(evidence, filename, folder_path, evidence_no_quotes, outfile)
 
 	elif(item_to_process == "Directory"):
 		folder_to_process = evidence_no_quotes
